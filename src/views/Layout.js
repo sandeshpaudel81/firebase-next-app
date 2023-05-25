@@ -1,5 +1,4 @@
 import Footer from '@/components/common/footer'
-import MobileHeader from '@/components/common/mobileHeader'
 import Navbar from '@/components/common/navbar'
 import Sidebar from '@/components/common/sidebar'
 import { useRouter } from 'next/router'
