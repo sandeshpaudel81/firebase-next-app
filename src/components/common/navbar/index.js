@@ -6,7 +6,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { FaFacebookF, FaYoutube, FaPhoneAlt } from "react-icons/fa";
 import {GrMail} from "react-icons/gr"
 
-const Navbar = () => {
+const Navbar = ({pathname}) => {
   return (
     <div className='hidden lg:block'>
       <div className='flex text-sm bg-primaryDark text-white items-center justify-between'>
@@ -33,10 +33,12 @@ const Navbar = () => {
         {
           NavbarMenu.map((item) => {
             return <div key={item.id} className='uppercase text-slate-800 font-medium flex flex-col items-center group'>
-                <Link href={item.url}><div className='hover:text-primaryDark flex flex-row items-center cursor-pointer'><p>{item.name}</p> {
-                  item.subMenu && <MdKeyboardArrowDown className='ml-1 font-semibold'/>
-                }
-                </div></Link>
+                <Link href={item.url}>
+                  <div className={item.url === pathname ? `hover:text-primaryDark flex flex-row items-center cursor-pointer border-b-2 border-primaryDark text-primaryDark` : `hover:text-primaryDark flex flex-row items-center cursor-pointer`}>
+                    <p>{item.name}</p> 
+                    {item.subMenu && <MdKeyboardArrowDown className='ml-1 font-semibold'/>}
+                  </div>
+                </Link>
                 <div className='group-hover:flex flex-col bg-primaryLight hidden absolute top-[90px] rounded-md z-50'>
                 {
                   item.subMenu && item.subMenu.map((menu) => {

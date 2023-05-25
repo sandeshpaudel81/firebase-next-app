@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar pathname={pathname}/>
             <Sidebar pathname={pathnames}/>
             <div>
                 {children}
