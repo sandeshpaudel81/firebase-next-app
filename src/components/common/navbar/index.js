@@ -34,7 +34,7 @@ const Navbar = ({pathname}) => {
           NavbarMenu.map((item) => {
             return <div key={item.id} className='uppercase text-slate-800 font-medium flex flex-col items-center group'>
                 <Link href={item.url}>
-                  <div className={item.url === pathname ? `hover:text-primaryDark flex flex-row items-center cursor-pointer border-b-2 border-primaryDark text-primaryDark` : `hover:text-primaryDark flex flex-row items-center cursor-pointer`}>
+                  <div className={item.url === pathname ? `hover:text-secondary flex flex-row items-center cursor-pointer border-b-2 border-secondary text-secondary` : `hover:text-secondary flex flex-row items-center cursor-pointer`}>
                     <p>{item.name}</p> 
                     {item.subMenu && <MdKeyboardArrowDown className='ml-1 font-semibold'/>}
                   </div>

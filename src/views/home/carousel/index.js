@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCarousel } from '../../redux/slices/carouselSlice';
+import { fetchCarousel } from '../../../redux/slices/carouselSlice';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 
 const Carousel = () => {

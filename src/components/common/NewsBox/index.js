@@ -7,7 +7,7 @@ const NewsBox = (props) => {
     const {image, title, content, id} = props
     return (
       <div className='col-span-4 md:col-span-1 shadow-lg h-72 relative group overflow-hidden' key={id}>
-          <div className='absolute bg-primary rounded-full right-2 top-2 z-30 text-white'>
+          <div className='absolute bg-secondary rounded-full right-2 top-2 z-30 text-white'>
               <div className='flex flex-col items-center font-semibold w-14 h-14'>
                   <h3 className='text-2xl'>30</h3>
                   <p className='text-sm uppercase'>Oct</p>
@@ -21,7 +21,7 @@ const NewsBox = (props) => {
               <p className='text-gray-700 h-24 opacity-0 overflow-hidden group-hover:opacity-100 text-sm'>{content}</p>
               <small className='flex items-center mt-2 font-medium text-gray-600 opacity-0 group-hover:opacity-100'><FaRegHourglass className='mr-2'/>5 min read</small>
           </div>
-          <div className='absolute bottom-0 right-0 bg-primary z-40 text-white'>
+          <div className='absolute bottom-0 right-0 bg-secondary z-40 text-white'>
               <Link href="#"><div className='p-2 text-sm'>Read more.. </div></Link>
           </div>
       </div>

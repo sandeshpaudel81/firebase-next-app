@@ -1,9 +1,9 @@
+import DonorsHomeView from '@/views/home/DonorsHomeView';
 import NewsBox from '@/components/common/NewsBox';
 import Layout from '@/views/Layout';
-import Carousel from '@/views/carousel';
+import Carousel from '@/views/home/carousel';
 import Link from 'next/link';
 import { MdKeyboardArrowRight } from "react-icons/md";
-
 
 export default function Home() {
   const news = [
@@ -98,6 +98,16 @@ export default function Home() {
             </div>
         </div>
 
+        {/* Donors and Partners */}
+        <div className='bg-primaryExtraLight'>
+            <div className='container mx-auto px-5 py-10 md:py-20'>
+                <div className='border-l-8 border-primary px-5'>
+                    <h2 className='text-primary font-bold text-3xl'>Donors <span className='text-primaryDark'>& Partners</span></h2>
+                    <p className='uppercase text-gray-600 text-sm font-medium mt-2'>With whom we work</p>
+                </div>
+                <DonorsHomeView />
+            </div>
+        </div>
     </main>
   )
 }

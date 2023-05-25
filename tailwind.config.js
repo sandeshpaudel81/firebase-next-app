@@ -22,6 +22,9 @@ module.exports = {
         primary: "#0080ff",
         primaryD: "#05a",
         primaryDark: "#048",
+
+        secondary: '#ff5b16',
+        
         sdgOrange: "#e9432f",
         sdgYellow: '#f59c2d',
         sdgGreen: "#4c9e39",
