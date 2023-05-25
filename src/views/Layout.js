@@ -1,11 +1,15 @@
 import Footer from '@/components/common/footer'
+import MobileHeader from '@/components/common/mobileHeader'
 import Navbar from '@/components/common/navbar'
+import Sidebar from '@/components/common/sidebar'
 import { useRouter } from 'next/router'
 import React from 'react'
 
 const Layout = ({ children }) => {
 
-    const { pathname } = useRouter()
+    const {pathname} = useRouter()
+    
+    const pathnames = pathname.split('/').filter(i => i)
 
     if (pathname.startsWith("/admin")) {
         return (
@@ -21,6 +25,7 @@ const Layout = ({ children }) => {
     return (
         <div>
             <Navbar />
+            <Sidebar pathname={pathnames}/>
             <div>
                 {children}
             </div>
