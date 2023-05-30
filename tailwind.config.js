@@ -29,6 +29,10 @@ module.exports = {
         sdgYellow: '#f59c2d',
         sdgGreen: "#4c9e39",
       },
+      gridTemplateRows: {
+        "auto": "80px 1fr",
+        "rowauto": "auto 1fr"
+      },
     },
   },
   plugins: [],

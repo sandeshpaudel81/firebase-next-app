@@ -89,3 +89,31 @@ export const NavbarMenu = [
         name: "Contact"
     },
 ]
+
+export const AdminNavbarMenu = [
+    {
+        id: 1,
+        url: "/admin",
+        name: "Dashboard"
+    },
+    {
+        id: 2,
+        url: "/admin/projects",
+        name: "Projects"
+    },
+    {
+        id: 3,
+        url: "/admin/slides",
+        name: "Slides"
+    },
+    {
+        id: 4,
+        url: "/admin/change-password",
+        name: "Change Password"
+    },
+    {
+        id: 5,
+        url: "/admin/logout",
+        name: "Logout"
+    }
+]

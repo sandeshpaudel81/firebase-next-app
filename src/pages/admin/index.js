@@ -1,11 +1,11 @@
 import Layout from '@/views/Layout'
-import AdminComp from '@/views/admin'
+import AdminDashboard from '@/views/admin'
 import React from 'react'
 
 const Index = () => {
     return (
         <div>
-            <AdminComp />
+            <AdminDashboard />
         </div>
     )
 }
