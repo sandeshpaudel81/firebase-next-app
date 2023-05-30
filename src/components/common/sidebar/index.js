@@ -1,6 +1,6 @@
 import { NavbarMenu } from '@/utils/constants'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PrimaryButton from '../button'
 import { MdKeyboardArrowRight } from "react-icons/md";
 import { GrClose, GrMail } from "react-icons/gr";
@@ -12,6 +12,10 @@ const Sidebar = ({pathname}) => {
   const sidebarHandler = () => {
     setsidebar(!sidebar)
   }
+  useEffect(() => {
+    setsidebar(false)
+  }, [pathname])
+  
   return ( <div>
       <div className='lg:hidden'>
             <div className='flex text-sm bg-primaryDark text-white'>
@@ -28,9 +32,11 @@ const Sidebar = ({pathname}) => {
                   <span>Home</span>
                   {
                     pathname?.map((item, index) => 
-                    <div key={index}>
+                    <div key={index} className='flex items-center'>
                       <MdKeyboardArrowRight />
-                      <span>{item}</span>
+                      {
+                        item != "[id]" && <span>{item}</span>
+                      }
                     </div>
                     )
                   }

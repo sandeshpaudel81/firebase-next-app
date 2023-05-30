@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection} from "firebase/firestore"
+import { combineReducers, createSlice } from "@reduxjs/toolkit";
+import {getDocs, query, collection, doc, getDoc} from "firebase/firestore"
 import {db} from "../../../firebase-config"
 
-const projectSlice = createSlice({
-    name: 'project',
+const getProjectSlice = createSlice({
+    name: 'getProject',
     initialState: {
         data: [],
         loading: false,
@@ -26,10 +26,38 @@ const projectSlice = createSlice({
     }
 })
 
-export const { setProjects, setLoading, setSuccess, setError } = projectSlice.actions;
 
-export default projectSlice.reducer;
+const addProjectSlice = createSlice({
+    name: 'addProject',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        addProjectLoading(state, action){
+            state.loading = action.payload
+        },
+        addProjectSuccess(state, action){
+            state.success = action.payload
+        },
+        addProjectError(state, action){
+            state.error = action.payload
+        },
+        addProjectReset(state){
+            state.success = false
+            state.error = ""
+        }
+    }
+})
 
+export const { setProjects, setLoading, setSuccess, setError } = getProjectSlice.actions;
+export const { addProjectLoading, addProjectSuccess, addProjectError, addProjectReset } = addProjectSlice.actions;
+
+export const projectReducer = combineReducers({
+    getProject: getProjectSlice.reducer,
+    addProject: addProjectSlice.reducer,
+});
 
 // thunks
 export function fetchProjects(){
@@ -47,7 +75,8 @@ export function fetchProjects(){
             dispatch(setLoading(false))
             dispatch(setSuccess(true)) 
         } catch(err) {
-            dispatch(setError('error'))
+            dispatch(setLoading(false))
+            dispatch(setError('Error while fetching projects.'))
         }
     }
 }

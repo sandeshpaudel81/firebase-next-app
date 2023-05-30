@@ -1,12 +1,17 @@
-import ProjectComp from '@/views/projects'
+import Layout from '@/views/Layout'
+import ProjectList from '@/views/projects'
 import React from 'react'
 
-const Index = () => {
+const Project = () => {
     return (
         <div>
-            <ProjectComp />
+            <ProjectList />
         </div>
     )
 }
 
-export default Index
+export default Project
+
+Project.getLayout = function getLayout(page) {
+    return <Layout>{page}</Layout>;
+  };

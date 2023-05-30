@@ -15,7 +15,7 @@ const DonorsHomeView = () => {
         <div className='grid grid-cols-4 pt-10 gap-10'>
             {
                 donors.map((item, index) => {
-                    return <div key={index}>
+                    return <div key={index} className='col-span-2 md:col-span-1'>
                         <img src={item.image} className='w-9/12 mx-auto'/>
                     </div>
                 })

@@ -1,5 +1,4 @@
 import React from 'react'
-import { MdKeyboardArrowRight } from "react-icons/md";
 import { FaRegHourglass } from "react-icons/fa";
 import Link from 'next/link';
 
