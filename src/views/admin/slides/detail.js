@@ -7,8 +7,10 @@ import CenteredLoading from '@/components/common/Loader'
 import UploadProgress from '@/components/common/UploadProgress'
 import { uploadImage, deleteImage, deleteImageReset, uploadImageReset } from '@/redux/slices/imageSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { editCarousel, editCarouselReset, fetchCarousel } from '@/redux/slices/carouselSlice'
+import { toast } from 'react-hot-toast'
+import DeleteSlide from './delete'
 
 const SlideDetail = ({id}) => {
     const [image, setImage] = useState(null)
@@ -23,6 +25,7 @@ const SlideDetail = ({id}) => {
         imageUrl: "",
     }
     const [values, setvalues] = useState(initialValue)
+    const [showModal, setShowModal] = useState(false)
 
     const dispatch = useDispatch()
     const router = useRouter()
@@ -48,7 +51,6 @@ const SlideDetail = ({id}) => {
             setvalues(docSnap.data())
             setcarouselLoading(false)
           } catch(err) {
-            console.log(err)
             setcarouselLoading(false)
           }
         }
@@ -61,6 +63,7 @@ const SlideDetail = ({id}) => {
         if (image!==null){
             dispatch(deleteImage(values.imageUrl));
             dispatch(uploadImage("carousel", image));
+            toast.success("Image uploaded successfully.")
             dispatch(deleteImageReset());
             return;
         }
@@ -71,6 +74,10 @@ const SlideDetail = ({id}) => {
         dispatch(editCarousel(id, values))
     }
 
+    const handleDeleteButton = () => {
+        setShowModal(true)
+    }
+
     useEffect(() => {
         if (editCarouselSuccess){
             dispatch(uploadImageReset())
@@ -78,6 +85,7 @@ const SlideDetail = ({id}) => {
             dispatch(fetchCarousel())
             setProgress(0)
             router.push('/admin/slides/')
+            toast.success("Slide updated successfully.")
         }
     }, [dispatch, editCarouselSuccess])
 
@@ -108,18 +116,6 @@ const SlideDetail = ({id}) => {
             
         ?
         <div className='mt-5 md:mt-10'>
-            {/* <div className='w-1/2'>
-                <div className='flex flex-col mb-5'>
-                    <p className='uppercase font-semibold'>Image</p>
-                    {(progress > 0) && (
-                        <UploadProgress progress={progress}/>
-                    )}
-                    <input type='file' accept='image/*' onChange={(e) => setImage(e.target.files[0])}></input>
-                    <button className='uppercase bg-primaryD w-1/5 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={uploadImageHandler} disabled={image!==null ? "False" : "True"}>
-                        Upload
-                    </button>
-                </div>
-            </div> */}
             <div className='w-1/2'>
                 <div className='flex flex-col mb-5'>
                     <label className='uppercase font-semibold'>Caption of the slide</label>
@@ -136,9 +132,9 @@ const SlideDetail = ({id}) => {
                 </div> 
                 <div className='flex flex-col mb-5'>
                     <p className='uppercase font-semibold'>Upload new Image</p>
-                    {(progress > 0) && (
-                        <UploadProgress progress={progress}/>
-                    )}
+                    {(progress > 0) ? 
+                        <UploadProgress progress={progress}/> : <div></div>
+                    }
                     <input type='file' accept='image/*' onChange={(e) => setImage(e.target.files[0])}></input>
                     <button className='uppercase bg-primaryD w-1/5 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={uploadImageHandler}>
                         { uploadLoading ? "Uploading..." : "Upload" }
@@ -148,9 +144,12 @@ const SlideDetail = ({id}) => {
                     <label className='uppercase font-semibold'>Image URL</label>
                     <input type='text' className='bg-slate-400 text-white p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='imageUrl' onChange={handleChange} value={values.imageUrl} disabled></input>
                 </div>
-                <div>
+                <div className='flex gap-5'>
                     <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={editCarouselHandler}>
                         {editCarouselLoading ? "Updating..." : "Update" }
+                    </button>
+                    <button type='submit' className='bg-red-700 px-8 py-3 text-white rounded-lg hover:bg-red-800 cursor-pointer' onClick={handleDeleteButton}>
+                        Delete
                     </button>
                 </div>
             </div>
@@ -163,6 +162,7 @@ const SlideDetail = ({id}) => {
                 <p className='flex items-center font-medium'><FaChevronLeft className='mr-3'/>All Slides</p>
             </Link>
         </div>
+        <DeleteSlide showModal={showModal} setShowModal={setShowModal} id={id}/>
     </div>
   )
 }

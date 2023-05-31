@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaChevronLeft } from 'react-icons/fa'
 import { addCarouselReset, addNewCarousel, fetchCarousel, uploadImage, uploadImageReset } from '@/redux/slices/carouselSlice'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import UploadProgress from '@/components/common/UploadProgress'
 
