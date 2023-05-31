@@ -17,7 +17,7 @@ const SlideAdd = () => {
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const {image:uploadedImageUrl, progress:uploadProgress, success:uploadSuccess} = useSelector(state => state.carousel.uploadCarouselImage);
+    const {image:uploadedImageUrl, progress:uploadProgress, success:uploadSuccess} = useSelector(state => state.image.uploadImage);
     const {success: addCarouselSuccess} = useSelector(state => state.carousel.addCarousel)
 
     const uploadImageHandler = () => {

@@ -18,3 +18,13 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 export const storage = getStorage(app);
+
+export const getPathStorageFromUrl = (url) => {
+  const baseUrl = "https://firebasestorage.googleapis.com/v0/b/kadam-myagdi.appspot.com/o/";
+  let imagePath = url.replace(baseUrl,"");
+  const indexOfEndPath = imagePath.indexOf("?");
+  imagePath = imagePath.substring(0,indexOfEndPath);
+  imagePath = imagePath.replace(/%2F/g,"/");
+  imagePath = imagePath.replace(/%20/g," ");
+  return imagePath;
+}

@@ -1,4 +1,6 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit"
+import { getPathStorageFromUrl, storage } from "../../../firebase-config"
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 
 const uploadImageSlice = createSlice({
     name: 'uploadImage',
@@ -36,30 +38,21 @@ const uploadImageSlice = createSlice({
 const deleteImageSlice = createSlice({
     name: 'deleteImage',
     initialState: {
-        image: {},
-        progress: 0,
         loading: false,
         success: false,
         error: "",
     },
     reducers: {
-        uploadImageData(state, action){
-            state.image = action.payload
-        },
-        uploadImageProgress(state, action){
-            state.progress = action.payload
-        },
-        uploadImageLoading(state, action){
+        deleteImageLoading(state, action){
             state.loading = action.payload
         },
-        uploadImageSuccess(state, action){
+        deleteImageSuccess(state, action){
             state.success = action.payload
         },
-        uploadImageError(state, action){
+        deleteImageError(state, action){
             state.error = action.payload
         },
-        uploadImageReset(state){
-            state.image = {}
+        deleteImageReset(state){
             state.success = false
             state.error = ""
         }
@@ -67,9 +60,11 @@ const deleteImageSlice = createSlice({
 })
 
 export const {uploadImageData, uploadImageProgress, uploadImageLoading, uploadImageSuccess, uploadImageError, uploadImageReset} = uploadImageSlice.actions;
+export const {deleteImageLoading, deleteImageSuccess, deleteImageError, deleteImageReset} = deleteImageSlice.actions;
 
 export const imageReducer = combineReducers({
-    uploadImage: uploadImageSlice.reducer
+    uploadImage: uploadImageSlice.reducer,
+    deleteImage: deleteImageSlice.reducer,
 });
 
 export function uploadImage(folder, image){
@@ -101,6 +96,26 @@ export function uploadImage(folder, image){
             dispatch(uploadImageSuccess(true))
         } catch(err) {
             dispatch(uploadImageError(err.message))
+        }
+    }
+}
+
+export function deleteImage(url){
+    return function uploadImageThunk(dispatch){
+        dispatch(deleteImageLoading(true))
+        try {
+            var imagePath = getPathStorageFromUrl(url)
+            const deleteRef = ref(storage, imagePath)
+            deleteObject(deleteRef).then(() => {
+                dispatch(deleteImageLoading(false))
+                dispatch(deleteImageSuccess(true))
+            }).catch((error) => {
+                dispatch(deleteImageError(error.message))
+                dispatch(deleteImageLoading(false))
+            })
+        } catch(err) {
+            dispatch(deleteImageError(err.message))
+            dispatch(deleteImageLoading(false))
         }
     }
 }

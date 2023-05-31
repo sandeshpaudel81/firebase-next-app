@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, addDoc, serverTimestamp} from "firebase/firestore"
-import {db, storage} from "../../../firebase-config"
+import {getDocs, query, collection, addDoc, serverTimestamp, doc, updateDoc} from "firebase/firestore"
+import {db} from "../../../firebase-config"
 import { combineReducers } from "@reduxjs/toolkit";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import moment from "moment";
 
 const getCarouselSlice = createSlice({
@@ -55,13 +54,39 @@ const addCarouselSlice = createSlice({
     }
 })
 
+const editCarouselSlice = createSlice({
+    name: 'editCarousel',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        editCarouselLoading(state, action){
+            state.loading = action.payload
+        },
+        editCarouselSuccess(state, action){
+            state.success = action.payload
+        },
+        editCarouselError(state, action){
+            state.error = action.payload
+        },
+        editCarouselReset(state){
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const {getCarouselData, getCarouselLoading, getCarouselSuccess, getCarouselError} = getCarouselSlice.actions;
 export const {addCarouselLoading, addCarouselSuccess, addCarouselError, addCarouselReset} = addCarouselSlice.actions;
+export const {editCarouselLoading, editCarouselSuccess, editCarouselError, editCarouselReset} = editCarouselSlice.actions;
 
 
 export const carouselReducer = combineReducers({
     getCarousel: getCarouselSlice.reducer,
     addCarousel: addCarouselSlice.reducer,
+    editCarousel: editCarouselSlice.reducer,
 });
 
 // convert timestamp to date
@@ -107,6 +132,24 @@ export function addNewCarousel(data){
             dispatch(addCarouselSuccess(true))
         } catch(err) {
             dispatch(addCarouselError(err.message))
+        }
+    }
+}
+
+export function editCarousel(id, data){
+    return async function editCarouselThunk(dispatch){
+        dispatch(editCarouselLoading(true))
+        try {
+            const docRef = doc(db, "carousel", id)
+            await updateDoc(docRef, {
+                caption: data.caption,
+                imageUrl: data.imageUrl,
+                is_active: data.is_active
+            })
+            dispatch(editCarouselLoading(false))
+            dispatch(editCarouselSuccess(true))
+        } catch(err) {
+            dispatch(editCarouselError(err.message))
         }
     }
 }
