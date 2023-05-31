@@ -5,6 +5,7 @@ import React from 'react'
 
 const ProjectDetail = () => {
   const { query: { id } } = useRouter()
+  
   return (
     <div>
         <ProjectDetailView id={id}/>

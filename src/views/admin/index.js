@@ -32,21 +32,21 @@ const AdminDashboard = () => {
             </div>
         </div>
       </Link>
-      <Link href='/admin/notices'>
+      <Link href='/admin/donors-partners'>
         <div className='bg-gradient-to-r from-[#fc6767] to-[#ec008c] h-[130px] rounded-md p-2 col-span-2 lg:col-span-1'>
             <div className='text-end'>
                 <p className='text-white font-medium'>DONORS & PARTNERS</p>
             </div>
         </div>
       </Link>
-      <Link href='/admin/notices'>
+      <Link href='/admin/members'>
         <div className='bg-gradient-to-r from-[#ACBB78] to-[#799F0C] h-[130px] rounded-md p-2 col-span-2 lg:col-span-1'>
             <div className='text-end'>
                 <p className='text-white font-medium'>MEMBERS</p>
             </div>
         </div>
       </Link>
-      <Link href='/admin/notices'>
+      <Link href='/admin/publications'>
         <div className='bg-gradient-to-r from-[#159957] to-[#155799] h-[130px] rounded-md p-2 col-span-2 lg:col-span-1'>
             <div className='text-end'>
                 <p className='text-white font-medium'>PUBLICATIONS</p>
