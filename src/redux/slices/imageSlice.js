@@ -71,33 +71,37 @@ export const imageReducer = combineReducers({
 export function uploadImage(folder, image){
     return function uploadImageThunk(dispatch){
         dispatch(uploadImageLoading(true))
-        try {
-            // upload image on firebase
-            const storageRef = ref(storage, `/${folder}/${image.name}`)
-            const uploadTask = uploadBytesResumable(storageRef, image)
-            uploadTask.on(
-                "state_changed",
-                (snapshot) => {
-                    const percent = Math.round(
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    )
-                    dispatch(uploadImageProgress(percent))
-                },
-                (err) => {
-                    dispatch(uploadImageError(err.message))
-                },
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                        dispatch(uploadImageData(url))
-                    })
-                }
-            )
-            // dispatch(uploadImageData("url"))
-            dispatch(uploadImageLoading(false))
-            dispatch(uploadImageSuccess(true))
-        } catch(err) {
-            dispatch(uploadImageError(err.message))
+        const upload = () => {
+            try {
+                // upload image on firebase
+                const storageRef = ref(storage, `/${folder}/${image.name}`)
+                const uploadTask = uploadBytesResumable(storageRef, image)
+                uploadTask?.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const percent = Math.round(
+                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        )
+                        dispatch(uploadImageProgress(percent))
+                    },
+                    (err) => {
+                        dispatch(uploadImageError(err.message))
+                        dispatch(uploadImageLoading(false))
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                            dispatch(uploadImageData(url))
+                            dispatch(uploadImageLoading(false))
+                            dispatch(uploadImageSuccess(true))
+                        })
+                    }
+                )
+            } catch(err) {
+                dispatch(uploadImageError(err.message))
+                dispatch(uploadImageLoading(false))
+            }
         }
+        upload()
     }
 }
 
