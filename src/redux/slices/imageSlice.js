@@ -30,6 +30,7 @@ const uploadImageSlice = createSlice({
         uploadImageReset(state){
             state.image = {}
             state.success = false
+            state.progress = 0
             state.error = ""
         }
     }
@@ -91,7 +92,7 @@ export function uploadImage(folder, image){
                     })
                 }
             )
-            dispatch(uploadImageData("url"))
+            // dispatch(uploadImageData("url"))
             dispatch(uploadImageLoading(false))
             dispatch(uploadImageSuccess(true))
         } catch(err) {

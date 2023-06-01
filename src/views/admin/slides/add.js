@@ -64,7 +64,7 @@ const SlideAdd = () => {
                     <p className='uppercase text-gray-600 text-sm font-medium mt-2'>Appear on homescreen</p>
                 </div>
                 <div className='mt-5 md:mt-10'>
-                    <div className='w-1/2'>
+                    <div className='w-full lg:w-1/2'>
                         <div className='flex flex-col mb-5'>
                             <p className='uppercase font-semibold'>Image</p>
                             {(progress > 0) && (
@@ -79,11 +79,11 @@ const SlideAdd = () => {
                     <div className='w-1/2'>
                         <div className='flex flex-col mb-5'>
                             <label className='uppercase font-semibold'>Caption of the slide</label>
-                            <textarea type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='carousel_caption' value={caption} onChange={(e) => setCaption(e.target.value)}></textarea>
+                            <textarea type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='caption' value={caption} onChange={(e) => setCaption(e.target.value)}></textarea>
                         </div>
                         <div className='flex mb-5'>
                             <label className='uppercase font-semibold mr-5'>Slide Status</label>
-                            <input type='checkbox' className='h-5 w-5 mr-5' name='carousel_is_active' checked={isActive} onChange={(e) => setIsActive(e.target.checked)}></input>
+                            <input type='checkbox' className='h-5 w-5 mr-5' name='is_active' checked={isActive} onChange={(e) => setIsActive(e.target.checked)}></input>
                             <p>Active</p>
                         </div>
                         <div>
@@ -93,7 +93,7 @@ const SlideAdd = () => {
                         </div>
                         <div className='flex flex-col mb-5'>
                             <label className='uppercase font-semibold'>Image URL</label>
-                            <input type='text' className='bg-slate-400 text-white p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='carousel_imageUrl' value={imageUrl} disabled></input>
+                            <input type='text' className='bg-slate-400 text-white p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='imageUrl' value={imageUrl} disabled></input>
                         </div>
                         <div>
                             <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={addCarouselHandler}>Submit</button>
