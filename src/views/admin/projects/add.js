@@ -39,13 +39,13 @@ const ProjectAdd = () => {
     }
 
     const objectivesChangeHandler = (e) => {
-        setvalues({ ...values, ["objectives"]: e })
+        setvalues({ ...values, objectives: e })
     }
     const methodologiesChangeHandler = (e) => {
-        setvalues({ ...values, ["methodologies"]: e })
+        setvalues({ ...values, methodologies: e })
     }
     const outcomesChangeHandler = (e) => {
-        setvalues({ ...values, ["outcomes"]: e })
+        setvalues({ ...values, outcomes: e })
     }
 
     const addCollaboratorHandler = () => {
