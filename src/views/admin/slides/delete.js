@@ -5,9 +5,11 @@ import { Fragment, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { db } from '../../../../firebase-config'
 import { fetchCarousel } from '@/redux/slices/carouselSlice'
+import { useDispatch } from 'react-redux'
 
 
 export default function DeleteSlide({ showModal, setShowModal, id }) {
+    const dispatch = useDispatch()
 
     const [process, setprocess] = useState("Yes")
     const router = useRouter()
