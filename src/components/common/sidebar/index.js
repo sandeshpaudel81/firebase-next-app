@@ -17,32 +17,7 @@ const Sidebar = ({pathname}) => {
   }, [pathname])
   
   return ( <div>
-      <div className='lg:hidden'>
-            <div className='flex text-sm bg-primaryDark text-white'>
-                <p className='p-2'>Kaligandaki Community Development Munch (KADAM)</p>
-            </div>
-            <div>
-                <img className='w-2/3 mx-auto' src='/assets/logo.png'/>
-            </div> 
-            <div className='flex justify-between bg-primaryDark text-white p-2'>
-                <div className='text-xl cursor-pointer' onClick={sidebarHandler}>
-                    <BiMenuAltRight />
-                </div>
-                <div className='flex items-center'>
-                  <span>Home</span>
-                  {
-                    pathname?.map((item, index) => 
-                    <div key={index} className='flex items-center'>
-                      <MdKeyboardArrowRight />
-                      {
-                        item != "[id]" && <span>{item}</span>
-                      }
-                    </div>
-                    )
-                  }
-                </div>
-            </div>
-      </div>
+      
       <div className={sidebar ? 'lg:hidden':'hidden'}>
           <div className='w-9/12 md:w-5/12 bg-primaryDark flex flex-col h-screen fixed overflow-y-scroll space-y-2 text-white py-5 z-50'>
               <div className='flex flex-row items-center justify-between mb-10 px-10'>
@@ -96,6 +71,32 @@ const Sidebar = ({pathname}) => {
                 </div>
               </div>
           </div>
+      </div>
+      <div className='lg:hidden'>
+            <div className='flex text-sm bg-primaryDark text-white'>
+                <p className='p-2'>Kaligandaki Community Development Munch (KADAM)</p>
+            </div>
+            <div>
+                <img className='w-2/3 mx-auto' src='/assets/logo.png'/>
+            </div> 
+            <div className='flex justify-between bg-primaryDark text-white p-2'>
+                <div className='text-xl cursor-pointer' onClick={sidebarHandler}>
+                    <BiMenuAltRight />
+                </div>
+                <div className='flex items-center'>
+                  <span>Home</span>
+                  {
+                    pathname?.map((item, index) => 
+                    <div key={index} className='flex items-center'>
+                      <MdKeyboardArrowRight />
+                      {
+                        item != "[id]" && <span>{item}</span>
+                      }
+                    </div>
+                    )
+                  }
+                </div>
+            </div>
       </div>
     </div>
   )

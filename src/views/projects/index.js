@@ -13,11 +13,11 @@ const ProjectList = () => {
         }
     }, [dispatch, projectSuccess]);
   return (
-      <div className='container mx-auto px-5 py-10 md:py-20'>
-          <div className='border-l-8 border-primary px-5'>
-                    <h2 className='text-primary font-bold text-3xl'>Our <span className='text-primaryDark'>Projects</span></h2>
-                    <p className='uppercase text-gray-600 text-sm font-medium mt-2'>since 2001</p>
-                </div>
+        <div className='container mx-auto px-5 py-10 md:py-20'>
+            <div className='border-l-8 border-primary px-5'>
+                <h2 className='text-primary font-bold text-3xl'>Our <span className='text-primaryDark'>Projects</span></h2>
+                <p className='uppercase text-gray-600 text-sm font-medium mt-2'>since 2001</p>
+            </div>
           <div className='grid grid-cols-2 gap-10 mt-5 md:mt-10'>
               {projects.filter((item, index) => index<4).map((project) => (
                   <ProjectBox project={project} key={project.id}/>

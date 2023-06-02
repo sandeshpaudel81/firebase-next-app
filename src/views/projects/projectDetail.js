@@ -81,7 +81,7 @@ const ProjectDetailView = ({id}) => {
         </div>
         <div className='grid grid-cols-3 gap-5 mb-5'>
           <p className='col-span-3 text-lg font-semibold'>Pictures</p>
-          <div><img src={project?.thumbnailImageUrl}/></div>
+          <div className='col-span-3 md:col-span-1'><img src={project?.thumbnailImageUrl}/></div>
           {
             project?.images?.map((image, index) => {
               return <div className='col-span-3 md:col-span-1' key={index}><img src={image}/></div>
