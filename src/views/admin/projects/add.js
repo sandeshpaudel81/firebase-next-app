@@ -48,38 +48,36 @@ const ProjectAdd = () => {
         setvalues({ ...values, outcomes: e })
     }
 
-    const addCollaboratorHandler = () => {
+    const addCollaboratorHandler = async () => {
         if (collaboratorName.length > 0) {
             let tempObj = {
                 name: collaboratorName,
                 imageUrl: ""  
             }
             if (image !== null) {
-      dispatch(uploadImage("projects", image))
-        .unwrap()
-        .then(() => {
-          if (uploadSuccess) {
-            tempObj.imageUrl = uploadedImageUrl;
-          }
-          let tempCollab = values.collaborators;
-          tempCollab.push(tempObj);
-          setvalues({ ...values, collaborators: tempCollab });
-          console.log(values);
-          dispatch(uploadImageReset());
-          setcollaboratorName("");
-          toast.success("Collaborator added successfully.");
-        })
-        .catch(() => {
-          toast.error("Could not upload image.");
-        });
-    } else {
-      let tempCollab = values.collaborators;
-      tempCollab.push(tempObj);
-      setvalues({ ...values, collaborators: tempCollab });
-      console.log(values);
-      setcollaboratorName("");
-      toast.success("Collaborator added successfully.");
-    }
+                try {
+                    await dispatch(uploadImage("projects", image))
+                    if (uploadSuccess) {
+                        tempObj.imageUrl = uploadedImageUrl;
+                    }
+                    let tempCollab = values.collaborators;
+                    tempCollab.push(tempObj);
+                    setvalues({ ...values, collaborators: tempCollab });
+                    console.log(values);
+                    await dispatch(uploadImageReset());
+                    setcollaboratorName("");
+                    toast.success("Collaborator added successfully.");
+                } catch(err) {
+                    toast.error("Could not upload image.");
+                }
+            } else {
+            let tempCollab = values.collaborators;
+            tempCollab.push(tempObj);
+            setvalues({ ...values, collaborators: tempCollab });
+            console.log(values);
+            setcollaboratorName("");
+            toast.success("Collaborator added successfully.");
+            }
         } else {
             return toast.error("Name of the collaborator is required.")
         }
