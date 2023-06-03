@@ -39,13 +39,13 @@ const ProjectAdd = () => {
     }
 
     const objectivesChangeHandler = (e) => {
-        setvalues({ ...values, ["objectives"]: e })
+        setvalues({ ...values, objectives: e })
     }
     const methodologiesChangeHandler = (e) => {
-        setvalues({ ...values, ["methodologies"]: e })
+        setvalues({ ...values, methodologies: e })
     }
     const outcomesChangeHandler = (e) => {
-        setvalues({ ...values, ["outcomes"]: e })
+        setvalues({ ...values, outcomes: e })
     }
 
     const addCollaboratorHandler = () => {
@@ -54,24 +54,32 @@ const ProjectAdd = () => {
                 name: collaboratorName,
                 imageUrl: ""  
             }
-            if (image!==null){
-                try {
-                    dispatch(uploadImage("projects", image));
-                } catch(err) {
-                    return toast.error("Could not upload image.")
-                }  
-            }
-            if (uploadSuccess){
-                tempObj.imageUrl = uploadedImageUrl
-            }
-            let tempCollab=values.collaborators
-            tempCollab.push(tempObj)
-            setvalues({...values, ["collaborators"]: tempCollab})
-            console.log(values)
-            dispatch(uploadImageReset())
-            setcollaboratorName("")
-            toast.success("Collaborator added successfully.")
-            return;
+            if (image !== null) {
+      dispatch(uploadImage("projects", image))
+        .unwrap()
+        .then(() => {
+          if (uploadSuccess) {
+            tempObj.imageUrl = uploadedImageUrl;
+          }
+          let tempCollab = values.collaborators;
+          tempCollab.push(tempObj);
+          setvalues({ ...values, collaborators: tempCollab });
+          console.log(values);
+          dispatch(uploadImageReset());
+          setcollaboratorName("");
+          toast.success("Collaborator added successfully.");
+        })
+        .catch(() => {
+          toast.error("Could not upload image.");
+        });
+    } else {
+      let tempCollab = values.collaborators;
+      tempCollab.push(tempObj);
+      setvalues({ ...values, collaborators: tempCollab });
+      console.log(values);
+      setcollaboratorName("");
+      toast.success("Collaborator added successfully.");
+    }
         } else {
             return toast.error("Name of the collaborator is required.")
         }
@@ -133,8 +141,8 @@ const ProjectAdd = () => {
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold mr-5'>Collaborators</label>
                         {
-                            values.collaborators?.map((collab) => {
-                                return <div className='flex justify-between items-center bg-slate-100 p-2 mb-2 rounded-md'>
+                            values.collaborators?.map((collab, index) => {
+                                return <div key={index} className='flex justify-between items-center bg-slate-100 p-2 mb-2 rounded-md'>
                                     <img src={collab.imageUrl} className='h-[50px] w-[50px] object-cover'/>
                                     <p>{collab.name}</p>
                                     <MdDeleteForever className='text-3xl cursor-pointer text-red-600 hover:text-red-500 ' onClick={deleteCollaborator}/>

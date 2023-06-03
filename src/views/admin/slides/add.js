@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaChevronLeft } from 'react-icons/fa'
-import { addCarouselReset, addNewCarousel, fetchCarousel, uploadImage, uploadImageReset } from '@/redux/slices/carouselSlice'
+import { addCarouselReset, addNewCarousel, fetchCarousel } from '@/redux/slices/carouselSlice'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import UploadProgress from '@/components/common/UploadProgress'
+import { uploadImage, uploadImageReset } from '@/redux/slices/imageSlice'
 
 
 const SlideAdd = () => {
@@ -71,7 +72,7 @@ const SlideAdd = () => {
                                 <UploadProgress progress={progress}/>
                             )}
                             <input type='file' accept='image/*' onChange={(e) => setImage(e.target.files[0])}></input>
-                            <button className='uppercase bg-primaryD w-1/5 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={uploadImageHandler} disabled={image!==null ? "False" : "True"}>
+                            <button className='uppercase bg-primaryD w-1/5 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={uploadImageHandler}>
                                 Upload
                             </button>
                         </div>
