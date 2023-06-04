@@ -26,48 +26,48 @@ const ProjectDetailView = ({id}) => {
   }, [id])
 
   return (
-    <div className='container mx-auto py-10'>
+    <div className='container mx-auto px-5 md:px-2 py-10'>
       { !projectLoading && project ?
       <div>
         <div className='mb-5'>
           <h1 className='text-3xl font-bold'>{project?.title}</h1>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Objective</p>
+          <p className='text-lg font-semibold'>Objective</p>
           <p>{project?.objectives}</p>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Methodologies</p>
+          <p className='text-lg font-semibold'>Methodologies</p>
           <p>{project?.methodologies}</p>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Project Area</p>
+          <p className='text-lg font-semibold'>Project Area</p>
           <p>{project?.projectLocation}</p>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Targeted Group</p>
+          <p className='text-lg font-semibold'>Targeted Group</p>
           <p>{project?.targetedGroup}</p>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Project Duration</p>
+          <p className='text-lg font-semibold'>Project Duration</p>
           <p>{project?.duration}</p>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Outcomes</p>
+          <p className='text-lg font-semibold'>Outcomes</p>
           <p>{project?.outcomes}</p>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Project Report</p>
+          <p className='text-lg font-semibold'>Project Report</p>
           <Link href={project?.reportUrl} target='_blank' className='text-primaryD hover:underline'>See report</Link>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Project Status</p>
+          <p className='text-lg font-semibold'>Project Status</p>
           <p className={project?.isCompleted ? "text-sdgGreen" : "text-sdgOrange"}>
             {project?.isCompleted ? "Completed" : "Ongoing"}
           </p>
         </div>
         <div className='mb-5'>
-          <p className='text-lg font-semibold italic'>Collaborators</p>
+          <p className='text-lg font-semibold'>Collaborators</p>
           <div className='grid grid-cols-4 gap-5'>
             {
               project?.collaborators?.map((collab, index) => {
@@ -80,8 +80,8 @@ const ProjectDetailView = ({id}) => {
           </div>
         </div>
         <div className='grid grid-cols-3 gap-5 mb-5'>
-          <p className='col-span-3 text-lg font-semibold italic'>Pictures</p>
-          <div><img src={project?.thumbnailImageUrl}/></div>
+          <p className='col-span-3 text-lg font-semibold'>Pictures</p>
+          <div className='col-span-3 md:col-span-1'><img src={project?.thumbnailImageUrl}/></div>
           {
             project?.images?.map((image, index) => {
               return <div className='col-span-3 md:col-span-1' key={index}><img src={image}/></div>

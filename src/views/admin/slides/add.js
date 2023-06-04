@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaChevronLeft } from 'react-icons/fa'
-import { addCarouselReset, addNewCarousel, fetchCarousel, uploadImage, uploadImageReset } from '@/redux/slices/carouselSlice'
+import { addCarouselReset, addNewCarousel, fetchCarousel } from '@/redux/slices/carouselSlice'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import UploadProgress from '@/components/common/UploadProgress'
+import { uploadImage, uploadImageReset } from '@/redux/slices/imageSlice'
 
 
 const SlideAdd = () => {
@@ -64,14 +65,14 @@ const SlideAdd = () => {
                     <p className='uppercase text-gray-600 text-sm font-medium mt-2'>Appear on homescreen</p>
                 </div>
                 <div className='mt-5 md:mt-10'>
-                    <div className='w-1/2'>
+                    <div className='w-full lg:w-1/2'>
                         <div className='flex flex-col mb-5'>
                             <p className='uppercase font-semibold'>Image</p>
                             {(progress > 0) && (
                                 <UploadProgress progress={progress}/>
                             )}
                             <input type='file' accept='image/*' onChange={(e) => setImage(e.target.files[0])}></input>
-                            <button className='uppercase bg-primaryD w-1/5 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={uploadImageHandler} disabled={image!==null ? "False" : "True"}>
+                            <button className='uppercase bg-primaryD w-1/5 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={uploadImageHandler}>
                                 Upload
                             </button>
                         </div>
@@ -79,11 +80,11 @@ const SlideAdd = () => {
                     <div className='w-1/2'>
                         <div className='flex flex-col mb-5'>
                             <label className='uppercase font-semibold'>Caption of the slide</label>
-                            <textarea type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='carousel_caption' value={caption} onChange={(e) => setCaption(e.target.value)}></textarea>
+                            <textarea type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='caption' value={caption} onChange={(e) => setCaption(e.target.value)}></textarea>
                         </div>
                         <div className='flex mb-5'>
                             <label className='uppercase font-semibold mr-5'>Slide Status</label>
-                            <input type='checkbox' className='h-5 w-5 mr-5' name='carousel_is_active' checked={isActive} onChange={(e) => setIsActive(e.target.checked)}></input>
+                            <input type='checkbox' className='h-5 w-5 mr-5' name='is_active' checked={isActive} onChange={(e) => setIsActive(e.target.checked)}></input>
                             <p>Active</p>
                         </div>
                         <div>
@@ -93,7 +94,7 @@ const SlideAdd = () => {
                         </div>
                         <div className='flex flex-col mb-5'>
                             <label className='uppercase font-semibold'>Image URL</label>
-                            <input type='text' className='bg-slate-400 text-white p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='carousel_imageUrl' value={imageUrl} disabled></input>
+                            <input type='text' className='bg-slate-400 text-white p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='imageUrl' value={imageUrl} disabled></input>
                         </div>
                         <div>
                             <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={addCarouselHandler}>Submit</button>
