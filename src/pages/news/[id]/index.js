@@ -1,20 +1,20 @@
 import Layout from '@/views/Layout'
-import NoticeDetailView from '@/views/notices/detail'
+import NewsDetailView from '@/views/news/detail'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const NoticeDetail = () => {
+const NewsDetail = () => {
   const { query: { id } } = useRouter()
   
   return (
     <div>
-        <NoticeDetailView noticeId={id}/>
+        <NewsDetailView newsId={id}/>
     </div>
   )
 }
 
-export default NoticeDetail
+export default NewsDetail
 
-NoticeDetail.getLayout = function getLayout(page) {
+NewsDetail.getLayout = function getLayout(page) {
     return <Layout>{page}</Layout>;
   };

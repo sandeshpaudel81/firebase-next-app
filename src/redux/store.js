@@ -3,6 +3,10 @@ import { carouselReducer } from './slices/carouselSlice'
 import { projectReducer } from './slices/projectSlice'
 import { sidebarReducer } from './slices/sidebarSlice'
 import { imageReducer } from './slices/imageSlice'
+import { donorsPartnersReducer } from './slices/donorsPartnersSlice'
+import { noticesReducer } from './slices/noticeSlice'
+import { newsReducer } from './slices/newsSlice'
+import { teamReducer } from './slices/teamSlice'
 
 export const store = configureStore({
     reducer: {
@@ -10,5 +14,9 @@ export const store = configureStore({
         carousel: carouselReducer,
         sidebar: sidebarReducer,
         image: imageReducer,
+        donorsPartners: donorsPartnersReducer,
+        notice: noticesReducer,
+        news: newsReducer,
+        team: teamReducer
     },
 })

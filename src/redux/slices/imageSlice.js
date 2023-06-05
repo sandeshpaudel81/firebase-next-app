@@ -74,7 +74,7 @@ export function uploadImage(folder, image){
         const upload = () => {
             try {
                 // upload image on firebase
-                const storageRef = ref(storage, `/${folder}/${image.name}`)
+                const storageRef = ref(storage, `/${folder}/${Date.now() + image.name}`)
                 const uploadTask = uploadBytesResumable(storageRef, image)
                 uploadTask?.on(
                     "state_changed",
