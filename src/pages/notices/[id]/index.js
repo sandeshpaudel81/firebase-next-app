@@ -8,7 +8,7 @@ const NoticeDetail = () => {
   
   return (
     <div>
-        <NoticeDetailView id={id}/>
+        <NoticeDetailView noticeId={id}/>
     </div>
   )
 }

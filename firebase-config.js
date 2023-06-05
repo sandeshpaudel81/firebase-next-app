@@ -31,7 +31,7 @@ export const getPathStorageFromUrl = (url) => {
 
 export const getFileNameFromUrl = (url) => {
   const lastIndex = url.lastIndexOf('%2F')
-  const after = url.slice(lastIndex + 1)
+  const after = url.slice(lastIndex + 3)
   const fileName = after.split(".")[0]
   return fileName;
 }
