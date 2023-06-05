@@ -1,6 +1,7 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
 import {getDocs, query, collection, doc, getDoc} from "firebase/firestore"
 import {db} from "../../../firebase-config"
+import moment from "moment";
 
 const getNotices = createSlice({
     name: 'getNotices',
@@ -33,6 +34,12 @@ export const noticesReducer = combineReducers({
     
 });
 
+// convert timestamp to date
+
+export function timestampToDate(datetime){
+    return String(moment(datetime.toDate()).format("dddd, MMMM Do YYYY"))
+}
+
 export function fetchNotices(){
     return async function fetchNoticesThunk(dispatch, getState){
         dispatch(setNoticesLoading(true))
@@ -42,7 +49,8 @@ export function fetchNotices(){
                 query(collection(db, "notices"))
             );
             Notices.docs.forEach((doc) => {
-                notices.push({ ...doc.data(), id: doc.id})
+                const datetime = timestampToDate(doc.data().posted_at)
+                notices.push({ ...doc.data(), id: doc.id, posted_at: datetime})
             });
             dispatch(setNotices(notices))
             dispatch(setNoticesLoading(false))

@@ -5,6 +5,7 @@ import { sidebarReducer } from './slices/sidebarSlice'
 import { imageReducer } from './slices/imageSlice'
 import { donorsPartnersReducer } from './slices/donorsPartnersSlice'
 import { noticesReducer } from './slices/noticeSlice'
+import { newsReducer } from './slices/newsSlice'
 
 export const store = configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
         image: imageReducer,
         donorsPartners: donorsPartnersReducer,
         notice: noticesReducer,
+        news: newsReducer,
     },
 })
