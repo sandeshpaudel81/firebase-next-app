@@ -20,7 +20,7 @@ const NoticeDetailView = ({noticeId}) => {
                 data?.map((item) => {
                     const {id} = item;
                     if (id === noticeId) {
-                        return <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
+                        return <div key={id} className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
                             <div>
                                 <h1 className='font-bold text-2xl'>{item.title}</h1>
                                 <small className='text-slate-700'>{item.posted_at}</small>
@@ -29,16 +29,16 @@ const NoticeDetailView = ({noticeId}) => {
                             <div>
                                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
                                     {
-                                        item.images?.map((im) => {
-                                            return <div><img src={im} alt={item.title}/></div>
+                                        item.images?.map((im, index) => {
+                                            return <div key={index}><img src={im} alt={item.title}/></div>
                                         })
                                     }
                                 </div>
                                 <p className='font-medium my-3'>Related Files</p>
                                 <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
                                     {
-                                        item.relatedFiles?.map((rF) => {
-                                            return <Link href={rF} target='_blank'>
+                                        item.relatedFiles?.map((rF, index) => {
+                                            return <Link key={index} href={rF} target='_blank'>
                                                 <div className='bg-primaryExtraLight p-2 rounded-md capitalize border-2 border-slate-300 hover:border-primary'>{getFileNameFromUrl(rF)} <span className='text-slate-500 italic'>- Click here</span></div>
                                             </Link>
                                         })

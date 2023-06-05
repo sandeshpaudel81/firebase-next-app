@@ -1,6 +1,7 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, doc, getDoc} from "firebase/firestore"
+import {getDocs, query, collection, orderBy} from "firebase/firestore"
 import {db} from "../../../firebase-config"
+import moment from "moment";
 
 const getNews = createSlice({
     name: 'getNews',
@@ -33,23 +34,30 @@ export const newsReducer = combineReducers({
     
 });
 
+// convert timestamp to date
+
+export function timestampToDate(datetime){
+    return String(moment(datetime.toDate()).format("dddd, MMMM Do YYYY"))
+}
+
 export function fetchNews(){
     return async function fetchNewsThunk(dispatch, getState){
         dispatch(setNewsLoading(true))
         try {
             let news = []
             const News = await getDocs(
-                query(collection(db, "News"))
+                query(collection(db, "news"), orderBy('posted_at', 'desc'))
             );
             News.docs.forEach((doc) => {
-                news.push({ ...doc.data(), id: doc.id})
+                const datetime = timestampToDate(doc.data().posted_at)
+                news.push({ ...doc.data(), id: doc.id, posted_at: datetime})
             });
             dispatch(setNews(news))
             dispatch(setNewsLoading(false))
             dispatch(setNewsSuccess(true)) 
         } catch(err) {
             dispatch(setNewsLoading(false))
-            dispatch(setNewsError('Error while fetching news.'))
+            dispatch(setNewsError(err.message))
         }
     }
 }

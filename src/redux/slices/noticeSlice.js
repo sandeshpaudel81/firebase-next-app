@@ -1,5 +1,5 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, doc, getDoc} from "firebase/firestore"
+import {getDocs, query, collection, doc, getDoc, orderBy} from "firebase/firestore"
 import {db} from "../../../firebase-config"
 import moment from "moment";
 
@@ -46,7 +46,7 @@ export function fetchNotices(){
         try {
             let notices = []
             const Notices = await getDocs(
-                query(collection(db, "notices"))
+                query(collection(db, "notices"), orderBy('posted_at', 'desc'))
             );
             Notices.docs.forEach((doc) => {
                 const datetime = timestampToDate(doc.data().posted_at)
