@@ -22,7 +22,7 @@ const NoticeList = () => {
             <div className='grid grid-cols-1 mt-10 gap-8 w-9/12 lg:w-1/2'>
                 {
                     data?.map((item) => {
-                        return <div className='grid grid-cols-4 bg-slate-200'>
+                        return <div key={item.id} className='grid grid-cols-4 bg-slate-200'>
                             <div className='col-span-4 lg:col-span-1'>
                                 <img src={item.images[0]} className='h-[150px] md:h-[200px] lg:h-[100px] w-full object-cover'/>
                             </div>
