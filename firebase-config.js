@@ -28,3 +28,10 @@ export const getPathStorageFromUrl = (url) => {
   imagePath = imagePath.replace(/%20/g," ");
   return imagePath;
 }
+
+export const getFileNameFromUrl = (url) => {
+  const lastIndex = url.lastIndexOf('%2F')
+  const after = url.slice(lastIndex + 1)
+  const fileName = after.split(".")[0]
+  return fileName;
+}
