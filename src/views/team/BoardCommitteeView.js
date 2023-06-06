@@ -3,64 +3,6 @@ import { fetchBoardCommittee } from "@/redux/slices/teamSlice"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
-const boardMembersList = [
-	{
-		id: 1,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Chairman",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 2,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Secretary",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 3,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Vice Secretary",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 4,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Chief Technical Officer",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 5,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Treasurer",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 6,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Member",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 7,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Advisor",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-]
 
 const BoardCommitteeView = () => {
 	const dispatch = useDispatch()

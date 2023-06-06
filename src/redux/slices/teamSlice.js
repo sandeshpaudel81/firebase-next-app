@@ -26,11 +26,36 @@ const getBoardCommittee = createSlice({
     }
 })
 
+const getOfficeStaffs = createSlice({
+    name: 'getOfficeStaffs',
+    initialState: {
+        data: [],
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        setOfficeStaffs(state, action){
+            state.data = action.payload
+        },
+        setOfficeStaffsLoading(state, action){
+            state.loading = action.payload
+        },
+        setOfficeStaffsSuccess(state, action){
+            state.success = action.payload
+        },
+        setOfficeStaffsError(state, action){
+            state.error = action.payload
+        }
+    }
+})
+
 export const { setBoardCommittee, setBoardCommitteeLoading, setBoardCommitteeSuccess, setBoardCommitteeError } = getBoardCommittee.actions;
+export const { setOfficeStaffs, setOfficeStaffsLoading, setOfficeStaffsSuccess, setOfficeStaffsError } = getOfficeStaffs.actions;
 
 export const teamReducer = combineReducers({
     getBoardCommittee: getBoardCommittee.reducer,
-    
+    getOfficeStaffs: getOfficeStaffs.reducer,
 });
 
 export function fetchBoardCommittee(){
@@ -50,6 +75,27 @@ export function fetchBoardCommittee(){
         } catch(err) {
             dispatch(setBoardCommitteeLoading(false))
             dispatch(setBoardCommitteeError(err.message))
+        }
+    }
+}
+
+export function fetchOfficeStaffs(){
+    return async function fetchOfficeStaffsThunk(dispatch, getState){
+        dispatch(setOfficeStaffsLoading(true))
+        try {
+            let staffs = []
+            const Members = await getDocs(
+                query(collection(db, "members"),where('teamCategory', '==', 'Office Staffs'), orderBy('level', 'asc'))
+            );
+            Members.docs.forEach((doc) => {
+                staffs.push({ ...doc.data(), id: doc.id})
+            });
+            dispatch(setOfficeStaffs(staffs))
+            dispatch(setOfficeStaffsLoading(false))
+            dispatch(setOfficeStaffsSuccess(true)) 
+        } catch(err) {
+            dispatch(setOfficeStaffsLoading(false))
+            dispatch(setOfficeStaffsError(err.message))
         }
     }
 }
