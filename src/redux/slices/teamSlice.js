@@ -50,12 +50,68 @@ const getOfficeStaffs = createSlice({
     }
 })
 
+const getAdvisors = createSlice({
+    name: 'getAdvisors',
+    initialState: {
+        data: [],
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        setAdvisors(state, action){
+            state.data = action.payload
+        },
+        setAdvisorsLoading(state, action){
+            state.loading = action.payload
+        },
+        setAdvisorsSuccess(state, action){
+            state.success = action.payload
+        },
+        setAdvisorsError(state, action){
+            state.error = action.payload
+        }
+    }
+})
+
+const getMembers = createSlice({
+    name: 'getMembers',
+    initialState: {
+        generalMembers: [],
+        lifeMembers: [],
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        setGeneralMembers(state, action){
+            state.generalMembers = action.payload
+        },
+        setLifeMembers(state, action){
+            state.lifeMembers = action.payload
+        },
+        setMembersLoading(state, action){
+            state.loading = action.payload
+        },
+        setMembersSuccess(state, action){
+            state.success = action.payload
+        },
+        setMembersError(state, action){
+            state.error = action.payload
+        }
+    }
+})
+
 export const { setBoardCommittee, setBoardCommitteeLoading, setBoardCommitteeSuccess, setBoardCommitteeError } = getBoardCommittee.actions;
 export const { setOfficeStaffs, setOfficeStaffsLoading, setOfficeStaffsSuccess, setOfficeStaffsError } = getOfficeStaffs.actions;
+export const { setAdvisors, setAdvisorsLoading, setAdvisorsSuccess, setAdvisorsError } = getAdvisors.actions;
+export const { setGeneralMembers, setLifeMembers, setMembersLoading, setMembersSuccess, setMembersError } = getMembers.actions;
 
 export const teamReducer = combineReducers({
     getBoardCommittee: getBoardCommittee.reducer,
     getOfficeStaffs: getOfficeStaffs.reducer,
+    getAdvisors: getAdvisors.reducer,
+    getMembers: getMembers.reducer,
 });
 
 export function fetchBoardCommittee(){
@@ -96,6 +152,58 @@ export function fetchOfficeStaffs(){
         } catch(err) {
             dispatch(setOfficeStaffsLoading(false))
             dispatch(setOfficeStaffsError(err.message))
+        }
+    }
+}
+
+export function fetchAdvisors(){
+    return async function fetchAdvisorsThunk(dispatch, getState){
+        dispatch(setAdvisorsLoading(true))
+        try {
+            let advisors = []
+            const Members = await getDocs(
+                query(collection(db, "members"),where('teamCategory', '==', 'Advisors'), orderBy('level', 'asc'))
+            );
+            Members.docs.forEach((doc) => {
+                advisors.push({ ...doc.data(), id: doc.id})
+            });
+            dispatch(setAdvisors(advisors))
+            dispatch(setAdvisorsLoading(false))
+            dispatch(setAdvisorsSuccess(true)) 
+        } catch(err) {
+            dispatch(setAdvisorsLoading(false))
+            dispatch(setAdvisorsError(err.message))
+        }
+    }
+}
+
+export function fetchMembers(){
+    return async function fetchMembersThunk(dispatch, getState){
+        dispatch(setMembersLoading(true))
+        try {
+            let gm = []
+            let lm = []
+            const [GMembers, LMembers] = await Promise.all([
+                getDocs(
+                    query(collection(db, "members"), where('teamCategory', '==', 'General Members'),)
+                ),
+                getDocs(
+                    query(collection(db, "members"), where('teamCategory', '==', 'Life Members'),)
+                )
+            ])
+            GMembers.docs.forEach((doc) => {
+                gm.push({ ...doc.data(), id: doc.id})
+            });
+            dispatch(setGeneralMembers(gm))
+            LMembers.docs.forEach((doc) => {
+                lm.push({ ...doc.data(), id: doc.id})
+            });
+            dispatch(setLifeMembers(lm))
+            dispatch(setMembersLoading(false))
+            dispatch(setMembersSuccess(true)) 
+        } catch(err) {
+            dispatch(setMembersLoading(false))
+            dispatch(setMembersError(err.message))
         }
     }
 }
