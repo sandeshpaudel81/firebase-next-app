@@ -1,5 +1,7 @@
 import Image from "next/image"
+import Link from "next/link"
 import React from "react"
+import { FaHome, FaPhoneAlt } from "react-icons/fa"
 
 const PersonCard = ({ name, post, contact, address, photo }) => {
 	return (
@@ -16,9 +18,11 @@ const PersonCard = ({ name, post, contact, address, photo }) => {
 
 			<div className=" text-center">
 				<h3 className="text-primary font-semibold text-xl">{name}</h3>
-				<p>{post}</p>
-				<p>{contact}</p>
-				<p>{address}</p>
+				<p className="text-sm font-medium text-slate-700">{post}</p>
+				<Link href={`telto:+977${contact}`}>
+					<p className="text-sm flex items-center justify-center gap-2"><FaPhoneAlt /> {contact}</p>
+				</Link>
+				<p className="text-sm flex items-center justify-center gap-2"><FaHome/> {address}</p>
 			</div>
 		</div>
 	)
