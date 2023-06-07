@@ -7,6 +7,7 @@ import { donorsPartnersReducer } from './slices/donorsPartnersSlice'
 import { noticesReducer } from './slices/noticeSlice'
 import { newsReducer } from './slices/newsSlice'
 import { teamReducer } from './slices/teamSlice'
+import { galleryReducer } from './slices/gallerySlice'
 
 export const store = configureStore({
     reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
         donorsPartners: donorsPartnersReducer,
         notice: noticesReducer,
         news: newsReducer,
-        team: teamReducer
+        team: teamReducer,
+        gallery: galleryReducer,
     },
 })

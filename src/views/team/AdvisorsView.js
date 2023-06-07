@@ -1,42 +1,18 @@
 import PersonCard from "@/components/common/PersonCard"
-import React from "react"
-
-const advisorsList = [
-	{
-		id: 1,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Advisor",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 2,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Advisor",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 3,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Advisor",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-	{
-		id: 4,
-		name: "Sandesh GC",
-		address: "Butwal",
-		post: "Advisor",
-		contact: "9811112222",
-		photoURL: "https://placehold.co/132x170",
-	},
-]
+import { fetchAdvisors } from "@/redux/slices/teamSlice"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 const AdvisorsView = () => {
+	const dispatch = useDispatch()
+	const {data, loading, success, error} = useSelector(state => state.team.getAdvisors)
+	useEffect(() => {
+		if (!success){
+			dispatch(fetchAdvisors())
+		}
+		return ;
+	}, [success, dispatch])
+	
 	return (
 		<div className="container mx-auto px-5 py-10 md:py-20">
 			<div className="border-l-8 border-primary px-5">
@@ -49,8 +25,15 @@ const AdvisorsView = () => {
 			</div>
 
 			<div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-10 gap-8">
-				{advisorsList.map((adv) => (
-					<PersonCard {...adv} key={adv.id} photo={adv.photoURL} />
+				{data.map((adv) => (
+					<PersonCard
+						key={adv.id}
+						name={adv.name}
+						post={adv.post}
+						contact={adv.contact}
+						address={adv.address}
+						photo={adv.picture}
+					/>
 				))}
 			</div>
 		</div>

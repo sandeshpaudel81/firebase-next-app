@@ -1,5 +1,7 @@
 import PersonCard from "@/components/common/PersonCard"
-import React from "react"
+import { fetchMembers } from "@/redux/slices/teamSlice"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 const membersList = [
 	{
@@ -85,6 +87,14 @@ const membersList = [
 ]
 
 const MembersView = () => {
+	const dispatch = useDispatch()
+	const {generalMembers, lifeMembers, loading, success, error} = useSelector(state => state.team.getMembers)
+	useEffect(() => {
+		if (!success){
+			dispatch(fetchMembers())
+		}
+		return ;
+	}, [success, dispatch])
 	return (
 		<div className="container mx-auto px-5 py-10 md:py-20">
 			<div className="border-l-8 border-primary px-5">
@@ -95,11 +105,65 @@ const MembersView = () => {
 					Dedicated Individuals
 				</p>
 			</div>
-
-			<div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-10 gap-8">
-				{membersList.map((mem) => (
-					<PersonCard {...mem} key={mem.id} photo={mem.photoURL} />
-				))}
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-10">
+				<div class="relative overflow-x-auto">
+					<p className="font-semibold text-xl">General Members</p>
+					<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+						<thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+							<tr>
+								<th scope="col" class="px-6 py-3">
+									Name
+								</th>
+								<th scope="col" class="px-6 py-3">
+									Address
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								generalMembers?.map((mem, index) => {
+									return <tr key={index} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+										<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											{mem.name}
+										</th>
+										<td class="px-6 py-4">
+											{mem.address}
+										</td>
+									</tr>
+								})
+							}
+						</tbody>
+					</table>
+				</div>
+				<div class="relative overflow-x-auto">
+				<p className="font-semibold text-xl">Life Members</p>
+					<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+						<thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+							<tr>
+								<th scope="col" class="px-6 py-3">
+									Name
+								</th>
+								<th scope="col" class="px-6 py-3">
+									Address
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								lifeMembers?.map((mem, index) => {
+									return <tr key={index} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+										<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+											{mem.name}
+										</th>
+										<td class="px-6 py-4">
+											{mem.address}
+										</td>
+									</tr>
+								})
+							}
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	)

@@ -8,10 +8,15 @@ import { fetchProjects } from '@/redux/slices/projectSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import ProjectBox from '@/components/common/ProjectBox';
+import { fetchNews } from '@/redux/slices/newsSlice';
+import CenteredLoading from '@/components/common/Loader';
 
 export default function Home() {
     const dispatch = useDispatch();
-    const {data: projects, success: projectSuccess} = useSelector(state => state.project.getProject);
+    const {data: projects, success: projectSuccess, loading:projectLoading} = useSelector(state => state.project.getProject);
+    const {data: news, success: newsSuccess, loading:newsLoading} = useSelector(state => state.news.getNews);
+    const {loading:dpLoading} = useSelector(state => state.donorsPartners.getDonorsPartners);
+    const {loading:carouselLoading} = useSelector(state => state.carousel.getCarousel)
 
     useEffect(() => {
         if (!projectSuccess){
@@ -19,14 +24,22 @@ export default function Home() {
         }
     }, [dispatch, projectSuccess]);
 
-  const news = [
-    {"id":1, "image": "/assets/car1.jpg", "title": "Title 10", "content": "Do non irure nisi anim et anim. Voluptate elit eu sint amet anim pariatur incididunt nulla ex tempor adipisicing. Aliquip mollit ipsum id ad anim id duis quis commodo proident. Commodo laboris elit pariatur dolore irure. Sunt ut adipisicing nulla dolor. Excepteur cillum voluptate voluptate qui excepteur nisi incididunt proident adipisicing."},
-    {"id":2, "image": "/assets/car1.jpg", "title": "Title 20", "content": "Amet Lorem laborum duis ipsum consequat exercitation eu occaecat nulla. Magna nostrud non do ea amet. Excepteur aliquip reprehenderit consectetur commodo amet laboris laborum adipisicing culpa reprehenderit. Ullamco adipisicing Lorem et reprehenderit cupidatat. Nisi reprehenderit mollit velit enim magna do ad tempor nisi anim labore eu excepteur ad."},
-    {"id":3, "image": "/assets/car1.jpg", "title": "Title 30", "content": "Esse in amet et esse adipisicing velit duis dolor ipsum in nostrud consectetur. Amet dolore aute sit in. Mollit et ea adipisicing deserunt nostrud nisi nulla."},
-    {"id":4, "image": "/assets/car1.jpg", "title": "Title 40", "content": "Ullamco aliqua incididunt occaecat ex labore aliqua ullamco culpa est occaecat est exercitation exercitation. Pariatur deserunt ullamco adipisicing sint id aliquip. Irure nostrud velit aliqua incididunt veniam. Mollit laborum in laborum consectetur in eu velit."}
-  ]
+    useEffect(() => {
+        if (!newsSuccess){
+            dispatch(fetchNews())
+        }
+    }, [dispatch, newsSuccess]);
+
+
   return (
     <main>
+        {
+            carouselLoading? 
+            <div className='h-screen w-screen fixed top-0 left-0 z-[100] bg-[rgb(255,255,255,0.8)] p-10'>
+                <div className='mt-48'><CenteredLoading /></div>
+            </div>:null
+        }
+        
         <Carousel />
 
         {/* Message From Chairperson */}
@@ -47,7 +60,10 @@ export default function Home() {
                             <h2 className='uppercase text-xl font-semibold text-primary'>Hari Prasad Paudel</h2>
                             <p className='text-sm font-medium text-gray-400'>Chairman, KADAM</p>
                         </div>
-                        <p className='mt-8'>Aliquip commodo tempor nisi id nisi tempor est incididunt nisi eu. Labore sint occaecat fugiat dolore ut sit Lorem commodo anim. Laboris sunt nulla amet Lorem enim eiusmod consectetur. Ut dolor proident dolore amet ut ea.<br></br> Ea sint veniam nulla culpa in esse anim aliqua anim occaecat ipsum enim ea. Consequat nisi duis commodo magna elit eu ullamco elit. Pariatur qui amet id id laborum labore id esse. Exercitation ut est culpa dolore labore veniam commodo in reprehenderit irure. Mollit laborum ut duis in proident consectetur sit fugiat dolore cupidatat amet. Officia anim duis consectetur aute nisi tempor est esse ea. Et mollit officia nostrud tempor consectetur. Culpa aute incididunt ipsum tempor.</p>
+                        <p className='mt-8'>संस्थाको आधिकारिक सूचनामूलक वेबसाइटमा यहाँ लाई स्वागत छ।
+                            कालिगण्डकी सामुदायिक विकास मञ्च (कदम) म्याग्दी २०५६ सालमा स्थानिय प्रशासनमा संस्था दर्ता ऐन २०३४ अनुसार दर्ता भै अविच्छिन्न समुदायमा कार्यरत मानव अधिकारमुखि अविच्छिन्न उत्तराधिकारीवाला राष्ट्रिय गैह्रसरकारी संस्था हो। संस्था स्थापना हुनु अगाबै वि.सं. २०५५ साल देखि अनवरत रुपमा संस्था स्थापनाका उद्देश्य र नागरिक सरोकारका विषयमा केन्द्रित रही म्याग्दी पर्वत बाग्लुङ जिल्लामा कार्यरत रहेको छ। संस्थाले नेपाल सरकारले लिएका दिगो विकास लक्ष्य तथा सहस्राब्दी विकास लक्ष्य अनुरुप आफ्ना कार्यक्रमहरु सञ्चालन गरिरहेको छ। अधिकारमुखी अवधारणामा रहेर स्थानीय आवश्यकता अनुसार स्थानीय साझेदार संस्थाहरु का साथै बिभिन्न दातृनिकाय संगको सहकार्यमा लक्षित वर्ग केन्द्रित भै स्वास्थ्य, महिला स्वास्थ्य, शिक्षा, आय आर्जन का क्षेत्रमा जनचेतना मुलक कार्यक्रम, आवश्यता सम्वोधन गर्नका लागि सामाग्री सहयोग, स्थानिय सरकार संगको सहकार्यमा निर्माणका काममा साझेदारी गर्नुका साथै पैरवी समेत गर्ने कार्य गरिरहेको छ। 
+                            वेबसाइट अवलोकन गरिसकेपछी केही जिज्ञासा वा सुझावहरु भएमा सुझाव तथा प्रतिक्रिया दिनुहुन अनुरोध गर्दछु।
+                        </p>
                     </div>
                 </div>
             </div>
@@ -60,11 +76,17 @@ export default function Home() {
                     <h2 className='text-primary font-bold text-3xl'>Our <span className='text-white'>Projects</span></h2>
                     <p className='uppercase text-gray-400 text-sm font-medium mt-2'>since 2000</p>
                 </div>
-                <div className='grid grid-cols-2 gap-10 mt-5 md:mt-10'>
-                    {projects.filter((item, index) => index<4).map((project) => (
-                        <ProjectBox project={project} key={project.id}/>
-                    ))}
-                </div>
+                {
+                    projectLoading
+                    ?
+                    <CenteredLoading />
+                    :
+                    <div className='grid grid-cols-2 gap-10 mt-5 md:mt-10'>
+                        {projects.filter((item, index) => index<4).map((project) => (
+                            <ProjectBox project={project} key={project.id}/>
+                        ))}
+                    </div>
+                }
                 <div className='flex justify-end mt-5'>
                     <Link href="/projects" className='uppercase text-gray-400 hover:text-white'>
                         <p className='flex items-center font-medium'>See More <MdKeyboardArrowRight className='ml-3'/></p>
@@ -80,11 +102,20 @@ export default function Home() {
                     <h2 className='text-primary font-bold text-3xl'>News / <span className='text-primaryDark'>Events</span></h2>
                     <p className='uppercase text-gray-600 text-sm font-medium mt-2'>Programs | Meetups | Affairs</p>
                 </div>
-                <div className='grid grid-cols-4 gap-10 mt-5 md:mt-10'>
-                    {news.map((item) => (
-                        <NewsBox title={item.title} content={item.content} image={item.image} key={item.id}/>
-                    ))}
-                </div>
+                {
+                    newsLoading
+                    ?
+                    <CenteredLoading />
+                    :
+                    <div className='grid grid-cols-4 gap-10 mt-5 md:mt-10'>
+                        {news.map((item, index) => {
+                            if (index < 4) {
+                                return <NewsBox news={item} key={item.id}/>
+                            }
+                        }
+                        )}
+                    </div>
+                }
                 <div className='flex justify-end mt-5'>
                     <Link href="/news" className='uppercase text-gray-600 hover:text-black'>
                         <p className='flex items-center font-medium'>See more <MdKeyboardArrowRight className='ml-3'/></p>
@@ -101,8 +132,8 @@ export default function Home() {
                     <p className='uppercase text-gray-400 text-sm font-medium mt-2'>become part of the organization</p>
                 </div>
                 <div className='grid grid-cols-2 gap-10 mt-5 md:mt-10'>
-                    <div className='col-span-2 md:col-span-1 grid grid-cols-3 px-20 gap-2'>
-                        <div className='col-span-3 md:col-span-1 pt-[100px]'>
+                    <div className='col-span-2 md:col-span-1 grid grid-cols-3 px-20 gap-5 md:gap-2'>
+                        <div className='col-span-3 md:col-span-1 md:pt-[100px]'>
                             <div className='bg-sdgOrange'>
                                 <h3 className='uppercase font-semibold text-white p-2'>Career / Volunteer</h3> 
                                 <Link href="/donate"><p className='text-slate-200 pl-2 hover:text-primaryDark'>Vacancies</p></Link>
@@ -116,7 +147,7 @@ export default function Home() {
                                 <img src="/assets/donation.png" alt='Donate Us'/>
                             </div>
                         </div>
-                        <div className='col-span-3 md:col-span-1 pt-[100px]'>
+                        <div className='col-span-3 md:col-span-1 md:pt-[100px]'>
                             <div className='bg-sdgGreen'>
                                 <h3 className='uppercase font-semibold text-white p-2'>Work In A Team</h3>
                                 <Link href="/donate"><p className='text-slate-200 pl-2 hover:text-primaryDark'>Become a member</p></Link>
@@ -138,7 +169,13 @@ export default function Home() {
                     <h2 className='text-primary font-bold text-3xl'>Donors <span className='text-primaryDark'>& Partners</span></h2>
                     <p className='uppercase text-gray-600 text-sm font-medium mt-2'>With whom we work</p>
                 </div>
-                <DonorsHomeView />
+                {
+                    dpLoading
+                    ?
+                    <CenteredLoading />
+                    :
+                    <DonorsHomeView />
+                }
             </div>
         </div>
     </main>

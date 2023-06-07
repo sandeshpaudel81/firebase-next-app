@@ -11,21 +11,16 @@ export const NavbarMenu = [
         subMenu: [
             {
                 id: 1,
-                url: "/about/objectives",
-                name: "Objectives"
+                url: "/about/vmgo",
+                name: "VMGO"
             },
             {
                 id: 2,
-                url: "/about/visions",
-                name: "Visions"
-            },
-            {
-                id: 3,
                 url: "/about/organogram",
                 name: "Organogram"
             },
             {
-                id: 4,
+                id: 3,
                 url: "/about/donors-partners",
                 name: "Donors & Partners"
             },

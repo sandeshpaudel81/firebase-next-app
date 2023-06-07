@@ -89,11 +89,6 @@ export const carouselReducer = combineReducers({
     editCarousel: editCarouselSlice.reducer,
 });
 
-// convert timestamp to date
-
-export function timestampToDate(datetime){
-    return String(moment(datetime.toDate()).format("dddd, MMMM Do YYYY"))
-}
 
 // thunks
 
@@ -106,8 +101,7 @@ export function fetchCarousel(){
                 query(collection(db, "carousel"))
             );
             slides.docs.forEach((doc) => {
-                const datetime = timestampToDate(doc.data().datetime)
-                carousel.push({ ...doc.data(), id: doc.id, datetime: datetime})
+                carousel.push({ ...doc.data(), id: doc.id})
             });
             dispatch(getCarouselData(carousel))
             dispatch(getCarouselLoading(false))
@@ -125,7 +119,6 @@ export function addNewCarousel(data){
             await addDoc(collection(db, "carousel"), {
                 caption: data.caption,
                 imageUrl: data.imageUrl,
-                datetime: serverTimestamp(),
                 is_active: data.is_active
             })
             dispatch(addCarouselLoading(false))
