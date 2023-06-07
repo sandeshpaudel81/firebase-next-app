@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import ProjectBox from '@/components/common/ProjectBox';
 import { fetchNews } from '@/redux/slices/newsSlice';
 import CenteredLoading from '@/components/common/Loader';
+import {NextSeo} from 'next-seo'
 
 export default function Home() {
     const dispatch = useDispatch();
@@ -32,6 +33,23 @@ export default function Home() {
 
 
   return (
+    <>
+        <NextSeo
+            title="Home | KADAM Myagdi"
+            description="संस्थाको आधिकारिक सूचनामूलक वेबसाइटमा यहाँ लाई स्वागत छ। कालिगण्डकी सामुदायिक विकास मञ्च (कदम) म्याग्दी २०५६ सालमा स्थानिय प्रशासनमा संस्था दर्ता ऐन २०३४ अनुसार दर्ता भै अविच्छिन्न समुदायमा कार्यरत मानव अधिकारमुखि अविच्छिन्न उत्तराधिकारीवाला राष्ट्रिय गैह्रसरकारी संस्था हो।"
+            openGraph={{
+                type: 'website',
+                url: 'https://kadammyagdi.org.np',
+                images: {
+                    url: '/assets/logo.png',
+                    width: 850,
+                    height: 650,
+                    alt: 'Photo of text',
+                },
+                site_name: 'KADAM Myagdi'
+            }}
+        />
+    
     <main>
         {
             carouselLoading? 
@@ -179,6 +197,7 @@ export default function Home() {
             </div>
         </div>
     </main>
+    </>
   )
 }
 
