@@ -1,19 +1,17 @@
-import ImageViewer from '@/components/common/ImageViewer'
-import { fetchNews } from '@/redux/slices/newsSlice'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchGallery } from '@/redux/slices/gallerySlice'
 
 const GalleryList = () => {
-    
-    const data = [
-        {
-            name: 'Untitled'
-        },
-        {
-            name: 'General Meeting'
+    const dispatch = useDispatch()
+    const {data, loading, error, success} = useSelector(state => state.gallery.getGallery)
+    useEffect(() => {
+        if(!success){
+            dispatch(fetchGallery())
         }
-    ]
+        return;
+    }, [success, dispatch])
     
     return (
         <div className='container mx-auto py-10 px-2'>
@@ -23,11 +21,11 @@ const GalleryList = () => {
             </div>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-10 gap-10'>
                 {
-                    data?.map((item, index) => {
-                        return <Link href={`/gallery/${item.id}`} key={index}>
+                    data?.map((item) => {
+                        return <Link href={`/gallery/${item.id}`} key={item.id}>
                             <div className='w-full h-[200px] p-1 border-r-2 border-b-2 border-primaryDark group hover:border-l-2 hover:border-t-2'>
                                 <div className='p-1 h-full border-r-2 border-b-2 border-primaryDark group-hover:border-l-2 group-hover:border-t-2'>
-                                    <img src='assets/car1.jpg' className='h-full w-full'/>
+                                    <img src={item.images[0]} className='h-full w-full object-cover'/>
                                 </div>
                             </div>
                             <p className='font-medium text-center mt-2'>{item.name}</p>

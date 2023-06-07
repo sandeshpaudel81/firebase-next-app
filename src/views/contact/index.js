@@ -1,6 +1,25 @@
-import React from 'react'
+import ImageViewer from '@/components/common/ImageViewer'
+import React, { useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 const ContactView = () => {
+    const initialMessage = {
+        'name': '',
+        'email': '',
+        'message': ''
+    }
+    const [message, setmessage] = useState(initialMessage)
+    const changeHandler = (e) => {
+        setmessage({...message, [e.target.name]:e.target.value})
+    }
+    const submitMessage = (e) => {
+        e.preventDefault()
+        if(message.name.length > 0 && message.email.length>0 && message.message.length>0){
+            console.log(message)
+        } else {
+            toast.error("Please fill up all the details.")
+        }
+    }
     return (
         <div className='container mx-auto py-10 px-2'>
             <div className='border-l-8 border-primary px-5'>
@@ -16,7 +35,21 @@ const ContactView = () => {
                     <p>Email: kadammyagdi@gmail.com</p>
                 </div>
                 <div className='bg-slate-200 p-10'>
-                    <p className='font-semibold text-xl text-primaryDark uppercase'>Send us a message</p>    
+                    <p className='font-semibold text-xl text-primaryDark uppercase'>Send us a message</p>
+                    <div className='grid grid-cols-2 gap-2 mt-2'>
+                        <div className=''>
+                            <input type='text' name='name' value={message.name} placeholder='Your Name' className='w-full border-2 border-primaryD bg-transparent rounded-md px-2 py-1 focus:border-primaryDark' onChange={changeHandler} required></input>
+                        </div>
+                        <div>
+                            <input type='email' name='email' value={message.email} placeholder='Your Email' className='w-full border-2 border-primaryD bg-transparent rounded-md px-2 py-1 focus:border-primaryDark' onChange={changeHandler} required></input>
+                        </div>
+                        <div className='col-span-2'>
+                            <textarea name='message' value={message.message} placeholder='Your Message' className='w-full border-2 border-primaryD bg-transparent rounded-md px-2 py-1 focus:border-primaryDark' onChange={changeHandler} required></textarea>
+                        </div>
+                        <div>
+                            <input type='submit' className='bg-primaryDark px-4 py-2 rounded-md text-white cursor-pointer' onClick={submitMessage}></input>
+                        </div>
+                    </div>    
                 </div>  
             </div>
             <div className='border-slate-200 border-2 p-2'>

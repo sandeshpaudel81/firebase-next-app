@@ -19,7 +19,7 @@ const Sidebar = ({pathname}) => {
   return ( <div>
       
       <div className={sidebar ? 'lg:hidden':'hidden'}>
-          <div className='w-9/12 md:w-5/12 bg-primaryDark flex flex-col h-screen fixed overflow-y-scroll space-y-2 text-white py-5 z-50'>
+          <div className='w-full bg-primaryDark flex flex-col h-screen fixed overflow-y-scroll space-y-2 text-white py-5 z-50'>
               <div className='flex flex-row items-center justify-between mb-10 px-10'>
                 <p className='text-2xl'>Menu</p>
                 <div className='bg-white p-2 rounded-full cursor-pointer' onClick={sidebarHandler}><GrClose /></div>
