@@ -19,7 +19,7 @@ const ProjectList = () => {
                 <p className='uppercase text-gray-600 text-sm font-medium mt-2'>since 2000</p>
             </div>
           <div className='grid grid-cols-2 gap-10 mt-5 md:mt-10'>
-              {projects.filter((item, index) => index<4).map((project) => (
+              {projects.map((project) => (
                   <ProjectBox project={project} key={project.id}/>
               ))}
           </div>

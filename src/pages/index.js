@@ -101,7 +101,7 @@ export default function Home() {
                     <CenteredLoading />
                     :
                     <div className='grid grid-cols-2 gap-10 mt-5 md:mt-10'>
-                        {projects.filter((item, index) => index<4).map((project) => (
+                        {projects?.filter((item, index) => index<4).map((project) => (
                             <ProjectBox project={project} key={project.id}/>
                         ))}
                     </div>
@@ -193,7 +193,14 @@ export default function Home() {
                     ?
                     <CenteredLoading />
                     :
-                    <DonorsHomeView />
+                    <div>
+                        <DonorsHomeView />
+                        <div className='flex justify-end mt-5'>
+                            <Link href="/about/donors-partners" className='uppercase text-gray-600 hover:text-black'>
+                                <p className='flex items-center font-medium'>See details <MdKeyboardArrowRight className='ml-3'/></p>
+                            </Link>
+                        </div>
+                    </div>
                 }
             </div>
         </div>
