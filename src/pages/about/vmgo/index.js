@@ -13,12 +13,12 @@ const VMGO = () => {
             openGraph={{
                 type: 'website',
                 url: 'https://kadammyagdi.org.np/about/vmgo',
-                images: {
+                images: [{
                     url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/meta_images/vmgo.png`,
                     width: 850,
                     height: 650,
                     alt: 'Kaligandaki Community Development Munch (KADAM) Myagdi',
-                },
+                }],
                 site_name: 'KADAM Myagdi'
             }}
         />

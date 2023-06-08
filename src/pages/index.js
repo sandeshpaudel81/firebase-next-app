@@ -41,12 +41,12 @@ export default function Home() {
             openGraph={{
                 type: 'website',
                 url: 'https://kadammyagdi.org.np',
-                images: {
+                images: [{
                     url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/meta_images/homepage.png`,
                     width: 850,
                     height: 650,
                     alt: 'Kaligandaki Community Development Munch (KADAM) - Official Website',
-                },
+                }],
                 site_name: 'Kaligandaki Community Development Munch (KADAM) Myagdi'
             }}
         />
