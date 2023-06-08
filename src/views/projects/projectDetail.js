@@ -72,7 +72,7 @@ const ProjectDetailView = ({id}) => {
             {
               project?.collaborators?.map((collab, index) => {
                 return <div className='col-span-4 md:col-span-1' key={index}>
-                  <img src={collab.imageUrl} className='w-1/2'/>
+                  <img src={collab.imageUrl} alt={collab.name} className='w-1/2'/>
                   <p>{collab.name}</p>
                 </div>
               })
@@ -81,10 +81,10 @@ const ProjectDetailView = ({id}) => {
         </div>
         <div className='grid grid-cols-3 gap-5 mb-5'>
           <p className='col-span-3 text-lg font-semibold'>Pictures</p>
-          <div className='col-span-3 md:col-span-1'><img src={project?.thumbnailImageUrl}/></div>
+          <div className='col-span-3 md:col-span-1'><img alt={project?.title} src={project?.thumbnailImageUrl}/></div>
           {
             project?.images?.map((image, index) => {
-              return <div className='col-span-3 md:col-span-1' key={index}><img src={image}/></div>
+              return <div className='col-span-3 md:col-span-1' key={index}><img src={image} alt={project?.title}/></div>
             })
           }
         </div>

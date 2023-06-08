@@ -23,7 +23,7 @@ const DonorsPartnersView = () => {
                     data?.map((item) => {
                         return <div key={item.id} className='col-span-2 lg:col-span-1 grid grid-cols-6 p-3 border-[1px] border-slate-300 shadow-lg shadow-black rounded-md gap-2'>
                             <div className='col-span-6 lg:col-span-2'>
-                                <img src={item.logoUrl} alt='donors logo' className='mx-auto'/>
+                                <img src={item.logoUrl} alt={item.name} className='mx-auto'/>
                             </div>
                             <div className='col-span-6 lg:col-span-4 px-2 text-center lg:text-start'>
                                 <p className='font-semibold text-2xl lg:text-3xl'>{item.name}</p>

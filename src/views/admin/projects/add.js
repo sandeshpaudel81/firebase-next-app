@@ -141,7 +141,7 @@ const ProjectAdd = () => {
                         {
                             values.collaborators?.map((collab, index) => {
                                 return <div key={index} className='flex justify-between items-center bg-slate-100 p-2 mb-2 rounded-md'>
-                                    <img src={collab.imageUrl} className='h-[50px] w-[50px] object-cover'/>
+                                    <img src={collab.imageUrl} alt={collab.name} className='h-[50px] w-[50px] object-cover'/>
                                     <p>{collab.name}</p>
                                     <MdDeleteForever className='text-3xl cursor-pointer text-red-600 hover:text-red-500 ' onClick={deleteCollaborator}/>
                                 </div>

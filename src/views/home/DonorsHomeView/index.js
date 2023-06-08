@@ -15,7 +15,7 @@ const DonorsHomeView = () => {
             {
                 data?.map((item, index) => {
                     return <div key={index} className='col-span-2 md:col-span-1'>
-                        <img src={item.logoUrl} className='w-9/12 mx-auto'/>
+                        <img src={item.logoUrl} alt={item.name} className='w-9/12 mx-auto'/>
                     </div>
                 })
             }

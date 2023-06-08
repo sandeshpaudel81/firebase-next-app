@@ -24,7 +24,7 @@ const NewsList = () => {
                     data?.map((item) => {
                         return <div key={item.id} className='grid grid-cols-4 bg-slate-200'>
                             <div className='col-span-4 lg:col-span-1'>
-                                <img src={item.images[0]} className='h-[150px] md:h-[200px] lg:h-[100px] w-full object-cover'/>
+                                <img src={item.images[0]} alt={item.title} className='h-[150px] md:h-[200px] lg:h-[100px] w-full object-cover'/>
                             </div>
                             <div className='col-span-4 lg:col-span-3 p-2 h-[100px] lg:h-auto relative'>
                                 <Link href={`/news/${item.id}`}><h1 className='font-bold text-primaryD'>{item.title}</h1></Link>

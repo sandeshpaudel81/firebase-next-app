@@ -21,7 +21,7 @@ const AdminNavbar = ({pathname}) => {
       <div className='flex flex-col'>
         <div className='bg-primaryDark lg:bg-primaryExtraLight text-center'>
             <div className='absolute right-2 top-2 block lg:hidden text-white' onClick={handleCloseSidebar}><GrClose /></div>
-            <img className='w-40 mx-auto hidden lg:block' src='/assets/logo.png'/>
+            <img className='w-40 mx-auto hidden lg:block' src='/assets/logo.png' alt='KADAM Myagdi'/>
             <p className='font-bold text-3xl hidden lg:block'>ADMIN</p>
             <p className='font-bold text-3xl block lg:hidden text-white'>MENU</p>
         </div>

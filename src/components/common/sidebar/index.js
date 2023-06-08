@@ -77,7 +77,7 @@ const Sidebar = ({pathname}) => {
                 <p className='p-2'>Kaligandaki Community Development Munch (KADAM)</p>
             </div>
             <div>
-                <img className='w-2/3 mx-auto' src='/assets/logo.png'/>
+                <img className='w-2/3 mx-auto' src='/assets/logo.png' alt='KADAM Myagdi'/>
             </div> 
             <div className='flex justify-between bg-primaryDark text-white p-2'>
                 <div className='text-xl cursor-pointer' onClick={sidebarHandler}>

@@ -29,7 +29,7 @@ const Navbar = ({pathname}) => {
         </div>
       </div>
       <div className='flex bg-primaryExtraLight justify-between p-3 items-center'>
-        <img className='w-40' src='/assets/logo.png'/>
+        <img className='w-40' src='/assets/logo.png' alt='KADAM Myagdi'/>
         {
           NavbarMenu.map((item) => {
             return <div key={item.id} className='uppercase text-slate-800 font-medium flex flex-col items-center group'>
