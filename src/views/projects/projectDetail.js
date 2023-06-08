@@ -58,7 +58,11 @@ const ProjectDetailView = ({id}) => {
         </div>
         <div className='mb-5'>
           <p className='text-lg font-semibold'>Project Report</p>
-          <Link href={project?.reportUrl} target='_blank' className='text-primaryD hover:underline'>See report</Link>
+          {
+            project?.reportUrl.length > 0 ?
+            <Link href={project?.reportUrl} target='_blank' className='text-primaryD hover:underline'>See report</Link>:
+            null
+          }
         </div>
         <div className='mb-5'>
           <p className='text-lg font-semibold'>Project Status</p>
@@ -81,7 +85,11 @@ const ProjectDetailView = ({id}) => {
         </div>
         <div className='grid grid-cols-3 gap-5 mb-5'>
           <p className='col-span-3 text-lg font-semibold'>Pictures</p>
-          <div className='col-span-3 md:col-span-1'><img alt={project?.title} src={project?.thumbnailImageUrl}/></div>
+          {
+            project?.thumbnailImageUrl.length > 0 ?
+            <div className='col-span-3 md:col-span-1'><img alt={project?.title} src={project?.thumbnailImageUrl}/></div>
+            : null
+          }
           {
             project?.images?.map((image, index) => {
               return <div className='col-span-3 md:col-span-1' key={index}><img src={image} alt={project?.title}/></div>

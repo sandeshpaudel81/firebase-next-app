@@ -1,9 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import React from "react"
-import { FaHome, FaPhoneAlt } from "react-icons/fa"
+import { FaPhoneAlt } from "react-icons/fa"
 
-const PersonCard = ({ name, post, contact, address, photo }) => {
+const PersonCard = ({ name, post, contact, photo }) => {
 	return (
 		<div className="flex flex-col gap-4 p-4 w-full shadow">
 			<div className="flex mx-auto">
@@ -13,7 +13,7 @@ const PersonCard = ({ name, post, contact, address, photo }) => {
 						src={photo}
 						width={132}
 						height={170}
-						alt="Member"
+						alt={name}
 						unoptimized
 					/> :
 					<Image
@@ -32,7 +32,6 @@ const PersonCard = ({ name, post, contact, address, photo }) => {
 				<Link href={`telto:+977${contact}`}>
 					<p className="text-sm flex items-center justify-center gap-2"><FaPhoneAlt /> {contact}</p>
 				</Link>
-				<p className="text-sm flex items-center justify-center gap-2"><FaHome/> {address}</p>
 			</div>
 		</div>
 	)

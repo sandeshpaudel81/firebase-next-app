@@ -1,4 +1,4 @@
-import PersonCard from "@/components/common/PersonCard"
+import PersonCard from "@/components/common/PersonCard/personCard"
 import { fetchBoardCommittee } from "@/redux/slices/teamSlice"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -32,7 +32,6 @@ const BoardCommitteeView = () => {
 						name={mem.name}
 						post={mem.post}
 						contact={mem.contact}
-						address={mem.address}
 						photo={mem.picture}
 					/>
 				))}

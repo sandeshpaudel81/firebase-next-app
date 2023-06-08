@@ -28,7 +28,11 @@ const DonorsPartnersView = () => {
                             <div className='col-span-6 lg:col-span-4 px-2 text-center lg:text-start'>
                                 <p className='font-semibold text-2xl lg:text-3xl'>{item.name}</p>
                                 <p className='text-sm mt-2'>{item.description}</p>
-                                <Link href={item.website}><p className='text-primaryDark hover:text-slate-900 hover:underline'>Visit Website</p></Link>
+                                {
+                                    item.website.length > 0 ?
+                                    <Link href={item.website} target='_blank'><p className='text-primaryDark hover:text-slate-900 hover:underline'>Visit Website</p></Link> :
+                                    null
+                                }
                             </div>
                             <div className='col-span-6 h-[2px] bg-slate-400'></div>
                             <div className='col-span-6'>
