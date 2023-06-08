@@ -42,7 +42,7 @@ export default function Home() {
                 type: 'website',
                 url: 'https://kadammyagdi.org.np',
                 images: [{
-                    url: `${process.env.NEXT_PUBLIC_BASE_URL}/assets/meta_images/homepage.png`,
+                    url: 'https://www.kadammyagdi.org.np/assets/meta_images/homepage.png',
                     width: 1200,
                     height: 630,
                     alt: 'Kaligandaki Community Development Munch (KADAM) - Official Website',
