@@ -1,4 +1,4 @@
-import PersonCard from "@/components/common/PersonCard"
+import PersonCard from "@/components/common/PersonCard/personCard"
 import { fetchAdvisors } from "@/redux/slices/teamSlice"
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
