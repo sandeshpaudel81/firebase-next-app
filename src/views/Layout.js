@@ -30,7 +30,7 @@ const Layout = ({ children }) => {
                 </div>
                 <div className='overflow-y-scroll w-full px-5'>
                     <div className='bg-primaryExtraLight text-primary text-center lg:hidden'>
-                        <img className='w-40 mx-auto' src='/assets/logo.png'/>
+                        <img className='w-40 mx-auto' src='/assets/logo.png' alt='KADAM Myagdi'/>
                         <p className='font-bold text-3xl'>ADMIN</p>
                     </div>
                     <div className='flex bg-primaryDark text-white p-2 mt-2 rounded-md items-center justify-between'>

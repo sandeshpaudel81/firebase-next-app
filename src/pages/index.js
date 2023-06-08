@@ -36,17 +36,18 @@ export default function Home() {
     <>
         <NextSeo
             title="Home | KADAM Myagdi"
-            description="संस्थाको आधिकारिक सूचनामूलक वेबसाइटमा यहाँ लाई स्वागत छ। कालिगण्डकी सामुदायिक विकास मञ्च (कदम) म्याग्दी २०५६ सालमा स्थानिय प्रशासनमा संस्था दर्ता ऐन २०३४ अनुसार दर्ता भै अविच्छिन्न समुदायमा कार्यरत मानव अधिकारमुखि अविच्छिन्न उत्तराधिकारीवाला राष्ट्रिय गैह्रसरकारी संस्था हो।"
+            description="Kaligandaki Community Development Munch (KADAM), registered according to the Institution Registration Act of 2034 BS  in the local administration in Myagdi district in 2056 BS, is an unbroken community-based national NGO dedicated to promoting human rights and empowerment in the community."
+            keywords="kadam myagdi, vmgo of ngo, vision of ngo"
             openGraph={{
                 type: 'website',
                 url: 'https://kadammyagdi.org.np',
                 images: {
-                    url: '/assets/logo.png',
+                    url: '/assets/meta_images/homepage.png',
                     width: 850,
                     height: 650,
-                    alt: 'Photo of text',
+                    alt: 'Kaligandaki Community Development Munch (KADAM) - Official Website',
                 },
-                site_name: 'KADAM Myagdi'
+                site_name: 'Kaligandaki Community Development Munch (KADAM) Myagdi'
             }}
         />
     
@@ -155,14 +156,14 @@ export default function Home() {
                             <div className='bg-sdgOrange'>
                                 <h3 className='uppercase font-semibold text-white p-2'>Career / Volunteer</h3> 
                                 <Link href="/donate"><p className='text-slate-200 pl-2 hover:text-primaryDark'>Vacancies</p></Link>
-                                <img src="/assets/vacancies.png" alt='Job vacancies'/>
+                                <img src="/assets/vacancies.png" alt='Job vacancies in KADAM'/>
                             </div>
                         </div>
                         <div className='col-span-3 md:col-span-1'>
                             <div className='bg-sdgYellow'>
                                 <h3 className='uppercase font-semibold text-white p-2'>Donate For Change</h3>
                                 <Link href="/donate"><p className='text-slate-200 pl-2 hover:text-primaryDark'>Donate now</p></Link>
-                                <img src="/assets/donation.png" alt='Donate Us'/>
+                                <img src="/assets/donation.png" alt='Donate for KADAM'/>
                             </div>
                         </div>
                         <div className='col-span-3 md:col-span-1 md:pt-[100px]'>
@@ -174,7 +175,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div className='col-span-2 md:col-span-1'>
-                        <img src="/assets/get-involved-image.png" alt='Work in KADAM'/>
+                        <img src="/assets/get-involved-image.png" alt='Work with us in KADAM Myagdi'/>
                     </div>
                 </div>
             </div>

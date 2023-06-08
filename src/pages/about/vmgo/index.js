@@ -9,14 +9,15 @@ const VMGO = () => {
         <NextSeo
             title="VMGO | KADAM Myagdi"
             description="Our Vision, Our Mission, Our Goals & Our Objectives"
+            keywords="kadam myagdi, vmgo of ngo, vision of ngo"
             openGraph={{
                 type: 'website',
                 url: 'https://kadammyagdi.org.np/about/vmgo',
                 images: {
-                    url: '/assets/logo.png',
+                    url: '/assets/meta_images/vmgo.png',
                     width: 850,
                     height: 650,
-                    alt: 'Kaligandaki Community Development Munch (KADAM)',
+                    alt: 'Kaligandaki Community Development Munch (KADAM) Myagdi',
                 },
                 site_name: 'KADAM Myagdi'
             }}

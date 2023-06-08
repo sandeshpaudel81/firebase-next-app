@@ -89,7 +89,7 @@ const SlideAdd = () => {
                         </div>
                         <div>
                             {uploadSuccess ? (
-                                <img src={imageUrl} alt='slide' className='w-[200px] h-[150px] object-cover object-center'/>
+                                <img src={imageUrl} alt='Upload image for carousel' className='w-[200px] h-[150px] object-cover object-center'/>
                             ) : <></> }
                         </div>
                         <div className='flex flex-col mb-5'>

@@ -128,7 +128,7 @@ const SlideDetail = ({id}) => {
                 </div>
                 <div className='flex flex-col mb-5'>
                     <label className='uppercase font-semibold'>Current Image</label>
-                    <img src={values.imageUrl} alt='slide' className='w-[200px] h-[150px] object-cover object-center'/>
+                    <img src={values.imageUrl} alt={values.caption} className='w-[200px] h-[150px] object-cover object-center'/>
                 </div> 
                 <div className='flex flex-col mb-5'>
                     <p className='uppercase font-semibold'>Upload new Image</p>

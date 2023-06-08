@@ -25,7 +25,7 @@ const GalleryList = () => {
                         return <Link href={`/gallery/${item.id}`} key={item.id}>
                             <div className='w-full h-[200px] p-1 border-r-2 border-b-2 border-primaryDark group hover:border-l-2 hover:border-t-2'>
                                 <div className='p-1 h-full border-r-2 border-b-2 border-primaryDark group-hover:border-l-2 group-hover:border-t-2'>
-                                    <img src={item.images[0]} className='h-full w-full object-cover'/>
+                                    <img src={item.images[0]} className='h-full w-full object-cover' alt={item.name}/>
                                 </div>
                             </div>
                             <p className='font-medium text-center mt-2'>{item.name}</p>
