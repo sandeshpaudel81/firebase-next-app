@@ -126,6 +126,8 @@ export default function Home() {
                     ?
                     <CenteredLoading />
                     :
+                    news.length > 0 
+                    ?
                     <div className='grid grid-cols-4 gap-10 mt-5 md:mt-10'>
                         {news.map((item, index) => {
                             if (index < 4) {
@@ -134,6 +136,8 @@ export default function Home() {
                         }
                         )}
                     </div>
+                    :
+                    <p className='mt-5 md:mt-10 text-center text-red-600'>Oops, No news have been uploaded yet.</p>
                 }
                 <div className='flex justify-end mt-5'>
                     <Link href="/news" className='uppercase text-gray-600 hover:text-black'>
