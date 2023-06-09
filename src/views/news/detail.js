@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchNews } from '@/redux/slices/newsSlice'
+import CenteredLoading from '@/components/common/Loader'
 
 const NewsDetailView = ({newsId}) => {
     const dispatch = useDispatch()
@@ -14,25 +15,31 @@ const NewsDetailView = ({newsId}) => {
     return (
         <div className='container mx-auto px-5 md:px-2 py-10'>
             {
-                data?.map((item) => {
-                    const {id} = item;
-                    if (id === newsId) {
-                        return <div key={id} className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
-                            <div>
-                                <h1 className='font-bold text-2xl'>{item.title}</h1>
-                                <small className='text-slate-700'>{item.posted_at}</small>
-                                <p className='mt-5'>{item.content}</p>
+                loading ?
+                <CenteredLoading /> :
+                <div>
+                {
+                    data?.map((item) => {
+                        const {id} = item;
+                        if (id === newsId) {
+                            return <div key={id} className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
+                                <div>
+                                    <h1 className='font-bold text-2xl'>{item.title}</h1>
+                                    <small className='text-slate-700'>{item.posted_at}</small>
+                                    <p className='mt-5'>{item.content}</p>
+                                </div>
+                                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
+                                    {
+                                        item.images?.map((im, index) => {
+                                            return <div key={index}><img src={im} alt={item.title}/></div>
+                                        })
+                                    }
+                                </div>
                             </div>
-                            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
-                                {
-                                    item.images?.map((im, index) => {
-                                        return <div key={index}><img src={im} alt={item.title}/></div>
-                                    })
-                                }
-                            </div>
-                        </div>
-                    }
-                })
+                        }
+                    })
+                }
+                </div>
             }
         </div>
     )
