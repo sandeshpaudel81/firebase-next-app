@@ -10,9 +10,9 @@ const PublicationsView = () => {
             </div>
             <div className='grid grid-cols-4 gap-5 mt-10'>
                 <div className='col-span-4 md:col-span-2 lg:col-span-1'>
-                    <Link href="https://facebook.com" target='_blank'>
+                    <Link href="https://firebasestorage.googleapis.com/v0/b/kadam-myagdi.appspot.com/o/publications%2FAnnual%20Report_%20ICDP_2022.pdf?alt=media&token=65f8990e-539f-47fa-bd0e-6cdf1c502270" target='_blank'>
                         <div className='p-3 border-[1px] border-slate-300 shadow-md shadow-black hover:shadow-primaryDark hover:text-primaryDark rounded-md'>
-                            <p className='font-semibold'>Title of publication</p>
+                            <p className='font-semibold'>Annual Report ICDP 2022</p>
                         </div>
                     </Link>
                 </div>
