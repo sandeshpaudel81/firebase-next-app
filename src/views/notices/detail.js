@@ -5,6 +5,7 @@ import { getFileNameFromUrl } from '../../../firebase-config'
 import Link from 'next/link'
 import { fetchNotices } from '@/redux/slices/noticeSlice'
 import CenteredLoading from '@/components/common/Loader'
+
 const NoticeDetailView = ({id}) => {
     const [noticeData, setnoticeData] = useState(null)
     const dispatch = useDispatch()

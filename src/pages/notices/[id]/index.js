@@ -34,7 +34,7 @@ const NoticeDetail = (props) => {
                     site_name: 'KADAM Myagdi'
                 }}
             />
-            <NoticeDetailView id={data.id}/>
+            <NoticeDetailView id={data?.id}/>
     </div>
   )
 }
