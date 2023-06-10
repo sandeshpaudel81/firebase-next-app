@@ -6,21 +6,10 @@ import { db } from '../../../../firebase-config'
 import { doc, getDoc } from 'firebase/firestore'
 import { NextSeo } from 'next-seo'
 import { timestampToDate } from '@/redux/slices/noticeSlice'
+import { getAllNotices, getNoticeById } from '@/utils/api-util'
 
-const NoticeDetail = () => {
-  const [data, setdata] = useState(null)
-  const { query: { id } } = useRouter()
-  useEffect(() => {
-    const getData = async () => {
-      const docRef = doc(db, "notices", id);
-      const docSnap = await getDoc(docRef);
-      const datetime = timestampToDate(docSnap.data().posted_at)
-      setdata({ ...docSnap.data(), id: doc.id, posted_at: datetime})
-    }
-    if(db!==null){
-      getData()
-    }
-  }, [db])
+const NoticeDetail = (props) => {
+  const data = props.data
   return (
     <div>
         <NextSeo
@@ -45,9 +34,33 @@ const NoticeDetail = () => {
                     site_name: 'KADAM Myagdi'
                 }}
             />
-        <NoticeDetailView data={data}/>
+            <NoticeDetailView id={data.id}/>
     </div>
   )
+}
+
+export async function getStaticProps({params}) {
+  const noticeId = params.id;
+
+    const notice = await getNoticeById(noticeId);
+
+    return {
+        props: {
+            data: notice
+        },
+        revalidate: 30
+    }
+
+}
+
+export async function getStaticPaths(){
+    const notices = await getAllNotices();
+    const paths = notices.map(notice => ({ params: { id: notice.id } }));
+
+    return {
+        paths: paths,
+        fallback: true
+    };
 }
 
 export default NoticeDetail
