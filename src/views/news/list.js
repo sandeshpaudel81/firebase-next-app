@@ -36,9 +36,9 @@ const NewsList = () => {
                                     }
                                 </div>
                                 <div className='col-span-4 lg:col-span-3 p-2 h-[100px] lg:h-auto relative'>
-                                    <Link href={`/news/${item.id}`}><h1 className='font-bold text-primaryD'>{item.title}</h1></Link>
+                                    <Link href={`/news/${item.metaId}`}><h1 className='font-bold text-primaryD'>{item.title}</h1></Link>
                                     <p className='text-slate-700 text-[10px]'>{item.posted_at}</p>
-                                    <Link href={`/news/${item.id}`}>
+                                    <Link href={`/news/${item.metaId}`}>
                                         <button className='absolute right-2 bottom-2 font-sm rounded-md bg-primaryD hover:bg-primaryDark text-white border-none outline-none px-3 py-1'>
                                             Details
                                         </button>

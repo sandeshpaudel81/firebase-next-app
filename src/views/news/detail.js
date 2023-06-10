@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchNews } from '@/redux/slices/newsSlice'
 import CenteredLoading from '@/components/common/Loader'
-import { NextSeo } from 'next-seo'
 
-const NewsDetailView = ({newsId}) => {
+const NewsDetailView = ({id}) => {
     const [newsData, setnewsData] = useState(null)
-    const [metaImage, setmetaImage] = useState("")
     const dispatch = useDispatch()
     const {data, loading, success, error} = useSelector(state => state.news.getNews)
     useEffect(() => {
@@ -17,36 +15,11 @@ const NewsDetailView = ({newsId}) => {
         }
     }, [success, dispatch])
     const filterData = () => {
-        setnewsData(data.find((item) => item.id===newsId))
+        setnewsData(data.find((item) => item.metaId===id))
     }
-    useEffect(() => {
-        if(newsData !== null) {
-            if(newsData?.images.length > 0) {
-                setmetaImage(newsData.images[0])
-            } else {
-                setmetaImage("https://www.kadammyagdi.org.np/assets/meta_images/news.png")
-            }
-        }
-    }, [newsData])
     
     return (
         <div>
-            <NextSeo
-                title={`${newsData?.title} | KADAM Myagdi`}
-                description={`${newsData?.content.substring(0,120)}`}
-                keywords="news of kadam myagdi, ngo news, ngo programs"
-                openGraph={{
-                    type: 'article',
-                    url: `https://kadammyagdi.org.np/news/${newsData?.id}/`,
-                    images: [{
-                        url: metaImage,
-                        width: 1200,
-                        height: 630,
-                        alt: 'News of Kaligandaki Community Development Munch (KADAM) Myagdi',
-                    }],
-                    site_name: 'KADAM Myagdi'
-                }}
-            />
             <div className='container mx-auto px-5 md:px-2 py-10'>
                 {
                     loading ?
