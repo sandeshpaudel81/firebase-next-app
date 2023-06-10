@@ -5,11 +5,9 @@ import { getFileNameFromUrl } from '../../../firebase-config'
 import Link from 'next/link'
 import { fetchNotices } from '@/redux/slices/noticeSlice'
 import CenteredLoading from '@/components/common/Loader'
-import { NextSeo } from 'next-seo'
 
-const NoticeDetailView = ({noticeId}) => {
+const NoticeDetailView = ({id}) => {
     const [noticeData, setnoticeData] = useState(null)
-    const [metaImage, setmetaImage] = useState("")
     const dispatch = useDispatch()
     const {data, loading, success, error} = useSelector(state => state.notice.getNotices)
     useEffect(() => {
@@ -21,36 +19,11 @@ const NoticeDetailView = ({noticeId}) => {
     }, [success, dispatch])
 
     const filterData = () => {
-        setnoticeData(data.find((item) => item.id===noticeId))
+        setnoticeData(data.find((item) => item.metaId===id))
     }
-    useEffect(() => {
-        if(noticeData !== null) {
-            if(noticeData?.images.length > 0) {
-                setmetaImage(noticeData.images[0])
-            } else {
-                setmetaImage("https://www.kadammyagdi.org.np/assets/meta_images/notices.png")
-            }
-        }
-    }, [noticeData])
 
     return (
         <div>
-            <NextSeo
-                title={`${noticeData?.title} | KADAM Myagdi`}
-                description={`${noticeData?.content.substring(0,120)}`}
-                keywords="notices of kadam myagdi, ngo notices, ngo vacancies"
-                openGraph={{
-                    type: 'article',
-                    url: `https://kadammyagdi.org.np/news/${noticeData?.id}/`,
-                    images: [{
-                        url: metaImage,
-                        width: 1200,
-                        height: 630,
-                        alt: 'Notices of Kaligandaki Community Development Munch (KADAM) Myagdi',
-                    }],
-                    site_name: 'KADAM Myagdi'
-                }}
-            />
             <div className='container mx-auto px-5 md:px-2 py-10'>
                 {
                     loading ?
