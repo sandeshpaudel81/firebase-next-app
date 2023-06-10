@@ -3,7 +3,7 @@ import { FaRegHourglass } from "react-icons/fa";
 import Link from 'next/link';
 
 const NewsBox = ({news}) => {
-    const {images, title, content, posted_at, id} = news
+    const {images, title, content, posted_at, id, metaId} = news
     return (
       <div className='col-span-4 md:col-span-1 shadow-lg h-72 relative group overflow-hidden'>
           <div className='absolute bg-secondary px-2 rounded-md right-2 top-2 z-30 text-white'>
@@ -18,7 +18,7 @@ const NewsBox = ({news}) => {
               <small className='flex items-center mt-2 font-medium text-gray-600 opacity-0 group-hover:opacity-100'><FaRegHourglass className='mr-2'/>5 min read</small>
           </div>
           <div className='absolute bottom-0 right-0 bg-secondary z-40 text-white'>
-              <Link href={`/news/${id}`}><div className='p-2 text-sm'>Read more.. </div></Link>
+              <Link href={`/news/${metaId}`}><div className='p-2 text-sm'>Read more.. </div></Link>
           </div>
       </div>
     )
