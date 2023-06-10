@@ -14,7 +14,6 @@ const GalleryDetailView = ({id}) => {
               const docRef = doc(db, "gallery", id);
               const docSnap = await getDoc(docRef);
               setgallery(docSnap.data())
-              console.log(gallery)
               setgalleryLoading(false)
             } catch(err) {
               setgalleryLoading(false)
@@ -39,7 +38,7 @@ const GalleryDetailView = ({id}) => {
                     <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mt-8'>
                         {
                             gallery?.images?.map((im, index) => {
-                                return <div key={index}><img src={im} alt={gallery?.name}/></div>
+                                return <div key={index}><img src={im.image} alt={gallery?.name}/></div>
                             })
                         }
                     </div>
