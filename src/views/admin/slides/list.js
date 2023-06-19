@@ -35,9 +35,6 @@ const SlideList = () => {
                                   <th className="p-2">
                                       <div className="font-semibold text-left">Status</div>
                                   </th>
-                                  <th className="p-2">
-                                      <div className="font-semibold text-left">Uploaded Datetime</div>
-                                  </th>
                                   <th></th>
                               </tr>
                           </thead>
@@ -55,11 +52,6 @@ const SlideList = () => {
                                   </td>
                                   <td className="p-2">
                                       <input type="checkbox" className="w-5 h-5" checked={slide.is_active} readOnly/>
-                                  </td>
-                                  <td className="p-2">
-                                      <div className="font-medium">
-                                          {slide.datetime}
-                                      </div>
                                   </td>
                                   <td className="p-2">
                                       <div className="flex justify-center">
