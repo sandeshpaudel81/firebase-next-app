@@ -1,3 +1,4 @@
+import { withPublic } from '@/hooks/route'
 import LoginView from '@/views/admin/auth/login'
 import React from 'react'
 
@@ -9,4 +10,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default withPublic(Login)

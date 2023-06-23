@@ -1,3 +1,4 @@
+import { withProtected } from '@/hooks/route'
 import Layout from '@/views/Layout'
 import ProjectList from '@/views/admin/projects/list'
 import React from 'react'

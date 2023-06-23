@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
+import { signInWithEmailAndPassword} from 'firebase/auth'
+import { auth } from '../../../../firebase-config'
 
 const LoginView = () => {
     const [email, setemail] = useState("")
@@ -12,11 +13,9 @@ const LoginView = () => {
         if (email.length === 0){
             toast.error("Email field should not be empty.")
         } else {
-            const auth = getAuth();
             signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                const user = userCredential.user;
-                console.log(user)
+                const user = userCredential.user
                 toast.success("Logged in successfully.")
             })
             .catch((error) => {
