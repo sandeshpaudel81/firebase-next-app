@@ -26,3 +26,15 @@ export function withProtected(Component) {
         return <Component {...props} />
     }
 }
+
+export const AdminProtected = ({children}) => {
+    const auth = useAuth()
+    const router = useRouter()
+    if (!auth.user) {
+        router.push('/admin/login')
+        return <CenteredLoading />
+    }
+    return (
+        {children}
+    )
+}

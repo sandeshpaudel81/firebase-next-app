@@ -1,3 +1,4 @@
+import { AdminProtected } from '@/hooks/route'
 import Layout from '@/views/Layout'
 import SlideAdd from '@/views/admin/slides/add'
 import SlideDetail from '@/views/admin/slides/detail'
@@ -16,5 +17,5 @@ const AdminSlideDetail = () => {
 export default AdminSlideDetail
 
 AdminSlideDetail.getLayout = function getLayout(page) {
-    return <Layout>{page}</Layout>;
+    return <AdminProtected><Layout>{page}</Layout></AdminProtected>;
   };
