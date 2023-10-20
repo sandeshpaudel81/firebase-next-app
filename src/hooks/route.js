@@ -35,6 +35,6 @@ export const AdminProtected = ({children}) => {
         return <CenteredLoading />
     }
     return (
-        {children}
+        children
     )
 }

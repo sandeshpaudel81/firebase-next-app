@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { signInWithEmailAndPassword} from 'firebase/auth'
 import { auth } from '../../../../firebase-config'
+import { useRouter } from 'next/router'
 
 const LoginView = () => {
     const [email, setemail] = useState("")
     const [password, setpassword] = useState("")
     const [AllowSubmit, setAllowSubmit] = useState(false)
     
+    const router = useRouter()
+
     const submitHandler = (e) =>{
         e.preventDefault()
         if (email.length === 0){
@@ -17,6 +20,7 @@ const LoginView = () => {
             .then((userCredential) => {
                 const user = userCredential.user
                 toast.success("Logged in successfully.")
+                router.push('/admin')
             })
             .catch((error) => {
                 const errorCode = error.code;
