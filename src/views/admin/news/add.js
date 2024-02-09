@@ -1,9 +1,9 @@
 import Tiptap from '@/components/common/TipTap';
-import { fetchNews } from '@/redux/slices/newsSlice';
+// import { fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
 // import ReactQuill from 'react-quill';
 // import 'react-quill/dist/quill.snow.css';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 
 const NewsAdd = () => {
     // const dispatch = useDispatch()
@@ -15,6 +15,7 @@ const NewsAdd = () => {
         slug: "",
         content: "",
     }
+
     const [values, setvalues] = useState(initialValue)
 
     const changeHandler = (e) => {
@@ -27,7 +28,7 @@ const NewsAdd = () => {
     }
 
     const contentChangeHandler = (e) => {
-        setvalues({ ...values, content: e.target.value })
+        setvalues({ ...values, content: e })
     }
 
     const submitHandler = (e) => {
@@ -55,24 +56,23 @@ const NewsAdd = () => {
                 <div className='w-1/2'>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>News Title</label>
-                        <input type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='title' value={values.title} onChange={changeHandler}></input>
+                        <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='title' value={values.title} onChange={changeHandler}></input>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Meta Description</label>
-                        <input type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='meta_description' value={values.meta_description} onChange={changeHandler}></input>
+                        <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='meta_description' value={values.meta_description} onChange={changeHandler}></input>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Slug</label>
-                        <input type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='slug' value={values.slug} onChange={slugChangeHandler}></input>
+                        <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='slug' value={values.slug} onChange={slugChangeHandler}></input>
                     </div>
                     {/* <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Content</label>
                         <ReactQuill theme="snow" value={values.content} onChange={contentChangeHandler}/>
                     </div> */}
                     <div className='flex flex-col mb-5'>
-                        <label className='uppercase font-semibold'>Tiptap</label>
-                        {/* <Tiptap content={values.content} onChange={contentChangeHandler}/> */}
-                        {/* <Tiptap/> */}
+                        <label className='uppercase font-semibold'>News Content</label>
+                        <Tiptap content={values.content} onChange={contentChangeHandler}/>
                     </div>
                     <div>
                         <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>Add</button>
