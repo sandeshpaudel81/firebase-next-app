@@ -6,8 +6,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 const NewsAdd = () => {
-    const dispatch = useDispatch()
-    const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
+    // const dispatch = useDispatch()
+    // const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
     // const [slugAllowed, setslugAllowed] = useState(false)
     const initialValue = {
         title: "",
@@ -27,18 +27,22 @@ const NewsAdd = () => {
     }
 
     const contentChangeHandler = (e) => {
-        setvalues({ ...values, content: e })
+        setvalues({ ...values, content: e.target.value })
     }
 
-    useEffect(() => {
-        if (!newsSuccess){
-            dispatch(fetchNews())
-        }
-        console.log(news)
-    }, [dispatch, newsSuccess])
+    const submitHandler = (e) => {
+        console.log(values)
+    }
+
+    // useEffect(() => {
+    //     if (!newsSuccess){
+    //         dispatch(fetchNews())
+    //     }
+    //     console.log(news)
+    // }, [dispatch, newsSuccess])
 
     const slugChangeHandler = (e) => {
-        setvalues({ ...values, slug: e })
+        setvalues({ ...values, slug: e.target.value })
     }
     
     return (
@@ -67,10 +71,11 @@ const NewsAdd = () => {
                     </div> */}
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Tiptap</label>
-                        <Tiptap content={values.content} onChange={contentChangeHandler}/>
+                        {/* <Tiptap content={values.content} onChange={contentChangeHandler}/> */}
+                        {/* <Tiptap/> */}
                     </div>
                     <div>
-                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer'>Add</button>
+                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>Add</button>
                     </div>
                 </div>
             </div>

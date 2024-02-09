@@ -9,16 +9,16 @@ const Tiptap = ({content, onChange}) => {
     extensions: [
       Bold, Paragraph
     ],
-    content: content,
+    content: '<p>Hello World!</p>',
     editorProps: {
         attributes: {
             class: "bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg"
         },
     },
-    onUpdate({ editor }){
-        onChange(editor.getHTML())
-        console.log(editor.getHTML())
-    }
+    // onUpdate({ editor }){
+    //     onChange(editor.getHTML())
+    //     console.log(editor.getHTML())
+    // }
   })
 
   return (
