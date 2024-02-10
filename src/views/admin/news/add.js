@@ -1,14 +1,13 @@
 import Tiptap from '@/components/common/TipTap';
-// import { fetchNews } from '@/redux/slices/newsSlice';
+import { fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
-// import ReactQuill from 'react-quill';
-// import 'react-quill/dist/quill.snow.css';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { FaCheck, FaTimes } from "react-icons/fa";
 
 const NewsAdd = () => {
-    // const dispatch = useDispatch()
-    // const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
-    // const [slugAllowed, setslugAllowed] = useState(false)
+    const dispatch = useDispatch()
+    const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
+    const [slugAllowed, setslugAllowed] = useState(false)
     const initialValue = {
         title: "",
         meta_description: "",
@@ -35,16 +34,25 @@ const NewsAdd = () => {
         console.log(values)
     }
 
-    // useEffect(() => {
-    //     if (!newsSuccess){
-    //         dispatch(fetchNews())
-    //     }
-    //     console.log(news)
-    // }, [dispatch, newsSuccess])
+    useEffect(() => {
+        if (!newsSuccess){
+            dispatch(fetchNews())
+        }
+        console.log(news)
+    }, [dispatch, newsSuccess])
 
-    const slugChangeHandler = (e) => {
-        setvalues({ ...values, slug: e.target.value })
-    }
+    useEffect(() => {
+        if(values.slug.length === 0) {
+            setslugAllowed(false)
+        } else {
+            const n = news.find((n) => n.metaId === values.slug)
+            if(n != null){
+                setslugAllowed(false)
+            } else {
+                setslugAllowed(true)
+            }
+        }
+    }, [values.slug])
     
     return (
         <div className='container mx-auto py-5'>
@@ -62,9 +70,11 @@ const NewsAdd = () => {
                         <label className='uppercase font-semibold'>Meta Description</label>
                         <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='meta_description' value={values.meta_description} onChange={changeHandler}></input>
                     </div>
-                    <div className='flex flex-col mb-5'>
+                    <div className='flex flex-col mb-5 relative'>
                         <label className='uppercase font-semibold'>Slug</label>
-                        <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='slug' value={values.slug} onChange={slugChangeHandler}></input>
+                        <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='slug' value={values.slug} onChange={changeHandler}></input>
+                        <span className='absolute top-7 right-2 text-xl'>{slugAllowed ? <FaCheck className='text-green-700'/> : <FaTimes className='text-red-600'/>}</span>
+                        <small>{'https://www.kadammyagdi.com.np/news/'+values.slug}</small>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>News Content</label>
