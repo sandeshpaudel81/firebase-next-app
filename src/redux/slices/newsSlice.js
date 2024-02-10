@@ -27,10 +27,36 @@ const getNews = createSlice({
     }
 })
 
+const addNewsSlice = createSlice({
+    name: 'addNews',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        addNewsLoading(state, action){
+            state.loading = action.payload
+        },
+        addNewsSuccess(state, action){
+            state.success = action.payload
+        },
+        addNewsError(state, action){
+            state.error = action.payload
+        },
+        addNewsReset(state){
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const { setNews, setNewsLoading, setNewsSuccess, setNewsError } = getNews.actions;
+export const { addNewsLoading, addNewsSuccess, addNewsError, addNewsReset } = addNewsSlice.actions;
 
 export const newsReducer = combineReducers({
     getNews: getNews.reducer,
+    addNews: addNewsSlice.reducer
     
 });
 

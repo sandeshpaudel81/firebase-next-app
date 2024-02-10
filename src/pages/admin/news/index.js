@@ -1,16 +1,16 @@
 import { AdminProtected } from '@/hooks/route'
 import Layout from '@/views/Layout'
-import SlideList from '@/views/admin/slides/list'
+import NewsList from '@/views/admin/news/list'
 import React from 'react'
 
-const AdminSlideList = () => {
+const AdminNewsList = () => {
   return (
-    <div><SlideList /></div>
+    <div><NewsList /></div>
   )
 }
 
-export default AdminSlideList
+export default AdminNewsList
 
-AdminSlideList.getLayout = function getLayout(page) {
+AdminNewsList.getLayout = function getLayout(page) {
   return <AdminProtected><Layout>{page}</Layout></AdminProtected>;
 };

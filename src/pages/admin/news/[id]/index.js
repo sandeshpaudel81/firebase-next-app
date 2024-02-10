@@ -1,21 +1,21 @@
 import { AdminProtected } from '@/hooks/route'
 import Layout from '@/views/Layout'
-import SlideAdd from '@/views/admin/slides/add'
-import SlideDetail from '@/views/admin/slides/detail'
+import NewsAdd from '@/views/admin/news/add'
+import NewsDetail from '@/views/admin/news/detail'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const AdminSlideDetail = () => {
+const AdminNewsDetail = () => {
     const { query: { id } } = useRouter()
     return (
         <div>
-            { id === "add" ? <SlideAdd /> : <SlideDetail id={id}/> }
+            { id === "add" ? <NewsAdd /> : <NewsDetail id={id}/> }
         </div>
     )
 }
 
-export default AdminSlideDetail
+export default AdminNewsDetail
 
-AdminSlideDetail.getLayout = function getLayout(page) {
+AdminNewsDetail.getLayout = function getLayout(page) {
     return <AdminProtected><Layout>{page}</Layout></AdminProtected>;
   };

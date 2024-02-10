@@ -1,3 +1,4 @@
+import { AdminProtected } from '@/hooks/route'
 import Layout from '@/views/Layout'
 import ProjectList from '@/views/admin/projects/list'
 import React from 'react'
@@ -13,5 +14,5 @@ const AdminProjectList = () => {
 export default AdminProjectList
 
 AdminProjectList.getLayout = function getLayout(page) {
-    return <Layout>{page}</Layout>;
+    return <AdminProtected><Layout>{page}</Layout></AdminProtected>;
   };

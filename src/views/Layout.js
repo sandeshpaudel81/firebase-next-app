@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux'
 
 const Layout = ({ children }) => {
     const dispatch = useDispatch()
-
     const {pathname} = useRouter()
     
     const pathnames = pathname.split('/').filter(i => i)
