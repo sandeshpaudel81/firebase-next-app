@@ -1,19 +1,40 @@
 "use client"
-import Bold from '@tiptap/extension-bold'
-import Paragraph from '@tiptap/extension-paragraph'
+import Heading from '@tiptap/extension-heading'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TipTapToolbar from './toolbar'
+import BulletList from '@tiptap/extension-bullet-list'
+import OrderedList from '@tiptap/extension-ordered-list'
+import ListItem from '@tiptap/extension-list-item'
 
 const Tiptap = ({content, onChange}) => {
     const editor = useEditor({
         extensions: [
-            StarterKit
+            StarterKit.configure({}),
+            Heading.configure({
+                HTMLAttributes: {
+                    class: "text-xl font-bold",
+                    levels: [2]
+                }
+            }),
+            ListItem,
+            BulletList.configure({
+                itemTypeName: 'listItem',
+                HTMLAttributes: {
+                    class: "list-disc ml-5"
+                }
+            }),
+            OrderedList.configure({
+                itemTypeName: 'listItem',
+                HTMLAttributes: {
+                    class: "list-decimal ml-5"
+                }
+            }),
         ],
         content: content,
         editorProps: {
             attributes: {
-                class: "bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg"
+                class: "bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] min-h-[100px]"
             },
         },
         onUpdate({ editor }){

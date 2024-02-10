@@ -52,7 +52,7 @@ const NewsAdd = () => {
                 <h2 className='text-primary font-bold text-3xl'>Add <span className='text-primaryDark'>News</span></h2>
                 <p className='uppercase text-gray-600 text-sm font-medium mt-2'>On the repository</p>
             </div>
-            <div className='mt-5 md:mt-10'>
+            <div className='mt-5 md:mt-10 text-sm'>
                 <div className='w-1/2'>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>News Title</label>
