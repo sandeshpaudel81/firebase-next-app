@@ -2,9 +2,7 @@ import UploadProgress from '@/components/common/UploadProgress';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast';
-import { FaChevronLeft } from 'react-icons/fa'
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { FaChevronLeft } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { MdDeleteForever } from 'react-icons/md'
 import { uploadImage, uploadImageReset, uploadImageSuccess } from '@/redux/slices/imageSlice';
@@ -38,15 +36,15 @@ const ProjectAdd = () => {
         }
     }
 
-    const objectivesChangeHandler = (e) => {
-        setvalues({ ...values, objectives: e })
-    }
-    const methodologiesChangeHandler = (e) => {
-        setvalues({ ...values, methodologies: e })
-    }
-    const outcomesChangeHandler = (e) => {
-        setvalues({ ...values, outcomes: e })
-    }
+    // const objectivesChangeHandler = (e) => {
+    //     setvalues({ ...values, objectives: e })
+    // }
+    // const methodologiesChangeHandler = (e) => {
+    //     setvalues({ ...values, methodologies: e })
+    // }
+    // const outcomesChangeHandler = (e) => {
+    //     setvalues({ ...values, outcomes: e })
+    // }
 
     const addCollaboratorHandler = async () => {
         if (collaboratorName.length > 0) {
@@ -109,15 +107,15 @@ const ProjectAdd = () => {
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Objectives</label>
-                        <ReactQuill theme="snow" value={values.objectives} onChange={objectivesChangeHandler}/>
+                        {/* <ReactQuill theme="snow" value={values.objectives} onChange={objectivesChangeHandler}/> */}
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Methodologies</label>
-                        <ReactQuill theme="snow" value={values.methodologies} onChange={methodologiesChangeHandler}/>
+                        {/* <ReactQuill theme="snow" value={values.methodologies} onChange={methodologiesChangeHandler}/> */}
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Outcomes</label>
-                        <ReactQuill theme="snow" value={values.outcomes} onChange={outcomesChangeHandler}/>
+                        {/* <ReactQuill theme="snow" value={values.outcomes} onChange={outcomesChangeHandler}/> */}
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Project Area</label>
