@@ -66,10 +66,6 @@ const NewsAdd = () => {
                         <label className='uppercase font-semibold'>Slug</label>
                         <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='slug' value={values.slug} onChange={slugChangeHandler}></input>
                     </div>
-                    {/* <div className='flex flex-col mb-5'>
-                        <label className='uppercase font-semibold'>Content</label>
-                        <ReactQuill theme="snow" value={values.content} onChange={contentChangeHandler}/>
-                    </div> */}
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>News Content</label>
                         <Tiptap content={values.content} onChange={contentChangeHandler}/>
