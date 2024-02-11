@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { FaArchive, FaCheck, FaTimes } from "react-icons/fa";
 import UploadProgress from '@/components/common/UploadProgress';
-import { deleteImage, uploadImage } from '@/redux/slices/imageSlice';
+import { deleteImage, deleteImageSuccess, uploadImage } from '@/redux/slices/imageSlice';
 
 const NewsAdd = () => {
     const dispatch = useDispatch()
@@ -25,6 +25,7 @@ const NewsAdd = () => {
     const [image, setImage] = useState(null)
     const [progress, setProgress] = useState(0)
     const {image:uploadedImageUrls, progress:uploadProgress, success:uploadSuccess} = useSelector(state => state.image.uploadImage)
+    const {error:deleteError, success:deleteSuccess} = useSelector(state => state.image.deleteImage)
 
     const uploadImageHandler = async () => {
         if (image!==null){
@@ -48,9 +49,9 @@ const NewsAdd = () => {
         setvalues({ ...values, content: e })
     }
 
-    // const deleteImageHandler = (imgUrl) => {
-    //     dispatch(deleteImage(imgUrl))
-    // }
+    const deleteImageHandler = (imgUrl) => {
+        dispatch(deleteImage(imgUrl))
+    }
 
     const toggleMetaImage = (imgUrl) => {
         setvalues({ ...values, metaImage: imgUrl })
@@ -59,6 +60,14 @@ const NewsAdd = () => {
     const submitHandler = (e) => {
         console.log(values)
     }
+
+    useEffect(() => {
+        if(deleteSuccess){
+            console.log('deleted successfully')
+            setvalues({...values, images: uploadedImageUrls})
+            dispatch(deleteImageSuccess(false))
+        }
+    }, [deleteSuccess])
 
     useEffect(() => {
         setProgress(uploadProgress)
@@ -127,24 +136,27 @@ const NewsAdd = () => {
                     </div>
                     <div className='flex flex-col'>
                         <label className='uppercase font-semibold'>Meta Image</label>
-                        <button className='uppercase border-2 border-primary w-1/5 rounded-md hover:bg-gray-200 cursor-pointer disabled:cursor-not-allowed' onClick={setMetaImageSelection(true)}>Select</button>
-                        <div className='flex gap-2 mb-2'>
-                            {/* {metaImageSelection ? (
+                        <button className='uppercase border-2 border-primary w-1/5 rounded-md hover:bg-gray-200 cursor-pointer disabled:cursor-not-allowed' onClick={() => setMetaImageSelection(true)}>Select</button>
+                        <div className='flex gap-3 mb-2'>
+                            {metaImageSelection ? (
                                 values.images.map((j, index) => (
-                                    <div className='relative'>
+                                    <div key={index} className='relative mt-2'>
                                         <img 
-                                            key={index} 
                                             src={j} 
                                             alt='Upload image for carousel' 
-                                            className='w-[150px] h-[100px] object-cover object-center cursor-pointer border-gray-300'
-                                            onClick={toggleMetaImage(j)}
+                                            className={values.metaImage == j ? 'w-[150px] h-[100px] object-cover object-center cursor-pointer border-primaryD border-4': 'w-[150px] h-[100px] object-cover object-center cursor-pointer border-gray-300'}
+                                            onClick={() => toggleMetaImage(j)}
                                         />
-                                        <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer'><FaArchive className='text-red-600'/></span>
+                                        {
+                                            values.metaImage == j &&
+                                            <span className='absolute text-xl top-1/2 left-1/2 p-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full'><FaCheck className='text-green-700'/></span>
+                                        }
+                                        <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => deleteImageHandler(j)}><FaArchive className='text-red-600'/></span>
                                     </div>
                                 ))
                             ) : (
                                 <></>
-                            )} */}
+                            )}
                         </div>
                     </div>
                     <div>

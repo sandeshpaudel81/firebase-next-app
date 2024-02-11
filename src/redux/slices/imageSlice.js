@@ -15,6 +15,15 @@ const uploadImageSlice = createSlice({
         uploadImageData(state, action){
             state.image = [...state.image, action.payload]
         },
+        deleteUploadImage(state, action){
+            console.log(action.payload)
+            console.log(state.image)
+            const index = state.image.findIndex(item => item === action.payload)
+            if(index !== -1){
+                state.image.splice(index, 1)
+            }
+            console.log(state.image)
+        },
         uploadImageProgress(state, action){
             state.progress = action.payload
         },
@@ -60,7 +69,7 @@ const deleteImageSlice = createSlice({
     }
 })
 
-export const {uploadImageData, uploadImageProgress, uploadImageLoading, uploadImageSuccess, uploadImageError, uploadImageReset} = uploadImageSlice.actions;
+export const {uploadImageData, deleteUploadImage, uploadImageProgress, uploadImageLoading, uploadImageSuccess, uploadImageError, uploadImageReset} = uploadImageSlice.actions;
 export const {deleteImageLoading, deleteImageSuccess, deleteImageError, deleteImageReset} = deleteImageSlice.actions;
 
 export const imageReducer = combineReducers({
@@ -114,6 +123,7 @@ export function deleteImage(url){
             deleteObject(deleteRef).then(() => {
                 dispatch(deleteImageLoading(false))
                 dispatch(deleteImageSuccess(true))
+                dispatch(deleteUploadImage(url))
             }).catch((error) => {
                 dispatch(deleteImageError(error.message))
                 dispatch(deleteImageLoading(false))
