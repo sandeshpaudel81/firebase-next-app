@@ -53,7 +53,7 @@ const SlideAdd = () => {
 
     useEffect(() => {
         if(uploadSuccess){
-            setImageUrl(uploadedImageUrl)
+            setImageUrl(uploadedImageUrl[0])
         }
     }, [uploadSuccess, uploadedImageUrl])
 

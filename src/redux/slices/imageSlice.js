@@ -5,7 +5,7 @@ import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebas
 const uploadImageSlice = createSlice({
     name: 'uploadImage',
     initialState: {
-        image: {},
+        image: [],
         progress: 0,
         loading: false,
         success: false,
@@ -13,7 +13,7 @@ const uploadImageSlice = createSlice({
     },
     reducers: {
         uploadImageData(state, action){
-            state.image = action.payload
+            state.image = [...state.image, action.payload]
         },
         uploadImageProgress(state, action){
             state.progress = action.payload
@@ -28,7 +28,7 @@ const uploadImageSlice = createSlice({
             state.error = action.payload
         },
         uploadImageReset(state){
-            state.image = {}
+            state.image = []
             state.success = false
             state.progress = 0
             state.error = ""
