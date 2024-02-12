@@ -1,7 +1,8 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, orderBy} from "firebase/firestore"
-import {db} from "../../../firebase-config"
+import {getDocs, query, collection, orderBy, addDoc} from "firebase/firestore"
+import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
+import { ref, set } from "firebase/database"
 
 const getNews = createSlice({
     name: 'getNews',
@@ -84,6 +85,32 @@ export function fetchNews(){
         } catch(err) {
             dispatch(setNewsLoading(false))
             dispatch(setNewsError(err.message))
+        }
+    }
+}
+
+export function addNews(data){
+    return async function addNewsThunk(dispatch){
+        dispatch(addNewsLoading(true))
+        try {
+            await addDoc(collection(db, "news"), {
+                title: data.title,
+                content: data.content,
+                images: data.images,
+                metaId: data.slug,
+                posted_at: new Date()
+            })
+            console.log('here')
+            await set(ref(realDb, 'news/' + data.slug), {
+                title: data.title,
+                content: data.meta_description,
+                images: [data.metaImage]
+            });
+            console.log('here')
+            dispatch(addNewsLoading(false))
+            dispatch(addNewsSuccess(true))
+        } catch(err) {
+            dispatch(addNewsError(err.message))
         }
     }
 }

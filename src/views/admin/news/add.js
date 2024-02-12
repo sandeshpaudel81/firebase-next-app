@@ -1,16 +1,17 @@
 import Tiptap from '@/components/common/TipTap';
-import { fetchNews } from '@/redux/slices/newsSlice';
+import { addNews, addNewsReset, fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { FaArchive, FaCheck, FaTimes } from "react-icons/fa";
 import UploadProgress from '@/components/common/UploadProgress';
-import { deleteImage, deleteImageSuccess, uploadImage } from '@/redux/slices/imageSlice';
+import { deleteImage, deleteImageReset, deleteImageSuccess, uploadImage, uploadImageReset } from '@/redux/slices/imageSlice';
+import toast from 'react-hot-toast';
 
 const NewsAdd = () => {
     const dispatch = useDispatch()
     const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
+    const {loading:addNewsLoading, success:addNewsSuccess, error:addNewsError} = useSelector(state => state.news.addNews)
     const [slugAllowed, setslugAllowed] = useState(false)
-    const [metaImageSelection, setMetaImageSelection] = useState(false)
     const initialValue = {
         title: "",
         meta_description: "",
@@ -58,12 +59,27 @@ const NewsAdd = () => {
     }
 
     const submitHandler = (e) => {
-        console.log(values)
+        dispatch(addNews(values))
     }
 
     useEffect(() => {
+        if(addNewsSuccess){
+            toast.success("News added successfully.")
+            dispatch(uploadImageReset())
+            dispatch(deleteImageReset())
+            dispatch(addNewsReset())
+            dispatch(fetchNews())
+            setProgress(0)
+            router.push('/admin/news/')
+        }
+        if(!addNewsSuccess && addNewsError.length > 0){
+            toast.error(addNewsError)
+        }
+    }, [addNewsSuccess, addNewsError])
+
+    useEffect(() => {
         if(deleteSuccess){
-            console.log('deleted successfully')
+            toast.success("Image has been deleted.")
             setvalues({...values, images: uploadedImageUrls})
             dispatch(deleteImageSuccess(false))
         }
@@ -136,9 +152,9 @@ const NewsAdd = () => {
                     </div>
                     <div className='flex flex-col'>
                         <label className='uppercase font-semibold'>Meta Image</label>
-                        <button className='uppercase border-2 border-primary w-1/5 rounded-md hover:bg-gray-200 cursor-pointer disabled:cursor-not-allowed' onClick={() => setMetaImageSelection(true)}>Select</button>
+                        <small>Select meta image:</small>
                         <div className='flex gap-3 mb-2'>
-                            {metaImageSelection ? (
+                            {values.images.length > 0 ? (
                                 values.images.map((j, index) => (
                                     <div key={index} className='relative mt-2'>
                                         <img 
