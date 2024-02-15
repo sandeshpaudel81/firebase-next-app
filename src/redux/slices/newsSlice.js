@@ -1,7 +1,9 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, orderBy} from "firebase/firestore"
-import {db} from "../../../firebase-config"
+import {getDocs, query, collection, orderBy, addDoc} from "firebase/firestore"
+import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
+import { ref, set } from "firebase/database"
+import { getAllNews, getNewsById } from "@/utils/api-util";
 
 const getNews = createSlice({
     name: 'getNews',
@@ -74,9 +76,17 @@ export function fetchNews(){
             const News = await getDocs(
                 query(collection(db, "news"), orderBy('posted_at', 'desc'))
             );
+            const allNewsFromRealDb = await getAllNews()
             News.docs.forEach((doc) => {
                 const datetime = timestampToDate(doc.data().posted_at)
-                news.push({ ...doc.data(), id: doc.id, posted_at: datetime})
+                const newsFromRealDb = allNewsFromRealDb.find((n) => n.id === doc.data().metaId);
+                news.push({
+                    ...doc.data(),
+                    id: doc.id,
+                    posted_at: datetime,
+                    meta_description:newsFromRealDb.content,
+                    metaImage: newsFromRealDb.image
+                })
             });
             dispatch(setNews(news))
             dispatch(setNewsLoading(false))
@@ -84,6 +94,30 @@ export function fetchNews(){
         } catch(err) {
             dispatch(setNewsLoading(false))
             dispatch(setNewsError(err.message))
+        }
+    }
+}
+
+export function addNews(data){
+    return async function addNewsThunk(dispatch){
+        dispatch(addNewsLoading(true))
+        try {
+            await addDoc(collection(db, "news"), {
+                title: data.title,
+                content: data.content,
+                images: data.images,
+                metaId: data.slug,
+                posted_at: new Date()
+            })
+            await set(ref(realDb, 'news/' + data.slug), {
+                title: data.title,
+                content: data.meta_description,
+                images: [data.metaImage]
+            });
+            dispatch(addNewsLoading(false))
+            dispatch(addNewsSuccess(true))
+        } catch(err) {
+            dispatch(addNewsError(err.message))
         }
     }
 }

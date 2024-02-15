@@ -16,7 +16,7 @@ const NewsDetail = (props) => {
                     type: 'article',
                     url: `https://kadammyagdi.org.np/news/${data?.id}/`,
                     images: [{
-                        url: data?.images[0],
+                        url: data?.image,
                         width: 1200,
                         height: 630,
                         alt: 'News of Kaligandaki Community Development Munch (KADAM) Myagdi',

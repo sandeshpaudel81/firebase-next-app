@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react'
 
-const NewsDetail = () => {
+const NewsDetail = ({id}) => {
+    useEffect(() => {
+        console.log(id)
+    }, [])
+    
     return (
         <div>
             NewsDetail
