@@ -100,13 +100,11 @@ export function addNews(data){
                 metaId: data.slug,
                 posted_at: new Date()
             })
-            console.log('here')
             await set(ref(realDb, 'news/' + data.slug), {
                 title: data.title,
                 content: data.meta_description,
                 images: [data.metaImage]
             });
-            console.log('here')
             dispatch(addNewsLoading(false))
             dispatch(addNewsSuccess(true))
         } catch(err) {

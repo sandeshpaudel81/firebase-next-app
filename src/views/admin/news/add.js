@@ -6,6 +6,9 @@ import { FaArchive, FaCheck, FaTimes } from "react-icons/fa";
 import UploadProgress from '@/components/common/UploadProgress';
 import { deleteImage, deleteImageReset, deleteImageSuccess, uploadImage, uploadImageReset } from '@/redux/slices/imageSlice';
 import toast from 'react-hot-toast';
+import { push, ref, set } from 'firebase/database';
+import { realDb } from '../../../../firebase-config';
+import { useRouter } from 'next/router';
 
 const NewsAdd = () => {
     const dispatch = useDispatch()
@@ -20,6 +23,8 @@ const NewsAdd = () => {
         images: [],
         metaImage: ''
     }
+
+    const router = useRouter()
 
     const [values, setvalues] = useState(initialValue)
 
@@ -58,7 +63,7 @@ const NewsAdd = () => {
         setvalues({ ...values, metaImage: imgUrl })
     }
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         dispatch(addNews(values))
     }
 
