@@ -25,8 +25,8 @@ const NewsList = () => {
                     news.map((oneNews) => (
                         <div key={oneNews.id} className='bg-slate-300 p-2 flex'>
                             <div>
-                                <h1>{oneNews.title}</h1>
-                                <p>{oneNews.posted_at}</p>
+                                <h1 className='text-lg'>{oneNews.title}</h1>
+                                <p className='text-sm text-gray-600'>{oneNews.posted_at}</p>
                             </div>
                             <div className="ml-5">
                                 <Link href={`/admin/news/${oneNews.id}`}>

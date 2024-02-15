@@ -3,6 +3,7 @@ import {getDocs, query, collection, orderBy, addDoc} from "firebase/firestore"
 import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
 import { ref, set } from "firebase/database"
+import { getAllNews, getNewsById } from "@/utils/api-util";
 
 const getNews = createSlice({
     name: 'getNews',
@@ -75,9 +76,17 @@ export function fetchNews(){
             const News = await getDocs(
                 query(collection(db, "news"), orderBy('posted_at', 'desc'))
             );
+            const allNewsFromRealDb = await getAllNews()
             News.docs.forEach((doc) => {
                 const datetime = timestampToDate(doc.data().posted_at)
-                news.push({ ...doc.data(), id: doc.id, posted_at: datetime})
+                const newsFromRealDb = allNewsFromRealDb.find((n) => n.id === doc.data().metaId);
+                news.push({
+                    ...doc.data(),
+                    id: doc.id,
+                    posted_at: datetime,
+                    meta_description:newsFromRealDb.content,
+                    metaImage: newsFromRealDb.image
+                })
             });
             dispatch(setNews(news))
             dispatch(setNewsLoading(false))
