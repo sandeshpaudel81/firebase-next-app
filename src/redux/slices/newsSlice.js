@@ -1,9 +1,9 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, orderBy, addDoc} from "firebase/firestore"
+import {getDocs, query, collection, orderBy, addDoc, updateDoc, doc} from "firebase/firestore"
 import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
-import { ref, set } from "firebase/database"
-import { getAllNews, getNewsById } from "@/utils/api-util";
+import { ref, remove, set, update } from "firebase/database"
+import { getAllNews } from "@/utils/api-util";
 
 const getNews = createSlice({
     name: 'getNews',
@@ -53,13 +53,38 @@ const addNewsSlice = createSlice({
     }
 })
 
+const editNewsSlice = createSlice({
+    name: 'editNews',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        editNewsLoading(state, action){
+            state.loading = action.payload
+        },
+        editNewsSuccess(state, action){
+            state.success = action.payload
+        },
+        editNewsError(state, action){
+            state.error = action.payload
+        },
+        editNewsReset(state){
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const { setNews, setNewsLoading, setNewsSuccess, setNewsError } = getNews.actions;
 export const { addNewsLoading, addNewsSuccess, addNewsError, addNewsReset } = addNewsSlice.actions;
+export const { editNewsLoading, editNewsSuccess, editNewsError, editNewsReset } = editNewsSlice.actions;
 
 export const newsReducer = combineReducers({
     getNews: getNews.reducer,
-    addNews: addNewsSlice.reducer
-    
+    addNews: addNewsSlice.reducer,
+    editNews: editNewsSlice.reducer,
 });
 
 // convert timestamp to date
@@ -112,12 +137,46 @@ export function addNews(data){
             await set(ref(realDb, 'news/' + data.slug), {
                 title: data.title,
                 content: data.meta_description,
-                images: [data.metaImage]
+                images: data.metaImage
             });
             dispatch(addNewsLoading(false))
             dispatch(addNewsSuccess(true))
         } catch(err) {
             dispatch(addNewsError(err.message))
+        }
+    }
+}
+
+export function editNews(id, oldSlug, data){
+    return async function editNewsThunk(dispatch){
+        dispatch(editNewsLoading(true))
+        try {
+            await updateDoc(doc(db, "news", id), {
+                title: data.title,
+                content: data.content,
+                images: data.images,
+                metaId: data.slug
+            })
+            if (data.slug == oldSlug){
+                const updates = {}
+                updates['/news/'+oldSlug] = {
+                    title: data.title,
+                    content: data.meta_description,
+                    images: data.metaImage
+                }
+                await update(ref(realDb), updates)
+            } else {
+                await remove(ref(realDb, `news/${oldSlug}`))
+                await set(ref(realDb, 'news/' + data.slug), {
+                    title: data.title,
+                    content: data.meta_description,
+                    images: data.metaImage
+                }); 
+            }
+            dispatch(editNewsLoading(false))
+            dispatch(editNewsSuccess(true))
+        } catch(err) {
+            dispatch(editNewsError(err.message))
         }
     }
 }

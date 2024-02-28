@@ -1,19 +1,18 @@
 import Tiptap from '@/components/common/TipTap';
-import { addNews, addNewsReset, fetchNews } from '@/redux/slices/newsSlice';
+import { addNews, addNewsReset, editNews, editNewsReset, fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { FaArchive, FaCheck, FaTimes } from "react-icons/fa";
 import UploadProgress from '@/components/common/UploadProgress';
 import { deleteImage, deleteImageReset, deleteImageSuccess, uploadImage, uploadImageReset } from '@/redux/slices/imageSlice';
 import toast from 'react-hot-toast';
-import { push, ref, set } from 'firebase/database';
-import { realDb } from '../../../../firebase-config';
 import { useRouter } from 'next/router';
 
-const NewsAdd = () => {
+const NewsAdd = ({id}) => {
     const dispatch = useDispatch()
     const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
     const {loading:addNewsLoading, success:addNewsSuccess, error:addNewsError} = useSelector(state => state.news.addNews)
+    const {loading:editNewsLoading, success:editNewsSuccess, error:editNewsError} = useSelector(state => state.news.editNews)
     const [slugAllowed, setslugAllowed] = useState(false)
     const initialValue = {
         title: "",
@@ -23,6 +22,7 @@ const NewsAdd = () => {
         images: [],
         metaImage: ''
     }
+    const [oldData, setoldData] = useState({})
 
     const router = useRouter()
 
@@ -64,7 +64,11 @@ const NewsAdd = () => {
     }
 
     const submitHandler = async (e) => {
-        dispatch(addNews(values))
+        if(id=='add'){
+            dispatch(addNews(values))
+        } else {
+            dispatch(editNews(id, oldData.metaId, values))
+        }
     }
 
     useEffect(() => {
@@ -81,6 +85,21 @@ const NewsAdd = () => {
             toast.error(addNewsError)
         }
     }, [addNewsSuccess, addNewsError])
+
+    useEffect(() => {
+        if(editNewsSuccess){
+            toast.success("News edited successfully.")
+            dispatch(uploadImageReset())
+            dispatch(deleteImageReset())
+            dispatch(editNewsReset())
+            dispatch(fetchNews())
+            setProgress(0)
+            router.push('/admin/news/')
+        }
+        if(!editNewsSuccess && editNewsError.length > 0){
+            toast.error(editNewsError)
+        }
+    }, [editNewsSuccess, editNewsError])
 
     useEffect(() => {
         if(deleteSuccess){
@@ -103,6 +122,27 @@ const NewsAdd = () => {
     useEffect(() => {
         if (!newsSuccess){
             dispatch(fetchNews())
+        } else {
+            if(id=='add'){
+                setvalues(initialValue)
+            } else {
+                const n = news.find((n) => n.id === id)
+                if(n != null){
+                    setoldData(n)
+                    const oldvalue = {
+                        title: n.title,
+                        meta_description: n.meta_description,
+                        slug: n.metaId,
+                        content: n.content,
+                        images: n.images,
+                        metaImage: n.metaImage
+                    }
+                    setvalues(oldvalue)
+                } else {
+                    toast.error("News not found!")
+                    router.push('/admin/news/')
+                }
+            }
         }
     }, [dispatch, newsSuccess])
 
@@ -112,7 +152,11 @@ const NewsAdd = () => {
         } else {
             const n = news.find((n) => n.metaId === values.slug)
             if(n != null){
-                setslugAllowed(false)
+                if (id=='add'){
+                    setslugAllowed(false)
+                } else {
+                    setslugAllowed(true)
+                }
             } else {
                 setslugAllowed(true)
             }
@@ -181,7 +225,17 @@ const NewsAdd = () => {
                         </div>
                     </div>
                     <div>
-                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>Add News</button>
+                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
+                            {
+                                id == 'add' ? 'Add News' : 'Edit News'
+                            }
+                        </button>
+                        {
+                            id !== 'add' &&
+                            <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
+                                Delete News
+                            </button>
+                        }
                     </div>
                 </div>
             </div>

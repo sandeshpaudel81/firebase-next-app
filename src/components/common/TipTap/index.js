@@ -40,7 +40,7 @@ const Tiptap = ({content, onChange}) => {
         onUpdate({ editor }){
             onChange(editor.getHTML())
         }
-    })
+    }, [content])
 
   return (
     <div className='flex flex-col'>
