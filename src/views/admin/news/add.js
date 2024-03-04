@@ -7,6 +7,7 @@ import UploadProgress from '@/components/common/UploadProgress';
 import { deleteImage, deleteImageReset, deleteImageSuccess, uploadImage, uploadImageReset } from '@/redux/slices/imageSlice';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
+import DeleteNewsModal from '@/components/common/deleteModal/deleteNews';
 
 const NewsAdd = ({id}) => {
     const dispatch = useDispatch()
@@ -23,7 +24,7 @@ const NewsAdd = ({id}) => {
         metaImage: ''
     }
     const [oldData, setoldData] = useState({})
-
+    const [showModal, setShowModal] = useState(false)
     const router = useRouter()
 
     const [values, setvalues] = useState(initialValue)
@@ -69,6 +70,10 @@ const NewsAdd = ({id}) => {
         } else {
             dispatch(editNews(id, oldData.metaId, values))
         }
+    }
+
+    const deleteSubmitHandler = (e) => {
+        setShowModal(true)
     }
 
     useEffect(() => {
@@ -232,13 +237,21 @@ const NewsAdd = ({id}) => {
                         </button>
                         {
                             id !== 'add' &&
-                            <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
+                            <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={deleteSubmitHandler}>
                                 Delete News
                             </button>
                         }
                     </div>
                 </div>
             </div>
+            {
+                showModal &&
+                <DeleteNewsModal
+                    setShowModal={setShowModal}
+                    id={id}
+                    slug={oldData.metaId}
+                />
+            }    
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, orderBy, addDoc, updateDoc, doc} from "firebase/firestore"
+import {getDocs, query, collection, orderBy, addDoc, updateDoc, doc, deleteDoc} from "firebase/firestore"
 import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
 import { ref, remove, set, update } from "firebase/database"
@@ -77,14 +77,40 @@ const editNewsSlice = createSlice({
     }
 })
 
+const deleteNewsSlice = createSlice({
+    name: 'deleteNews',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        deleteNewsLoading(state, action){
+            state.loading = action.payload
+        },
+        deleteNewsSuccess(state, action){
+            state.success = action.payload
+        },
+        deleteNewsError(state, action){
+            state.error = action.payload
+        },
+        deleteNewsReset(state){
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const { setNews, setNewsLoading, setNewsSuccess, setNewsError } = getNews.actions;
 export const { addNewsLoading, addNewsSuccess, addNewsError, addNewsReset } = addNewsSlice.actions;
 export const { editNewsLoading, editNewsSuccess, editNewsError, editNewsReset } = editNewsSlice.actions;
+export const { deleteNewsLoading, deleteNewsSuccess, deleteNewsError, deleteNewsReset } = deleteNewsSlice.actions;
 
 export const newsReducer = combineReducers({
     getNews: getNews.reducer,
     addNews: addNewsSlice.reducer,
     editNews: editNewsSlice.reducer,
+    deleteNews: deleteNewsSlice.reducer,
 });
 
 // convert timestamp to date
@@ -177,6 +203,20 @@ export function editNews(id, oldSlug, data){
             dispatch(editNewsSuccess(true))
         } catch(err) {
             dispatch(editNewsError(err.message))
+        }
+    }
+}
+
+export function deleteNews(id, slug){
+    return async function deleteNewsThunk(dispatch){
+        dispatch(deleteNewsLoading(true))
+        try {
+            await deleteDoc(doc(db, "news", id))
+            await remove(ref(realDb, `news/${slug}`))
+            dispatch(deleteNewsLoading(false))
+            dispatch(deleteNewsSuccess(true))
+        } catch(err) {
+            dispatch(deleteNewsError(err.message))
         }
     }
 }
