@@ -8,6 +8,7 @@ import { deleteImage, deleteImageReset, deleteImageSuccess, uploadImage, uploadI
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import DeleteNewsModal from '@/components/common/deleteModal/deleteNews';
+import UploadFiles from '@/components/common/UploadFiles';
 
 const NewsAdd = ({id}) => {
     const dispatch = useDispatch()
@@ -251,7 +252,8 @@ const NewsAdd = ({id}) => {
                     id={id}
                     slug={oldData.metaId}
                 />
-            }    
+            }
+            <UploadFiles />    
         </div>
     )
 }
