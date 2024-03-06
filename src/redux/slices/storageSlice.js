@@ -58,3 +58,25 @@ export function getRootDirectory(){
         }
     }
 }
+
+export function getSubDirectory(folderName){
+    return async function getSubDirectoryThunk(dispatch){
+        const result = {}
+        dispatch(getDirectoryLoading(true))
+        try {
+            const listOfItems = [];
+            const listRef = ref(storage, `/${folderName}`);
+            const res = await listAll(listRef);
+            const { items } = res;
+            for (const item of items) {
+                listOfItems.push(await getDownloadURL(item))
+            }
+            result[folderName] = listOfItems
+            dispatch(setSubItems(result))
+            dispatch(getDirectoryLoading(false))
+            dispatch(getDirectorySuccess(true))
+        } catch(err) {
+            dispatch(getDirectoryError(err.message))
+        }
+    }
+}

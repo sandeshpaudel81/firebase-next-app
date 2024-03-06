@@ -1,17 +1,20 @@
-import { getDownloadURL, listAll, ref } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import { storage } from '../../../../firebase-config'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRootDirectory } from '@/redux/slices/storageSlice'
+import { getRootDirectory, getSubDirectory } from '@/redux/slices/storageSlice'
 import { FaArrowLeft, FaFolder } from 'react-icons/fa'
 
 const UploadFiles = () => {
     const [tab, setTab] = useState('files')
     const [currDirectory, setCurrDirectory] = useState('/home')
+    const [wholeDirectory, setWholeDirectory] = useState({})
     const dispatch = useDispatch()
     const {directory, success, loading, error} = useSelector(state => state.storage.getDirectory)
 
     const changeDirectory = (nameOfDirectory) => {
+        if(wholeDirectory[nameOfDirectory].length == 0){
+            dispatch(getSubDirectory(nameOfDirectory))
+        }
         setCurrDirectory('/home/'+nameOfDirectory)
     }
 
@@ -22,6 +25,12 @@ const UploadFiles = () => {
     useEffect(() => {
         dispatch(getRootDirectory())
     }, [])
+
+    useEffect(() => {
+        console.log(directory)
+        console.log(currDirectory)
+        setWholeDirectory(directory)
+    }, [directory])
 
     return (
         <div className='fixed top-0 left-0 h-screen w-screen z-50 p-5'>
@@ -40,7 +49,7 @@ const UploadFiles = () => {
                         >Upload Files</button>
                     </div>
                     <button type="button" className="absolute top-2.5 end-2.5 text-gray-900 bg-transparent hover:bg-gray-900 hover:text-gray-200 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                         </svg>
                         <span className="sr-only">Close modal</span>
@@ -57,22 +66,39 @@ const UploadFiles = () => {
                         </div>)
                     }
                 </div>
-                <div className='p-5'>
-                    <div className='flex flex-wrap gap-5 mb-24'>
+                <div className='p-5 overflow-y-scroll max-h-[calc(100vh-200px)]'>
                     {
-                        Object.entries(directory).map(([key, value]) => {
-                            return(
-                                <div className='flex flex-col items-center p-5 hover:bg-gray-200 cursor-pointer' onDoubleClick={() => changeDirectory(key)}>
-                                    <FaFolder className='text-yellow-700 text-5xl'/>
-                                    <p>{key}</p>
-                                </div>
-                            )
-                        })
+                        loading ?
+                        (<p>Loading...</p>):
+                        (
+                        <div className='flex flex-wrap gap-5 mb-24'>
+                            {currDirectory === '/home' ? (
+                                Object.entries(wholeDirectory).map(([key, value], idx) => {
+                                    return (
+                                        <div key={idx} className='flex flex-col items-center p-5 hover:bg-gray-200 cursor-pointer' onDoubleClick={() => changeDirectory(key)}>
+                                            <FaFolder className='text-yellow-700 text-5xl'/>
+                                            <p>{key}</p>
+                                        </div>
+                                    );
+                                })
+                            ) : (
+                                <>
+                                    {wholeDirectory[currDirectory.split('home/')[1]]?.map((item, index) => {
+                                        console.log(currDirectory)
+                                        return (
+                                            <div key={index} className='flex flex-col items-center p-2 hover:bg-primaryExtraLight cursor-pointer'>
+                                                <img src={item} className='w-28 h-28 object-cover border-2 border-primaryExtraLight'/>
+                                            </div>
+                                        );
+                                    })}
+                                    <button className="absolute bottom-5 right-5 text-white bg-primary hover:bg-primaryD focus:ring-4 focus:outline-none focus:ring-primaryLight dark:focus:ring-primaryDark font-medium rounded-lg text-md inline-flex items-center px-8 py-2.5 text-center">
+                                        Select
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                        )
                     }
-                    </div>
-                    <button className="absolute bottom-5 right-5 text-white bg-primary hover:bg-primaryD focus:ring-4 focus:outline-none focus:ring-primaryLight dark:focus:ring-primaryDark font-medium rounded-lg text-md inline-flex items-center px-8 py-2.5 text-center">
-                        Select
-                    </button>
                 </div>
                 
                 {/* <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
