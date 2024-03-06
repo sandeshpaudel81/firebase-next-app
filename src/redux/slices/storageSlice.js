@@ -33,10 +33,41 @@ const getDirectorySlice = createSlice({
     }
 })
 
+const uploadFileSlice = createSlice({
+    name: 'uploadFile',
+    initialState: {
+        file: [],
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        uploadFileData(state, action){
+            state.file = [...state.file, action.payload]
+        },
+        uploadFileLoading(state, action){
+            state.loading = action.payload
+        },
+        uploadFileSuccess(state, action){
+            state.success = action.payload
+        },
+        uploadFileError(state, action){
+            state.error = action.payload
+        },
+        uploadFileReset(state){
+            state.file = []
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
+export const {uploadFileData, uploadFileLoading, uploadFileSuccess, uploadFileError, uploadFileReset} = uploadFileSlice.actions;
 export const {setRootDirectory, setSubItems, getDirectoryLoading, getDirectoryProgress, getDirectorySuccess} = getDirectorySlice.actions;
 
 export const storageReducer = combineReducers({
     getDirectory: getDirectorySlice.reducer,
+    uploadFile: uploadFileSlice.reducer,
 });
 
 export function getRootDirectory(){
@@ -78,5 +109,41 @@ export function getSubDirectory(folderName){
         } catch(err) {
             dispatch(getDirectoryError(err.message))
         }
+    }
+}
+
+export function uploadFile(folder, file){
+    return function uploadFileThunk(dispatch){
+        dispatch(uploadFileLoading(true))
+        const upload = () => {
+            try {
+                // upload image on firebase
+                const storageRef = ref(storage, `/${folder}/${Date.now() + file.name}`)
+                const uploadTask = uploadBytesResumable(storageRef, file)
+                uploadTask?.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const percent = Math.round(
+                            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                        )
+                    },
+                    (err) => {
+                        dispatch(uploadFileError(err.message))
+                        dispatch(uploadFileLoading(false))
+                    },
+                    () => {
+                        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                            dispatch(uploadFileData(url))
+                            dispatch(uploadFileLoading(false))
+                            dispatch(uploadFileSuccess(true))
+                        })
+                    }
+                )
+            } catch(err) {
+                dispatch(uploadFileError(err.message))
+                dispatch(uploadFileLoading(false))
+            }
+        }
+        upload()
     }
 }

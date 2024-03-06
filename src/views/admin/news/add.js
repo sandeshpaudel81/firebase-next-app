@@ -11,6 +11,9 @@ import DeleteNewsModal from '@/components/common/deleteModal/deleteNews';
 import UploadFiles from '@/components/common/UploadFiles';
 
 const NewsAdd = ({id}) => {
+
+    const [showUploadModel, setShowUploadModel] = useState(false)
+
     const dispatch = useDispatch()
     const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
     const {loading:addNewsLoading, success:addNewsSuccess, error:addNewsError} = useSelector(state => state.news.addNews)
@@ -231,7 +234,7 @@ const NewsAdd = ({id}) => {
                         </div>
                     </div>
                     <div>
-                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
+                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={() => setShowUploadModel(true)}>
                             {
                                 id == 'add' ? 'Add News' : 'Edit News'
                             }
@@ -253,7 +256,16 @@ const NewsAdd = ({id}) => {
                     slug={oldData.metaId}
                 />
             }
-            <UploadFiles />    
+            {
+                showUploadModel &&
+                <UploadFiles 
+                    setShowUploadModal={setShowUploadModel}
+                    values={values} 
+                    setvalues={setvalues} 
+                    type='array'
+                />
+            }
+                
         </div>
     )
 }
