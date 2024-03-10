@@ -65,7 +65,11 @@ const NewsAdd = ({id}) => {
     }
 
     const toggleMetaImage = (imgUrl) => {
-        setvalues({ ...values, metaImage: imgUrl })
+        if(values.metaImage !== imgUrl){
+            setvalues({ ...values, metaImage: imgUrl })
+        } else {
+            setvalues({ ...values, metaImage: ''})
+        }
     }
 
     const submitHandler = async (e) => {

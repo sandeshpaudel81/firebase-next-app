@@ -1,6 +1,6 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit"
-import { storage } from "../../../firebase-config"
-import { getDownloadURL, listAll, ref } from "firebase/storage"
+import { getPathStorageFromUrl, storage } from "../../../firebase-config"
+import { getDownloadURL, listAll, ref, uploadBytesResumable } from "firebase/storage"
 
 const getDirectorySlice = createSlice({
     name: 'getDirectory',
@@ -62,12 +62,38 @@ const uploadFileSlice = createSlice({
     }
 })
 
+const deleteFileSlice = createSlice({
+    name: 'deleteFile',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        deleteFileLoading(state, action){
+            state.loading = action.payload
+        },
+        deleteFileSuccess(state, action){
+            state.success = action.payload
+        },
+        deleteFileError(state, action){
+            state.error = action.payload
+        },
+        deleteFileReset(state){
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const {uploadFileData, uploadFileLoading, uploadFileSuccess, uploadFileError, uploadFileReset} = uploadFileSlice.actions;
 export const {setRootDirectory, setSubItems, getDirectoryLoading, getDirectoryProgress, getDirectorySuccess} = getDirectorySlice.actions;
+export const {deleteFileLoading, deleteFileSuccess, deleteFileError, deleteFileReset} = deleteFileSlice.actions;
 
 export const storageReducer = combineReducers({
     getDirectory: getDirectorySlice.reducer,
     uploadFile: uploadFileSlice.reducer,
+    deleteFile: deleteFileSlice.reducer,
 });
 
 export function getRootDirectory(){
@@ -145,5 +171,25 @@ export function uploadFile(folder, file){
             }
         }
         upload()
+    }
+}
+
+export function deleteFile(url){
+    return function deleteFileThunk(dispatch){
+        dispatch(deleteFileLoading(true))
+        try {
+            var filePath = getPathStorageFromUrl(url)
+            const deleteRef = ref(storage, filePath)
+            deleteObject(deleteRef).then(() => {
+                dispatch(deleteFileLoading(false))
+                dispatch(deleteFileSuccess(true))
+            }).catch((error) => {
+                dispatch(deleteFileError(error.message))
+                dispatch(deleteFileLoading(false))
+            })
+        } catch(err) {
+            dispatch(deleteFileError(err.message))
+            dispatch(deleteFileLoading(false))
+        }
     }
 }

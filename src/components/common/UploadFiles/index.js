@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getRootDirectory, getSubDirectory, uploadFile, uploadFileError } from '@/redux/slices/storageSlice'
-import { FaArrowLeft, FaFolder } from 'react-icons/fa'
+import { getRootDirectory, getSubDirectory, uploadFile, uploadFileError, uploadFileReset } from '@/redux/slices/storageSlice'
+import { FaArchive, FaArrowLeft, FaFolder } from 'react-icons/fa'
 import toast from 'react-hot-toast'
+import { getFileNameFromUrl } from '../../../../firebase-config'
+import DeleteFileModal from '../deleteModal/deleteFile'
 
 const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
     const [tab, setTab] = useState('files')
@@ -10,31 +12,47 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
     const [wholeDirectory, setWholeDirectory] = useState({})
     const dispatch = useDispatch()
     const {directory, success, loading, error} = useSelector(state => state.storage.getDirectory)
-    const {file, success:uploadSuccess, error:uploadError} = useSelector(state => state.storage.getDirectory)
+    const {file, success:uploadSuccess, error:uploadError} = useSelector(state => state.storage.uploadFile)
     const [selectedFile, setSelectedFile] = useState('')
     const [files, setFiles] = useState(null)
     const [uploadToFolder, setUploadToFolder] = useState('others')
     const [uploadProgress, setUploadProgress] = useState('')
+    const [uploadedFiles, setUploadedFiles] = useState([])
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [toBeDeleted, setToBeDeleted] = useState('')
 
     const closeModal = () => {
         setShowUploadModal(false)
+        dispatch(uploadFileReset())
     }
 
     const changeDirectory = (nameOfDirectory) => {
-        if(wholeDirectory[nameOfDirectory].length == 0){
-            dispatch(getSubDirectory(nameOfDirectory))
-        }
+        dispatch(getSubDirectory(nameOfDirectory))
         setSelectedFile('')
         setCurrDirectory('/home/'+nameOfDirectory)
     }
 
     const backToHome = () => {
+        setSelectedFile('')
         setCurrDirectory('/home')
     }
 
     const selectFileHandler = () => {
         setvalues({ ...values, images: [...values.images, selectedFile] });
         setShowUploadModal(false)
+    }
+
+    const showInFilesHandler = () => {
+        changeDirectory(uploadToFolder)
+        setTab('files')
+        setSelectedFile('')
+        setFiles(null)
+        setUploadProgress('')
+    }
+
+    const deleteFileHandler = (imgUrl) => {
+        setToBeDeleted(imgUrl)
+        setShowDeleteModal(true)
     }
 
     const uploadFilesHandler = async () => {
@@ -63,11 +81,16 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
         setWholeDirectory(directory)
     }, [directory])
 
-    useEffect((error) => {
+    useEffect(() => {
         if(error?.length > 0){
             toast.error(error)
         }
     }, [error])
+
+    useEffect(() => {
+        console.log(file)
+        setUploadedFiles(file)
+    }, [file])
 
     return (
         <div className='fixed top-0 left-0 h-screen w-screen z-50 p-5'>
@@ -127,10 +150,11 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
                                                 return (
                                                     <div
                                                         key={index}
-                                                        className={selectedFile == item ? 'flex flex-col items-center p-2 bg-primaryLight cursor-pointer':'flex flex-col items-center p-2 hover:bg-primaryExtraLight cursor-pointer'}
+                                                        className={selectedFile == item ? 'flex flex-col items-center p-2 bg-primaryLight cursor-pointer relative':'flex flex-col items-center p-2 hover:bg-primaryExtraLight cursor-pointer relative'}
                                                         onClick={() => setSelectedFile(selectedFile === item ? '' : item)}
                                                     >
                                                         <img src={item} className='w-28 h-28 object-cover border-2 border-primaryExtraLight'/>
+                                                        <span className='absolute -top-2 -right-2 text-lg p-2 bg-gray-300 rounded-full pointer-events-auto cursor-pointer' onClick={() => deleteFileHandler(item)}><FaArchive className='text-red-600'/></span>
                                                     </div>
                                                 );
                                             })}
@@ -164,13 +188,16 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
                                 Upload
                             </button>
                             <p className='text-sm text-gray-500'>Upload Progress: {uploadProgress}</p>
-                            {
-                                file?.map((item, index) => {
-                                    return (<div key={index} className='w-11/12 bg-gray-300 border-gray-400 text-ellipsis'>
-                                        {item}
-                                    </div>)
-                                })
-                            }
+                            {uploadedFiles && uploadedFiles.length > 0 && (
+                                <>
+                                    <p className='font-semibold hover:underline' onClick={showInFilesHandler}>&larr; Show in files</p>
+                                    {uploadedFiles.map((item, index) => (
+                                        <div key={index} className='w-11/12 bg-gray-300 border-gray-400 overflow-hidden py-3 px-2 border-b-2'>
+                                            <p className='text-ellipsis whitespace-nowrap overflow-hidden'>{getFileNameFromUrl(item)}</p>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                         </div>
                     </div>)
                 }
@@ -183,6 +210,16 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
                 </button>
                 <button className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onClick={closeModal}>No, cancel</button> */}
             </div>
+            {
+                showDeleteModal &&
+                <DeleteFileModal
+                    setShowModal={setShowDeleteModal}
+                    imgUrl={toBeDeleted}
+                    directory={currDirectory}
+                    changeDirectory={changeDirectory}
+                    setToBeDeleted={setToBeDeleted}
+                />
+            }
         </div>
     )
 }

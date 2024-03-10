@@ -1,41 +1,43 @@
-import { deleteNews, deleteNewsReset, fetchNews } from '@/redux/slices/newsSlice'
+import { deleteFile, deleteFileReset } from '@/redux/slices/storageSlice'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
+import { getFileNameFromUrl } from '../../../../firebase-config'
 
-const DeleteNewsModal = ({setShowModal, id, slug}) => {
+const DeleteFileModal = ({setShowModal, imgUrl, directory, changeDirectory, setToBeDeleted}) => {
     const dispatch = useDispatch()
     const router = useRouter()
-    const {success:deleteNewsSuccess, error:deleteNewsError} = useSelector(state => state.news.deleteNews)
+    const {success:deleteFileSuccess, error:deleteFileError} = useSelector(state => state.storage.deleteFile)
     const [process, setprocess] = useState("Yes, I'm sure")
 
     const closeModal = () => {
         setShowModal(false)
+        setToBeDeleted('')
     }
 
     const handleDelete = async () => {
         setprocess("Deleting...")
-        dispatch(deleteNews(id, slug))
+        dispatch(deleteFile(imgUrl))
     }
 
     useEffect(() => {
-        if(deleteNewsSuccess){
-            toast.success("News deleted.")
+        if(deleteFileSuccess){
+            toast.success("File deleted.")
             setprocess("Yes, I'm sure")
             setShowModal(false)
-            dispatch(fetchNews())
-            dispatch(deleteNewsReset())
-            router.push('/admin/news')
+            setToBeDeleted('')
+            changeDirectory(directory.split('home/')[1])
+            dispatch(deleteFileReset())
         }
-    }, [deleteNewsSuccess])
+    }, [deleteFileSuccess])
 
     useEffect(() => {
-        if(deleteNewsError){
-            toast.error(deleteNewsError)
+        if(deleteFileError){
+            toast.error(deleteFileError)
             setShowModal(false)
         }
-    }, [deleteNewsError])
+    }, [deleteFileError])
     
 
     return (
@@ -51,7 +53,8 @@ const DeleteNewsModal = ({setShowModal, id, slug}) => {
                 <svg className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
-                <h3 className="mb-5 text-lg font-normal text-gray-400 dark:text-gray-400">Are you sure you want to delete this news?</h3>
+                <h3 className="mb-5 text-lg font-normal text-gray-400 dark:text-gray-400">Are you sure you want to delete this file?</h3>
+                <p>{getFileNameFromUrl(imgUrl)}</p>
                 <button className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center" onClick={handleDelete}>
                     {process}
                 </button>
@@ -61,4 +64,4 @@ const DeleteNewsModal = ({setShowModal, id, slug}) => {
     )
 }
 
-export default DeleteNewsModal
+export default DeleteFileModal
