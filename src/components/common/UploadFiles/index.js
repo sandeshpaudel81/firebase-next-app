@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRootDirectory, getSubDirectory, uploadFile, uploadFileError, uploadFileReset } from '@/redux/slices/storageSlice'
-import { FaArchive, FaArrowLeft, FaFolder } from 'react-icons/fa'
+import { FaArchive, FaArrowLeft, FaFile, FaFolder } from 'react-icons/fa'
 import toast from 'react-hot-toast'
-import { getFileNameFromUrl } from '../../../../firebase-config'
+import { getExtension, getFileNameFromUrl } from '../../../../firebase-config'
 import DeleteFileModal from '../deleteModal/deleteFile'
 
 const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
@@ -38,7 +38,11 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
     }
 
     const selectFileHandler = () => {
-        setvalues({ ...values, images: [...values.images, selectedFile] });
+        if(type=='array'){
+            setvalues({ ...values, images: [...values.images, selectedFile] });
+        } else {
+            setvalues({ ...values, images: selectedFile });
+        }
         setShowUploadModal(false)
     }
 
@@ -153,7 +157,11 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
                                                         className={selectedFile == item ? 'flex flex-col items-center p-2 bg-primaryLight cursor-pointer relative':'flex flex-col items-center p-2 hover:bg-primaryExtraLight cursor-pointer relative'}
                                                         onClick={() => setSelectedFile(selectedFile === item ? '' : item)}
                                                     >
-                                                        <img src={item} className='w-28 h-28 object-cover border-2 border-primaryExtraLight'/>
+                                                        {
+                                                            getExtension(item) == 'jpg' || getExtension(item) == 'jpeg' || getExtension(item) == 'png' ?
+                                                            <img src={item} className='w-28 h-28 object-cover border-2 border-primaryExtraLight'/>:
+                                                            <div className='flex flex-col w-28 h-28 items-center overflow-hidden'><FaFile className='text-5xl text-gray-400'/><p className='text-center'>{getFileNameFromUrl(item)}</p></div>
+                                                        }
                                                         <span className='absolute -top-2 -right-2 text-lg p-2 bg-gray-300 rounded-full pointer-events-auto cursor-pointer' onClick={() => deleteFileHandler(item)}><FaArchive className='text-red-600'/></span>
                                                     </div>
                                                 );

@@ -35,14 +35,25 @@ export const getPathStorageFromUrl = (url) => {
 }
 
 export const getFileNameFromUrl = (url) => {
-    const lastIndex = url.lastIndexOf('%2F')
-    const after = url.slice(lastIndex + 3)
-    const filename = after.split("?")[0]
-    return filename;
+    try {
+        const lastIndex = url.lastIndexOf('%2F')
+        const after = url.slice(lastIndex + 3)
+        const filename = after.split("?")[0]
+        const final = filename.replaceAll("%20", " ")
+        return final
+    } catch(e) {
+        return url;
+    }
 }
 
 export const getFileNameWithoutExt = (url) => {
     const after = getFileNameFromUrl(url)
     const fileName = after.split(".")[0]
     return fileName;
+}
+
+export const getExtension = (url) => {
+    const after = getFileNameFromUrl(url)
+    const extension = after.split(".")[1]
+    return extension;
 }

@@ -1,6 +1,6 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit"
 import { getPathStorageFromUrl, storage } from "../../../firebase-config"
-import { getDownloadURL, listAll, ref, uploadBytesResumable } from "firebase/storage"
+import { deleteObject, getDownloadURL, listAll, ref, uploadBytesResumable } from "firebase/storage"
 
 const getDirectorySlice = createSlice({
     name: 'getDirectory',
