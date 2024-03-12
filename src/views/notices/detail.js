@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { getFileNameFromUrl } from '../../../firebase-config'
+import { getFileNameWithoutExt } from '../../../firebase-config'
 import Link from 'next/link'
 import { fetchNotices } from '@/redux/slices/noticeSlice'
 import CenteredLoading from '@/components/common/Loader'
@@ -47,7 +46,7 @@ const NoticeDetailView = ({id}) => {
                                 {
                                     noticeData?.relatedFiles?.map((rF, index) => {
                                         return <Link key={index} href={rF} target='_blank'>
-                                            <div className='bg-primaryExtraLight p-2 rounded-md capitalize border-2 border-slate-300 hover:border-primary'>{getFileNameFromUrl(rF)} <span className='text-slate-500 italic'>- Click here</span></div>
+                                            <div className='bg-primaryExtraLight p-2 rounded-md capitalize border-2 border-slate-300 hover:border-primary'>{getFileNameWithoutExt(rF)} <span className='text-slate-500 italic'>- Click here</span></div>
                                         </Link>
                                     })
                                 }

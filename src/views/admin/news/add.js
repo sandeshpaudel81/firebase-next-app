@@ -1,19 +1,21 @@
 import Tiptap from '@/components/common/TipTap';
-import { addNews, addNewsReset, fetchNews } from '@/redux/slices/newsSlice';
+import { addNews, addNewsReset, editNews, editNewsReset, fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { FaArchive, FaCheck, FaTimes } from "react-icons/fa";
-import UploadProgress from '@/components/common/UploadProgress';
-import { deleteImage, deleteImageReset, deleteImageSuccess, uploadImage, uploadImageReset } from '@/redux/slices/imageSlice';
 import toast from 'react-hot-toast';
-import { push, ref, set } from 'firebase/database';
-import { realDb } from '../../../../firebase-config';
 import { useRouter } from 'next/router';
+import DeleteNewsModal from '@/components/common/deleteModal/deleteNews';
+import UploadFiles from '@/components/common/UploadFiles';
 
-const NewsAdd = () => {
+const NewsAdd = ({id}) => {
+
+    const [showUploadModel, setShowUploadModel] = useState(false)
+
     const dispatch = useDispatch()
     const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
     const {loading:addNewsLoading, success:addNewsSuccess, error:addNewsError} = useSelector(state => state.news.addNews)
+    const {loading:editNewsLoading, success:editNewsSuccess, error:editNewsError} = useSelector(state => state.news.editNews)
     const [slugAllowed, setslugAllowed] = useState(false)
     const initialValue = {
         title: "",
@@ -23,25 +25,11 @@ const NewsAdd = () => {
         images: [],
         metaImage: ''
     }
-
+    const [oldData, setoldData] = useState({})
+    const [showModal, setShowModal] = useState(false)
     const router = useRouter()
 
     const [values, setvalues] = useState(initialValue)
-
-    const [image, setImage] = useState(null)
-    const [progress, setProgress] = useState(0)
-    const {image:uploadedImageUrls, progress:uploadProgress, success:uploadSuccess} = useSelector(state => state.image.uploadImage)
-    const {error:deleteError, success:deleteSuccess} = useSelector(state => state.image.deleteImage)
-
-    const uploadImageHandler = async () => {
-        if (image!==null){
-            for (let i=0; i<image.length; i++){
-                dispatch(uploadImage("news", image[i]))
-            }
-            return;
-        }
-        return;
-    }
 
     const changeHandler = (e) => {
         setvalues({ ...values, [e.target.name]: e.target.value })
@@ -55,16 +43,32 @@ const NewsAdd = () => {
         setvalues({ ...values, content: e })
     }
 
-    const deleteImageHandler = (imgUrl) => {
-        dispatch(deleteImage(imgUrl))
+    const removeSelectedImage = (index, url) => {
+        if (values.metaImage === url) {
+            setvalues({ ...values, metaImage: '', images: values.images.filter((image, i) => i !== index) });
+        } else {
+            setvalues({ ...values, images: values.images.filter((image, i) => i !== index) });
+        }
     }
 
     const toggleMetaImage = (imgUrl) => {
-        setvalues({ ...values, metaImage: imgUrl })
+        if(values.metaImage !== imgUrl){
+            setvalues({ ...values, metaImage: imgUrl })
+        } else {
+            setvalues({ ...values, metaImage: ''})
+        }
     }
 
     const submitHandler = async (e) => {
-        dispatch(addNews(values))
+        if(id=='add'){
+            dispatch(addNews(values))
+        } else {
+            dispatch(editNews(id, oldData.metaId, values))
+        }
+    }
+
+    const deleteSubmitHandler = (e) => {
+        setShowModal(true)
     }
 
     useEffect(() => {
@@ -83,26 +87,44 @@ const NewsAdd = () => {
     }, [addNewsSuccess, addNewsError])
 
     useEffect(() => {
-        if(deleteSuccess){
-            toast.success("Image has been deleted.")
-            setvalues({...values, images: uploadedImageUrls})
-            dispatch(deleteImageSuccess(false))
+        if(editNewsSuccess){
+            toast.success("News edited successfully.")
+            dispatch(uploadImageReset())
+            dispatch(deleteImageReset())
+            dispatch(editNewsReset())
+            dispatch(fetchNews())
+            setProgress(0)
+            router.push('/admin/news/')
         }
-    }, [deleteSuccess])
-
-    useEffect(() => {
-        setProgress(uploadProgress)
-    }, [uploadProgress])
-
-    useEffect(() => {
-        if(uploadSuccess){
-            setvalues({...values, images: uploadedImageUrls})
+        if(!editNewsSuccess && editNewsError.length > 0){
+            toast.error(editNewsError)
         }
-    }, [uploadSuccess, uploadedImageUrls])
+    }, [editNewsSuccess, editNewsError])
 
     useEffect(() => {
         if (!newsSuccess){
             dispatch(fetchNews())
+        } else {
+            if(id=='add'){
+                setvalues(initialValue)
+            } else {
+                const n = news.find((n) => n.id === id)
+                if(n != null){
+                    setoldData(n)
+                    const oldvalue = {
+                        title: n.title,
+                        meta_description: n.meta_description,
+                        slug: n.metaId,
+                        content: n.content,
+                        images: n.images,
+                        metaImage: n.metaImage
+                    }
+                    setvalues(oldvalue)
+                } else {
+                    toast.error("News not found!")
+                    router.push('/admin/news/')
+                }
+            }
         }
     }, [dispatch, newsSuccess])
 
@@ -112,7 +134,11 @@ const NewsAdd = () => {
         } else {
             const n = news.find((n) => n.metaId === values.slug)
             if(n != null){
-                setslugAllowed(false)
+                if (id=='add'){
+                    setslugAllowed(false)
+                } else {
+                    setslugAllowed(true)
+                }
             } else {
                 setslugAllowed(true)
             }
@@ -146,13 +172,9 @@ const NewsAdd = () => {
                         <Tiptap content={values.content} onChange={contentChangeHandler}/>
                     </div>
                     <div className='flex flex-col mb-5'>
-                        <p className='uppercase font-semibold'>Image</p>
-                        {(progress > 0) && (
-                            <UploadProgress progress={progress}/>
-                        )}
-                        <input type='file' accept='image/*' multiple onChange={(e) => setImage(e.target.files)}></input>
-                        <button className='uppercase bg-primaryD w-1/5 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={uploadImageHandler}>
-                            Upload
+                        <p className='uppercase font-semibold'>Images</p>
+                        <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowUploadModel(true)}>
+                            Choose images
                         </button>
                     </div>
                     <div className='flex flex-col'>
@@ -172,7 +194,7 @@ const NewsAdd = () => {
                                             values.metaImage == j &&
                                             <span className='absolute text-xl top-1/2 left-1/2 p-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full'><FaCheck className='text-green-700'/></span>
                                         }
-                                        <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => deleteImageHandler(j)}><FaArchive className='text-red-600'/></span>
+                                        <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => removeSelectedImage(index, j)}><FaArchive className='text-red-600'/></span>
                                     </div>
                                 ))
                             ) : (
@@ -181,10 +203,38 @@ const NewsAdd = () => {
                         </div>
                     </div>
                     <div>
-                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>Add News</button>
+                        <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
+                            {
+                                id == 'add' ? 'Add News' : 'Edit News'
+                            }
+                        </button>
+                        {
+                            id !== 'add' &&
+                            <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={deleteSubmitHandler}>
+                                Delete News
+                            </button>
+                        }
                     </div>
                 </div>
             </div>
+            {
+                showModal &&
+                <DeleteNewsModal
+                    setShowModal={setShowModal}
+                    id={id}
+                    slug={oldData.metaId}
+                />
+            }
+            {
+                showUploadModel &&
+                <UploadFiles 
+                    setShowUploadModal={setShowUploadModel}
+                    values={values} 
+                    setvalues={setvalues} 
+                    type='array'
+                />
+            }
+                
         </div>
     )
 }

@@ -9,7 +9,7 @@ const AdminSlideDetail = () => {
     const { query: { id } } = useRouter()
     return (
         <div>
-            { id === "add" ? <SlideAdd /> : <SlideDetail id={id}/> }
+            <SlideAdd id={id}/>
         </div>
     )
 }
