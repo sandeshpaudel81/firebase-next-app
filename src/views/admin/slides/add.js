@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaArchive, FaChevronLeft } from 'react-icons/fa'
-import { addCarouselReset, addNewCarousel, fetchCarousel } from '@/redux/slices/carouselSlice'
+import { addCarouselReset, addNewCarousel, editCarousel, editCarouselReset, fetchCarousel } from '@/redux/slices/carouselSlice'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import UploadFiles from '@/components/common/UploadFiles'
 import { getFileNameFromUrl } from '../../../../firebase-config'
+import DeleteSlideModal from '@/components/common/deleteModal/deleteSlide'
+import toast from 'react-hot-toast'
 
 
-const SlideAdd = () => {
+const SlideAdd = ({id}) => {
     const [showUploadModel, setShowUploadModel] = useState(false)
     const initialValue = {
         caption: "",
         isActive: true,
         images: ""
     }
-
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const router = useRouter()
     const dispatch = useDispatch()
 
-    const {success: addCarouselSuccess} = useSelector(state => state.carousel.addCarousel)
+    const {data:slides, success:slidesSuccess} = useSelector(state => state.carousel.getCarousel)
+    const {success: addCarouselSuccess, error:addCarouselError} = useSelector(state => state.carousel.addCarousel)
+    const {success: editCarouselSuccess, error:editCarouselError} = useSelector(state => state.carousel.editCarousel)
 
     const [values, setvalues] = useState(initialValue)
 
@@ -31,21 +35,73 @@ const SlideAdd = () => {
         setvalues({...values, images:''})
     }
 
-    const addCarouselHandler = () => {
-        dispatch(addNewCarousel({
-            caption: values.caption,
-            imageUrl: values.images,
-            is_active: values.isActive
-        }))
+    const deleteSubmitHandler = (e) => {
+        setShowDeleteModal(true)
+    }
+
+    const submitHandler = () => {
+        if(id=='add'){
+            dispatch(addNewCarousel({
+                caption: values.caption,
+                imageUrl: values.images,
+                is_active: values.isActive
+            }))
+        } else {
+            dispatch(editCarousel(id, {
+                caption: values.caption,
+                imageUrl: values.images,
+                is_active: values.isActive
+            }))
+        }
+        
     }
 
     useEffect(() => {
         if (addCarouselSuccess){
+            toast.success("Slide added successfully.")
             dispatch(addCarouselReset())
             dispatch(fetchCarousel())
             router.push('/admin/slides/')
         }
-    }, [dispatch, addCarouselSuccess, history])
+        if(!addCarouselSuccess && addCarouselError.length > 0){
+            toast.error(addCarouselError)
+        }
+    }, [dispatch, addCarouselSuccess, addCarouselError, history])
+
+    useEffect(() => {
+        if(editCarouselSuccess){
+            toast.success("Slide edited successfully.")
+            dispatch(editCarouselReset())
+            dispatch(fetchCarousel())
+            router.push('/admin/slides/')
+        }
+        if(!editCarouselSuccess && editCarouselError.length > 0){
+            toast.error(editCarouselError)
+        }
+    }, [dispatch, editCarouselSuccess, editCarouselError, history])
+
+    useEffect(() => {
+        if (!slidesSuccess){
+            dispatch(fetchCarousel())
+        } else {
+            if(id=='add'){
+                setvalues(initialValue)
+            } else {
+                const n = slides.find((n) => n.id === id)
+                if(n != null){
+                    const oldvalue = {
+                        caption: n.caption,
+                        isActive: n.is_active,
+                        images: n.imageUrl
+                    }
+                    setvalues(oldvalue)
+                } else {
+                    toast.error("Slide not found!")
+                    router.push('/admin/slides/')
+                }
+            }
+        }
+    }, [dispatch, slidesSuccess])
 
     return (
         <div>
@@ -86,7 +142,17 @@ const SlideAdd = () => {
                             <input type='text' className='bg-slate-400 text-gray-800 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='imageUrl' value={getFileNameFromUrl(values.images)} disabled></input>
                         </div>
                         <div>
-                            <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={addCarouselHandler}>Submit</button>
+                            <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
+                            {
+                                id == 'add' ? 'Add Slide' : 'Edit Slide'
+                            }
+                            </button>
+                            {
+                                id !== 'add' &&
+                                <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={deleteSubmitHandler}>
+                                    Delete Slide
+                                </button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -103,6 +169,13 @@ const SlideAdd = () => {
                     values={values} 
                     setvalues={setvalues} 
                     type='string'
+                />
+            }
+            {
+                showDeleteModal &&
+                <DeleteSlideModal
+                    setShowModal={setShowDeleteModal}
+                    id={id}
                 />
             }
         </div>
