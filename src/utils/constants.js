@@ -108,11 +108,16 @@ export const AdminNavbarMenu = [
     },
     {
         id: 5,
+        url: "/admin/notices",
+        name: "Notices"
+    },
+    {
+        id: 6,
         url: "/admin/change-password",
         name: "Change Password"
     },
     {
-        id: 6,
+        id: 7,
         url: "/admin/logout",
         name: "Logout"
     }
