@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { getExtension, getFileNameFromUrl } from '../../../../firebase-config'
 import DeleteFileModal from '../deleteModal/deleteFile'
 
-const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
+const UploadFiles = ({setShowUploadModal, values, setvalues, type, varName}) => {
     const [tab, setTab] = useState('files')
     const [currDirectory, setCurrDirectory] = useState('/home')
     const [wholeDirectory, setWholeDirectory] = useState({})
@@ -39,9 +39,9 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type}) => {
 
     const selectFileHandler = () => {
         if(type=='array'){
-            setvalues({ ...values, images: [...values.images, selectedFile] });
+            setvalues({ ...values, [varName]: [...values[varName], selectedFile] });
         } else {
-            setvalues({ ...values, images: selectedFile });
+            setvalues({ ...values, [varName]: selectedFile });
         }
         setShowUploadModal(false)
     }

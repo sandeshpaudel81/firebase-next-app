@@ -10,7 +10,12 @@ import ListItem from '@tiptap/extension-list-item'
 const Tiptap = ({content, onChange}) => {
     const editor = useEditor({
         extensions: [
-            StarterKit.configure({}),
+            StarterKit.configure({
+                heading: false,
+                listItem: false,
+                bulletList: false,
+                orderedList: false
+            }),
             Heading.configure({
                 HTMLAttributes: {
                     class: "text-xl font-bold",
@@ -40,7 +45,7 @@ const Tiptap = ({content, onChange}) => {
         onUpdate({ editor }){
             onChange(editor.getHTML())
         }
-    }, [content])
+    }, [content, onChange])
 
   return (
     <div className='flex flex-col'>

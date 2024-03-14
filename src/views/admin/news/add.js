@@ -169,7 +169,7 @@ const NewsAdd = ({id}) => {
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>News Content</label>
-                        <Tiptap content={values.content} onChange={contentChangeHandler}/>
+                        <Tiptap content={values.content} onChange={(e) => contentChangeHandler(e)}/>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <p className='uppercase font-semibold'>Images</p>
@@ -232,6 +232,7 @@ const NewsAdd = ({id}) => {
                     values={values} 
                     setvalues={setvalues} 
                     type='array'
+                    varName='images'
                 />
             }
                 
