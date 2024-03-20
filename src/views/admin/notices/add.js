@@ -1,22 +1,24 @@
-"use client";
 import Tiptap from '@/components/common/TipTap';
 import { addNews, addNewsReset, editNews, editNewsReset, fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { FaArchive, FaCheck, FaTimes } from "react-icons/fa";
+import { FaArchive, FaCheck, FaFile, FaTimes } from "react-icons/fa";
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import DeleteNewsModal from '@/components/common/deleteModal/deleteNews';
 import UploadFiles from '@/components/common/UploadFiles';
+import { addNotice, addNoticeReset, editNotice, editNoticeReset, fetchNotices } from '@/redux/slices/noticeSlice';
+import { getFileNameFromUrl } from '../../../../firebase-config';
 
-const NewsAdd = ({id}) => {
+const NoticeAdd = ({id}) => {
 
-    const [showUploadModel, setShowUploadModel] = useState(false)
+    const [showImageUploadModel, setShowImageUploadModel] = useState(false)
+    const [showFileUploadModel, setShowFileUploadModel] = useState(false)
 
     const dispatch = useDispatch()
-    const {data: news, success: newsSuccess} = useSelector(state => state.news.getNews)
-    const {loading:addNewsLoading, success:addNewsSuccess, error:addNewsError} = useSelector(state => state.news.addNews)
-    const {loading:editNewsLoading, success:editNewsSuccess, error:editNewsError} = useSelector(state => state.news.editNews)
+    const {data: notices, success: noticeSuccess} = useSelector(state => state.notice.getNotices)
+    const {loading:addNoticeLoading, success:addNoticeSuccess, error:addNoticeError} = useSelector(state => state.notice.addNotice)
+    const {loading:editNoticeLoading, success:editNoticeSuccess, error:editNoticeError} = useSelector(state => state.notice.addNotice)
     const [slugAllowed, setslugAllowed] = useState(false)
     const initialValue = {
         title: "",
@@ -24,6 +26,7 @@ const NewsAdd = ({id}) => {
         slug: "",
         content: "",
         images: [],
+        files: [],
         metaImage: ''
     }
     const [oldData, setoldData] = useState({})
@@ -41,7 +44,6 @@ const NewsAdd = ({id}) => {
     }
 
     const contentChangeHandler = (e) => {
-        console.log(e)
         setvalues({ ...values, content: e })
     }
 
@@ -53,6 +55,10 @@ const NewsAdd = ({id}) => {
         }
     }
 
+    const removeSelectedFile = (index, url) => {
+        setvalues({ ...values, files: values.files.filter((file, i) => i !== index) });
+    }
+
     const toggleMetaImage = (imgUrl) => {
         if(values.metaImage !== imgUrl){
             setvalues({ ...values, metaImage: imgUrl })
@@ -62,11 +68,12 @@ const NewsAdd = ({id}) => {
     }
 
     const submitHandler = async (e) => {
-        if(id=='add'){
-            dispatch(addNews(values))
-        } else {
-            dispatch(editNews(id, oldData.metaId, values))
-        }
+        // if(id=='add'){
+        //     dispatch(addNotice(values))
+        // } else {
+        //     dispatch(editNotice(id, oldData.metaId, values))
+        // }
+        console.log(values)
     }
 
     const deleteSubmitHandler = (e) => {
@@ -74,43 +81,37 @@ const NewsAdd = ({id}) => {
     }
 
     useEffect(() => {
-        if(addNewsSuccess){
-            toast.success("News added successfully.")
-            dispatch(uploadImageReset())
-            dispatch(deleteImageReset())
-            dispatch(addNewsReset())
-            dispatch(fetchNews())
-            setProgress(0)
-            router.push('/admin/news/')
+        if(addNoticeSuccess){
+            toast.success("Notice added successfully.")
+            dispatch(addNoticeReset())
+            dispatch(fetchNotices())
+            router.push('/admin/notices/')
         }
-        if(!addNewsSuccess && addNewsError.length > 0){
-            toast.error(addNewsError)
+        if(!addNoticeSuccess && addNoticeError.length > 0){
+            toast.error(addNoticeError)
         }
-    }, [addNewsSuccess, addNewsError])
+    }, [dispatch, addNoticeSuccess, addNoticeError])
 
     useEffect(() => {
-        if(editNewsSuccess){
-            toast.success("News edited successfully.")
-            dispatch(uploadImageReset())
-            dispatch(deleteImageReset())
-            dispatch(editNewsReset())
-            dispatch(fetchNews())
-            setProgress(0)
-            router.push('/admin/news/')
+        if(editNoticeSuccess){
+            toast.success("Notice edited successfully.")
+            dispatch(editNoticeReset())
+            dispatch(fetchNotices())
+            router.push('/admin/notices/')
         }
-        if(!editNewsSuccess && editNewsError.length > 0){
-            toast.error(editNewsError)
+        if(!editNoticeSuccess && editNoticeError.length > 0){
+            toast.error(editNoticeError)
         }
-    }, [editNewsSuccess, editNewsError])
+    }, [dispatch, editNoticeSuccess, editNoticeError])
 
     useEffect(() => {
-        if (!newsSuccess){
-            dispatch(fetchNews())
+        if (!noticeSuccess){
+            dispatch(fetchNotices())
         } else {
             if(id=='add'){
                 setvalues(initialValue)
             } else {
-                const n = news.find((n) => n.id === id)
+                const n = notices.find((n) => n.id === id)
                 if(n != null){
                     setoldData(n)
                     const oldvalue = {
@@ -119,22 +120,23 @@ const NewsAdd = ({id}) => {
                         slug: n.metaId,
                         content: n.content,
                         images: n.images,
+                        files: n.files,
                         metaImage: n.metaImage
                     }
                     setvalues(oldvalue)
                 } else {
-                    toast.error("News not found!")
-                    router.push('/admin/news/')
+                    toast.error("Notice not found!")
+                    router.push('/admin/notices/')
                 }
             }
         }
-    }, [dispatch, newsSuccess])
+    }, [dispatch, noticeSuccess])
 
     useEffect(() => {
         if(values.slug.length === 0) {
             setslugAllowed(false)
         } else {
-            const n = news.find((n) => n.metaId === values.slug)
+            const n = notices.find((n) => n.metaId === values.slug)
             if(n != null){
                 if (id=='add'){
                     setslugAllowed(false)
@@ -150,13 +152,13 @@ const NewsAdd = ({id}) => {
     return (
         <div className='container mx-auto py-5'>
             <div className='border-l-8 border-primary px-5'>
-                <h2 className='text-primary font-bold text-3xl'>Add <span className='text-primaryDark'>News</span></h2>
+                <h2 className='text-primary font-bold text-3xl'>Add <span className='text-primaryDark'>Notice</span></h2>
                 <p className='uppercase text-gray-600 text-sm font-medium mt-2'>On the repository</p>
             </div>
             <div className='mt-5 md:mt-10 text-sm'>
                 <div className='w-1/2'>
                     <div className='flex flex-col mb-5'>
-                        <label className='uppercase font-semibold'>News Title</label>
+                        <label className='uppercase font-semibold'>Notice Title</label>
                         <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='title' value={values.title} onChange={changeHandler}></input>
                     </div>
                     <div className='flex flex-col mb-5'>
@@ -170,12 +172,12 @@ const NewsAdd = ({id}) => {
                         <small>{'https://www.kadammyagdi.com.np/news/'+values.slug}</small>
                     </div>
                     <div className='flex flex-col mb-5'>
-                        <label className='uppercase font-semibold'>News Content</label>
+                        <label className='uppercase font-semibold'>Notice Content</label>
                         <Tiptap content={values.content} onChange={contentChangeHandler}/>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <p className='uppercase font-semibold'>Images</p>
-                        <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowUploadModel(true)}>
+                        <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowImageUploadModel(true)}>
                             Choose images
                         </button>
                     </div>
@@ -204,16 +206,35 @@ const NewsAdd = ({id}) => {
                             )}
                         </div>
                     </div>
+                    <div className='flex flex-col mb-5'>
+                        <p className='uppercase font-semibold'>Related Files</p>
+                        <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowFileUploadModel(true)}>
+                            Choose files
+                        </button>
+                    </div>
+
+                    <div className='flex gap-3 mb-5'>
+                        {values.files.length > 0 ? (
+                            values.files.map((j, index) => (
+                                <div key={index} className='relative mt-2'>
+                                    <div className='flex flex-col w-28 h-28 items-center overflow-hidden'><FaFile className='text-5xl text-gray-400'/><p className='text-center'>{getFileNameFromUrl(j)}</p></div>
+                                    <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => removeSelectedFile(index, j)}><FaArchive className='text-red-600'/></span>
+                                </div>
+                            ))
+                        ) : (
+                            <></>
+                        )}
+                    </div>
                     <div>
                         <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
                             {
-                                id == 'add' ? 'Add News' : 'Edit News'
+                                id == 'add' ? 'Add Notice' : 'Edit Notice'
                             }
                         </button>
                         {
                             id !== 'add' &&
                             <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={deleteSubmitHandler}>
-                                Delete News
+                                Delete Notice
                             </button>
                         }
                     </div>
@@ -228,13 +249,23 @@ const NewsAdd = ({id}) => {
                 />
             }
             {
-                showUploadModel &&
+                showImageUploadModel &&
                 <UploadFiles 
-                    setShowUploadModal={setShowUploadModel}
+                    setShowUploadModal={setShowImageUploadModel}
                     values={values} 
                     setvalues={setvalues} 
                     type='array'
                     varName='images'
+                />
+            }
+            {
+                showFileUploadModel &&
+                <UploadFiles 
+                    setShowUploadModal={setShowFileUploadModel}
+                    values={values} 
+                    setvalues={setvalues} 
+                    type='array'
+                    varName='files'
                 />
             }
                 
@@ -242,4 +273,4 @@ const NewsAdd = ({id}) => {
     )
 }
 
-export default NewsAdd
+export default NoticeAdd
