@@ -1,40 +1,41 @@
 "use client"
-import Heading from '@tiptap/extension-heading'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TipTapToolbar from './toolbar'
-import BulletList from '@tiptap/extension-bullet-list'
-import OrderedList from '@tiptap/extension-ordered-list'
-import ListItem from '@tiptap/extension-list-item'
+import Underline from '@tiptap/extension-underline'
 
 const Tiptap = ({content, onChange}) => {
+    const handleChange = (newContent) => {
+        onChange(newContent)
+    }
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
-                heading: false,
-                listItem: false,
-                bulletList: false,
-                orderedList: false
-            }),
-            Heading.configure({
-                HTMLAttributes: {
-                    class: "text-xl font-bold",
-                    levels: [2]
+                heading: {
+                    HTMLAttributes: {
+                        class: "text-xl font-bold",
+                        levels: [2]
+                    }
+                },
+                bulletList: {
+                    itemTypeName: 'listItem',
+                    HTMLAttributes: {
+                        class: "list-disc ml-5"
+                    }
+                },
+                orderedList: {
+                    itemTypeName: 'listItem',
+                    HTMLAttributes: {
+                        class: "list-decimal ml-5"
+                    }
+                },
+                blockquote: {
+                    HTMLAttributes: {
+                        class: "border-l-2 pl-3 border-gray-700 text-gray-700"
+                    }
                 }
             }),
-            ListItem,
-            BulletList.configure({
-                itemTypeName: 'listItem',
-                HTMLAttributes: {
-                    class: "list-disc ml-5"
-                }
-            }),
-            OrderedList.configure({
-                itemTypeName: 'listItem',
-                HTMLAttributes: {
-                    class: "list-decimal ml-5"
-                }
-            }),
+            Underline,
         ],
         content: content,
         editorProps: {
@@ -43,9 +44,9 @@ const Tiptap = ({content, onChange}) => {
             },
         },
         onUpdate({ editor }){
-            onChange(editor.getHTML())
+            handleChange(editor.getHTML())
         }
-    }, [content, onChange])
+    })
 
   return (
     <div className='flex flex-col'>

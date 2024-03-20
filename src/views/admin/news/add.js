@@ -1,3 +1,4 @@
+"use client";
 import Tiptap from '@/components/common/TipTap';
 import { addNews, addNewsReset, editNews, editNewsReset, fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
@@ -40,6 +41,7 @@ const NewsAdd = ({id}) => {
     }
 
     const contentChangeHandler = (e) => {
+        console.log(e)
         setvalues({ ...values, content: e })
     }
 
@@ -169,7 +171,7 @@ const NewsAdd = ({id}) => {
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>News Content</label>
-                        <Tiptap content={values.content} onChange={(e) => contentChangeHandler(e)}/>
+                        <Tiptap content={values.content} onChange={contentChangeHandler}/>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <p className='uppercase font-semibold'>Images</p>
