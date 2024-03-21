@@ -76,11 +76,8 @@ const NewsAdd = ({id}) => {
     useEffect(() => {
         if(addNewsSuccess){
             toast.success("News added successfully.")
-            dispatch(uploadImageReset())
-            dispatch(deleteImageReset())
             dispatch(addNewsReset())
             dispatch(fetchNews())
-            setProgress(0)
             router.push('/admin/news/')
         }
         if(!addNewsSuccess && addNewsError.length > 0){
@@ -91,11 +88,8 @@ const NewsAdd = ({id}) => {
     useEffect(() => {
         if(editNewsSuccess){
             toast.success("News edited successfully.")
-            dispatch(uploadImageReset())
-            dispatch(deleteImageReset())
             dispatch(editNewsReset())
             dispatch(fetchNews())
-            setProgress(0)
             router.push('/admin/news/')
         }
         if(!editNewsSuccess && editNewsError.length > 0){
