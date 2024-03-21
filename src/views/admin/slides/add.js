@@ -169,6 +169,7 @@ const SlideAdd = ({id}) => {
                     values={values} 
                     setvalues={setvalues} 
                     type='string'
+                    varName='images'
                 />
             }
             {

@@ -28,7 +28,7 @@ const NewsDetailView = ({id}) => {
                         <div>
                             <h1 className='font-bold text-2xl'>{newsData?.title}</h1>
                             <small className='text-slate-700'>{newsData?.posted_at}</small>
-                            <p className='mt-5'>{newsData?.content}</p>
+                            <p className='mt-5' dangerouslySetInnerHTML={{__html: newsData?.content}}></p>
                         </div>
                         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
                             {
