@@ -23,8 +23,7 @@ const NewsAdd = ({id}) => {
         meta_description: "",
         slug: "",
         content: "",
-        images: [],
-        metaImage: ''
+        metaImage: ""
     }
     const [oldData, setoldData] = useState({})
     const [showModal, setShowModal] = useState(false)
@@ -41,24 +40,11 @@ const NewsAdd = ({id}) => {
     }
 
     const contentChangeHandler = (e) => {
-        console.log(e)
         setvalues({ ...values, content: e })
     }
 
-    const removeSelectedImage = (index, url) => {
-        if (values.metaImage === url) {
-            setvalues({ ...values, metaImage: '', images: values.images.filter((image, i) => i !== index) });
-        } else {
-            setvalues({ ...values, images: values.images.filter((image, i) => i !== index) });
-        }
-    }
-
-    const toggleMetaImage = (imgUrl) => {
-        if(values.metaImage !== imgUrl){
-            setvalues({ ...values, metaImage: imgUrl })
-        } else {
-            setvalues({ ...values, metaImage: ''})
-        }
+    const removeMetaImage = () => {
+        setvalues({ ...values, metaImage: '' })
     }
 
     const submitHandler = async (e) => {
@@ -112,7 +98,6 @@ const NewsAdd = ({id}) => {
                         meta_description: n.meta_description,
                         slug: n.metaId,
                         content: n.content,
-                        images: n.images,
                         metaImage: n.metaImage
                     }
                     setvalues(oldvalue)
@@ -148,7 +133,7 @@ const NewsAdd = ({id}) => {
                 <p className='uppercase text-gray-600 text-sm font-medium mt-2'>On the repository</p>
             </div>
             <div className='mt-5 md:mt-10 text-sm'>
-                <div className='w-1/2'>
+                <div className='w-2/3'>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>News Title</label>
                         <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='title' value={values.title} onChange={changeHandler}></input>
@@ -167,32 +152,27 @@ const NewsAdd = ({id}) => {
                         <label className='uppercase font-semibold'>News Content</label>
                         <Tiptap content={values.content} onChange={contentChangeHandler}/>
                     </div>
-                    <div className='flex flex-col mb-5'>
+                    {/* <div className='flex flex-col mb-5'>
                         <p className='uppercase font-semibold'>Images</p>
                         <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowUploadModel(true)}>
                             Choose images
                         </button>
-                    </div>
+                    </div> */}
                     <div className='flex flex-col'>
                         <label className='uppercase font-semibold'>Meta Image</label>
                         <small>Select meta image:</small>
+                        <button className='capitalize bg-primaryExtraLight w-[150px] px-3 py-2 text-black mt-3 rounded-md hover:bg-primaryLight cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowUploadModel(true)}>
+                            Choose image
+                        </button>
                         <div className='flex gap-3 mb-2'>
-                            {values.images.length > 0 ? (
-                                values.images.map((j, index) => (
-                                    <div key={index} className='relative mt-2'>
-                                        <img 
-                                            src={j} 
-                                            alt='Upload image for carousel' 
-                                            className={values.metaImage == j ? 'w-[150px] h-[100px] object-cover object-center cursor-pointer border-primaryD border-4': 'w-[150px] h-[100px] object-cover object-center cursor-pointer border-gray-300'}
-                                            onClick={() => toggleMetaImage(j)}
-                                        />
-                                        {
-                                            values.metaImage == j &&
-                                            <span className='absolute text-xl top-1/2 left-1/2 p-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full'><FaCheck className='text-green-700'/></span>
-                                        }
-                                        <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => removeSelectedImage(index, j)}><FaArchive className='text-red-600'/></span>
-                                    </div>
-                                ))
+                            {values.metaImage ? (
+                                <div className='relative mt-2'>
+                                    <img 
+                                        src={values.metaImage}  
+                                        className='w-[150px] h-[100px] object-cover object-center cursor-pointer border-gray-300'
+                                    />
+                                    <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => removeMetaImage()}><FaArchive className='text-red-600'/></span>
+                                </div>
                             ) : (
                                 <></>
                             )}
@@ -227,8 +207,8 @@ const NewsAdd = ({id}) => {
                     setShowUploadModal={setShowUploadModel}
                     values={values} 
                     setvalues={setvalues} 
-                    type='array'
-                    varName='images'
+                    type='string'
+                    varName='metaImage'
                 />
             }
                 

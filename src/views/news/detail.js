@@ -20,23 +20,14 @@ const NewsDetailView = ({id}) => {
     
     return (
         <div>
-            <div className='container mx-auto px-5 md:px-2 py-10'>
+            <div className='container mx-auto px-5 md:px-10 lg:px-20 xl:px-72 py-10'>
                 {
                     loading ?
                     <CenteredLoading /> :
-                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
-                        <div>
-                            <h1 className='font-bold text-2xl'>{newsData?.title}</h1>
-                            <small className='text-slate-700'>{newsData?.posted_at}</small>
-                            <p className='mt-5' dangerouslySetInnerHTML={{__html: newsData?.content}}></p>
-                        </div>
-                        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
-                            {
-                                newsData?.images?.map((im, index) => {
-                                    return <div key={index}><img src={im} alt={newsData?.title}/></div>
-                                })
-                            }
-                        </div>
+                    <div>
+                        <h1 className='font-bold text-2xl'>{newsData?.title}</h1>
+                        <small className='text-slate-700'>{newsData?.posted_at}</small>
+                        <p className='mt-5' dangerouslySetInnerHTML={{__html: newsData?.content}}></p>
                     </div>
                 }
             </div>

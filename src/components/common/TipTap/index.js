@@ -45,7 +45,7 @@ const Tiptap = ({content, onChange}) => {
             Underline,
             Image.configure({
                 HTMLAttributes: {
-                    class: "max-w-10/12 max-h-500px object-contain"
+                    class: "max-w-10/12 max-h-500px object-contain my-3"
                 }
             })
         ],

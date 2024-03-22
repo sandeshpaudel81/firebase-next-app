@@ -30,8 +30,8 @@ const NewsList = () => {
                             return <div key={item.id} className='grid grid-cols-4 bg-slate-200'>
                                 <div className='col-span-4 lg:col-span-1'>
                                     {
-                                        item.images.length > 0 ?
-                                        <img src={item.images[0]} alt={item.title} className='h-[150px] md:h-[200px] lg:h-[100px] w-full object-cover'/> :
+                                        item.metaImage ?
+                                        <img src={item.metaImage} alt={item.title} className='h-[150px] md:h-[200px] lg:h-[100px] w-full object-cover'/> :
                                         <img src='/assets/meta_images/news.png' alt={item.title} className='h-[150px] md:h-[200px] lg:h-[100px] w-full object-cover'/>
                                     }
                                 </div>

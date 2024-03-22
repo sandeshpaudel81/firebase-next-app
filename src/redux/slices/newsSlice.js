@@ -136,7 +136,7 @@ export function fetchNews(){
                     id: doc.id,
                     posted_at: datetime,
                     meta_description:newsFromRealDb.content,
-                    metaImage: newsFromRealDb.image
+                    metaImage: newsFromRealDb.images
                 })
             });
             dispatch(setNews(news))
@@ -156,7 +156,6 @@ export function addNews(data){
             await addDoc(collection(db, "news"), {
                 title: data.title,
                 content: data.content,
-                images: data.images,
                 metaId: data.slug,
                 posted_at: new Date()
             })
@@ -180,7 +179,6 @@ export function editNews(id, oldSlug, data){
             await updateDoc(doc(db, "news", id), {
                 title: data.title,
                 content: data.content,
-                images: data.images,
                 metaId: data.slug
             })
             if (data.slug == oldSlug){
