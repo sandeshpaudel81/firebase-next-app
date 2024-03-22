@@ -1,7 +1,6 @@
 import { AdminProtected } from '@/hooks/route'
 import Layout from '@/views/Layout'
 import SlideAdd from '@/views/admin/slides/add'
-import SlideDetail from '@/views/admin/slides/detail'
 import { useRouter } from 'next/router'
 import React from 'react'
 
