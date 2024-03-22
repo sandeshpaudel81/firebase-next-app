@@ -1,10 +1,17 @@
 "use client"
 
-import { FaBold, FaItalic, FaStrikethrough, FaListUl, FaListOl, FaHeading, FaUnderline, FaQuoteLeft, FaUndo, FaRedo } from "react-icons/fa"
+import { useState } from "react"
+import { FaBold, FaItalic, FaStrikethrough, FaListUl, FaListOl, FaHeading, FaUnderline, FaQuoteLeft, FaUndo, FaRedo, FaImage } from "react-icons/fa"
+import SelectImageTiptapModal from "./selectImage"
 
 const TipTapToolbar = ({editor}) => {
+    const [selectImageModal, setSelectImageModal] = useState(false)
+
     if (!editor) {
         return null
+    }
+    const addImage = () => {
+        setSelectImageModal(true)
     }
 
     return (
@@ -90,6 +97,13 @@ const TipTapToolbar = ({editor}) => {
             <FaQuoteLeft />
             </button>
             <button
+                onClick={addImage}
+                disabled={!editor.can().chain().focus().toggleBlockquote().run()}
+                className='px-2 hover:bg-gray-300 rounded-md'
+            >
+            <FaImage />
+            </button>
+            <button
                 onClick={(e) => {
                     e.preventDefault()
                     editor.chain().focus().undo().run()
@@ -109,6 +123,9 @@ const TipTapToolbar = ({editor}) => {
             >
             <FaRedo />
             </button>
+            {selectImageModal &&
+                <SelectImageTiptapModal editor={editor} setSelectImageModal={setSelectImageModal}/>
+            }
         </div>
         
     )
