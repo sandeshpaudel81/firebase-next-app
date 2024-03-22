@@ -3,11 +3,18 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import TipTapToolbar from './toolbar'
 import Underline from '@tiptap/extension-underline'
+import Image from '@tiptap/extension-image'
+import { useEffect } from 'react'
 
 const Tiptap = ({content, onChange}) => {
     const handleChange = (newContent) => {
         onChange(newContent)
     }
+
+    useEffect(() => {
+        if (editor && !editor.isDestroyed) editor?.commands.setContent(content);
+     }, [content]);
+
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -36,6 +43,11 @@ const Tiptap = ({content, onChange}) => {
                 }
             }),
             Underline,
+            Image.configure({
+                HTMLAttributes: {
+                    class: "max-w-10/12 max-h-500px object-contain"
+                }
+            })
         ],
         content: content,
         editorProps: {

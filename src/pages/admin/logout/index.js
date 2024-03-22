@@ -3,14 +3,12 @@ import { auth } from '../../../../firebase-config';
 import { signOut } from 'firebase/auth';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { useRouter as usrR } from 'next/navigation';
 
 const Logout = () => {
     const [process, setprocess] = useState("Yes")
-    const routerNav = usrR()
     const router = useRouter()
     const closeModal = () => {
-        routerNav.back()
+        router.back()
     }
     
     const logoutFunc = () => {
@@ -21,7 +19,7 @@ const Logout = () => {
             router.push('/admin/login')
         }).catch((error) => {
             setprocess("Yes")
-            toast.error(error)
+            toast.error(error.message)
         });
     }
 
