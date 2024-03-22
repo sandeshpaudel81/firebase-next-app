@@ -13,6 +13,8 @@ const NewsDetail = (props) => {
                 description={`${data?.content.substring(0,120)}`}
                 keywords="news of kadam myagdi, ngo news, ngo programs"
                 openGraph={{
+                    title: `${data?.title} | KADAM Myagdi`,
+                    description: `${data?.content.substring(0,120)}`,
                     type: 'article',
                     url: `https://kadammyagdi.org.np/news/${data?.id}/`,
                     images: [{
@@ -20,11 +22,13 @@ const NewsDetail = (props) => {
                         width: 1200,
                         height: 630,
                         alt: 'News of Kaligandaki Community Development Munch (KADAM) Myagdi',
+                        type: `'image/*'`
                     },{
                         url: "https://kadammyagdi.org.np/assets/meta_images/news.png",
                         width: 1200,
                         height: 630,
                         alt: 'News of Kaligandaki Community Development Munch (KADAM) Myagdi',
+                        type: 'image/png'
                     }
                     ],
                     site_name: 'KADAM Myagdi'
