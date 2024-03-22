@@ -92,7 +92,6 @@ const UploadFiles = ({setShowUploadModal, values, setvalues, type, varName}) => 
     }, [error])
 
     useEffect(() => {
-        console.log(file)
         setUploadedFiles(file)
     }, [file])
 

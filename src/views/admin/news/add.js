@@ -10,7 +10,6 @@ import DeleteNewsModal from '@/components/common/deleteModal/deleteNews';
 import UploadFiles from '@/components/common/UploadFiles';
 
 const NewsAdd = ({id}) => {
-
     const [showUploadModel, setShowUploadModel] = useState(false)
 
     const dispatch = useDispatch()
@@ -152,15 +151,8 @@ const NewsAdd = ({id}) => {
                         <label className='uppercase font-semibold'>News Content</label>
                         <Tiptap content={values.content} onChange={contentChangeHandler}/>
                     </div>
-                    {/* <div className='flex flex-col mb-5'>
-                        <p className='uppercase font-semibold'>Images</p>
-                        <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowUploadModel(true)}>
-                            Choose images
-                        </button>
-                    </div> */}
                     <div className='flex flex-col'>
                         <label className='uppercase font-semibold'>Meta Image</label>
-                        <small>Select meta image:</small>
                         <button className='capitalize bg-primaryExtraLight w-[150px] px-3 py-2 text-black mt-3 rounded-md hover:bg-primaryLight cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowUploadModel(true)}>
                             Choose image
                         </button>
@@ -180,8 +172,10 @@ const NewsAdd = ({id}) => {
                     </div>
                     <div>
                         <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
-                            {
-                                id == 'add' ? 'Add News' : 'Edit News'
+                            {  
+                                id == 'add' ? 
+                                (addNewsLoading ? 'Adding' : 'Add News'): 
+                                (editNewsLoading ? 'Editing' : 'Edit News')
                             }
                         </button>
                         {
