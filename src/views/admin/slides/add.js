@@ -22,8 +22,8 @@ const SlideAdd = ({id}) => {
     const dispatch = useDispatch()
 
     const {data:slides, success:slidesSuccess} = useSelector(state => state.carousel.getCarousel)
-    const {success: addCarouselSuccess, error:addCarouselError} = useSelector(state => state.carousel.addCarousel)
-    const {success: editCarouselSuccess, error:editCarouselError} = useSelector(state => state.carousel.editCarousel)
+    const {loading: addCarouselLoading, success: addCarouselSuccess, error:addCarouselError} = useSelector(state => state.carousel.addCarousel)
+    const {loading: editCarouselLoading, success: editCarouselSuccess, error:editCarouselError} = useSelector(state => state.carousel.editCarousel)
 
     const [values, setvalues] = useState(initialValue)
 
@@ -143,8 +143,10 @@ const SlideAdd = ({id}) => {
                         </div>
                         <div>
                             <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
-                            {
-                                id == 'add' ? 'Add Slide' : 'Edit Slide'
+                            {  
+                                id == 'add' ? 
+                                (addCarouselLoading ? 'Adding' : 'Add Slide'): 
+                                (editCarouselLoading ? 'Editing' : 'Edit Slide')
                             }
                             </button>
                             {

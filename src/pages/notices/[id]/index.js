@@ -17,13 +17,15 @@ const NoticeDetail = (props) => {
                 description={`${data?.content.substring(0,120)}`}
                 keywords="notices of kadam myagdi, ngo notices, ngo vacancies"
                 openGraph={{
+                    title: `${data?.title} | KADAM Myagdi`,
+                    description: `${data?.content.substring(0,120)}`,
                     type: 'article',
                     url: `https://kadammyagdi.org.np/notices/${data?.id}/`,
                     images: [{
-                        url: data?.images[0],
+                        url: data?.images,
                         width: 1200,
                         height: 630,
-                        alt: 'Notices of Kaligandaki Community Development Munch (KADAM) Myagdi',
+                        alt: data?.title,
                     },{
                         url: "https://kadammyagdi.org.np/assets/meta_images/notices.png",
                         width: 1200,

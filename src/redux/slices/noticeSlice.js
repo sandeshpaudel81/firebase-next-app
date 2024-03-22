@@ -1,8 +1,9 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
 import {getDocs, query, collection, doc, orderBy, addDoc, updateDoc, deleteDoc} from "firebase/firestore"
-import {db} from "../../../firebase-config"
+import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
 import { ref, remove, set, update } from "firebase/database";
+import { getAllNotices } from "@/utils/api-util";
 
 const getNotices = createSlice({
     name: 'getNotices',
@@ -126,9 +127,17 @@ export function fetchNotices(){
             const Notices = await getDocs(
                 query(collection(db, "notices"), orderBy('posted_at', 'desc'))
             );
+            const allNoticesFromRealDb = await getAllNotices()
             Notices.docs.forEach((doc) => {
                 const datetime = timestampToDate(doc.data().posted_at)
-                notices.push({ ...doc.data(), id: doc.id, posted_at: datetime})
+                const noticeFromRealDb = allNoticesFromRealDb.find((n) => n.id === doc.data().metaId);
+                notices.push({
+                    ...doc.data(),
+                    id: doc.id,
+                    posted_at: datetime,
+                    meta_description: noticeFromRealDb.content,
+                    metaImage: noticeFromRealDb.images
+                })
             });
             dispatch(setNotices(notices))
             dispatch(setNoticesLoading(false))
@@ -147,8 +156,8 @@ export function addNotice(data){
             await addDoc(collection(db, "notices"), {
                 title: data.title,
                 content: data.content,
-                images: data.images,
                 metaId: data.slug,
+                files: data.files,
                 posted_at: new Date()
             })
             await set(ref(realDb, 'notices/' + data.slug), {
@@ -171,8 +180,8 @@ export function editNotice(id, oldSlug, data){
             await updateDoc(doc(db, "notices", id), {
                 title: data.title,
                 content: data.content,
-                images: data.images,
-                metaId: data.slug
+                metaId: data.slug,
+                files: data.files
             })
             if (data.slug == oldSlug){
                 const updates = {}

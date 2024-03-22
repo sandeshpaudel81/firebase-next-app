@@ -1,14 +1,13 @@
 import Tiptap from '@/components/common/TipTap';
-import { addNews, addNewsReset, editNews, editNewsReset, fetchNews } from '@/redux/slices/newsSlice';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { FaArchive, FaCheck, FaFile, FaTimes } from "react-icons/fa";
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import DeleteNewsModal from '@/components/common/deleteModal/deleteNews';
 import UploadFiles from '@/components/common/UploadFiles';
 import { addNotice, addNoticeReset, editNotice, editNoticeReset, fetchNotices } from '@/redux/slices/noticeSlice';
 import { getFileNameFromUrl } from '../../../../firebase-config';
+import DeleteNoticeModal from '@/components/common/deleteModal/deleteNotice';
 
 const NoticeAdd = ({id}) => {
 
@@ -25,7 +24,6 @@ const NoticeAdd = ({id}) => {
         meta_description: "",
         slug: "",
         content: "",
-        images: [],
         files: [],
         metaImage: ''
     }
@@ -47,33 +45,20 @@ const NoticeAdd = ({id}) => {
         setvalues({ ...values, content: e })
     }
 
-    const removeSelectedImage = (index, url) => {
-        if (values.metaImage === url) {
-            setvalues({ ...values, metaImage: '', images: values.images.filter((image, i) => i !== index) });
-        } else {
-            setvalues({ ...values, images: values.images.filter((image, i) => i !== index) });
-        }
+    const removeMetaImage = () => {
+        setvalues({ ...values, metaImage: '' })
     }
 
     const removeSelectedFile = (index, url) => {
         setvalues({ ...values, files: values.files.filter((file, i) => i !== index) });
     }
 
-    const toggleMetaImage = (imgUrl) => {
-        if(values.metaImage !== imgUrl){
-            setvalues({ ...values, metaImage: imgUrl })
-        } else {
-            setvalues({ ...values, metaImage: ''})
-        }
-    }
-
     const submitHandler = async (e) => {
-        // if(id=='add'){
-        //     dispatch(addNotice(values))
-        // } else {
-        //     dispatch(editNotice(id, oldData.metaId, values))
-        // }
-        console.log(values)
+        if(id=='add'){
+            dispatch(addNotice(values))
+        } else {
+            dispatch(editNotice(id, oldData.metaId, values))
+        }
     }
 
     const deleteSubmitHandler = (e) => {
@@ -119,7 +104,6 @@ const NoticeAdd = ({id}) => {
                         meta_description: n.meta_description,
                         slug: n.metaId,
                         content: n.content,
-                        images: n.images,
                         files: n.files,
                         metaImage: n.metaImage
                     }
@@ -169,38 +153,26 @@ const NoticeAdd = ({id}) => {
                         <label className='uppercase font-semibold'>Slug</label>
                         <input type='text' className='bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] rounded-lg' name='slug' value={values.slug} onChange={slugChangeHandler} placeholder='eg. social-audit-report'></input>
                         <span className='absolute top-7 right-2 text-xl'>{slugAllowed ? <FaCheck className='text-green-700'/> : <FaTimes className='text-red-600'/>}</span>
-                        <small>{'https://www.kadammyagdi.com.np/news/'+values.slug}</small>
+                        <small>{'https://www.kadammyagdi.com.np/notices/'+values.slug}</small>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Notice Content</label>
                         <Tiptap content={values.content} onChange={contentChangeHandler}/>
                     </div>
-                    <div className='flex flex-col mb-5'>
-                        <p className='uppercase font-semibold'>Images</p>
-                        <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowImageUploadModel(true)}>
-                            Choose images
-                        </button>
-                    </div>
                     <div className='flex flex-col'>
                         <label className='uppercase font-semibold'>Meta Image</label>
-                        <small>Select meta image:</small>
+                        <button className='capitalize bg-primaryExtraLight w-[150px] px-3 py-2 text-black mt-3 rounded-md hover:bg-primaryLight cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowImageUploadModel(true)}>
+                            Choose image
+                        </button>
                         <div className='flex gap-3 mb-2'>
-                            {values.images.length > 0 ? (
-                                values.images.map((j, index) => (
-                                    <div key={index} className='relative mt-2'>
-                                        <img 
-                                            src={j} 
-                                            alt='Upload image for carousel' 
-                                            className={values.metaImage == j ? 'w-[150px] h-[100px] object-cover object-center cursor-pointer border-primaryD border-4': 'w-[150px] h-[100px] object-cover object-center cursor-pointer border-gray-300'}
-                                            onClick={() => toggleMetaImage(j)}
-                                        />
-                                        {
-                                            values.metaImage == j &&
-                                            <span className='absolute text-xl top-1/2 left-1/2 p-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full'><FaCheck className='text-green-700'/></span>
-                                        }
-                                        <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => removeSelectedImage(index, j)}><FaArchive className='text-red-600'/></span>
-                                    </div>
-                                ))
+                            {values.metaImage ? (
+                                <div className='relative mt-2'>
+                                    <img 
+                                        src={values.metaImage}  
+                                        className='w-[150px] h-[100px] object-cover object-center cursor-pointer border-gray-300'
+                                    />
+                                    <span className='absolute -top-2 -right-2 text-lg p-2 bg-white rounded-full cursor-pointer' onClick={() => removeMetaImage()}><FaArchive className='text-red-600'/></span>
+                                </div>
                             ) : (
                                 <></>
                             )}
@@ -208,7 +180,7 @@ const NoticeAdd = ({id}) => {
                     </div>
                     <div className='flex flex-col mb-5'>
                         <p className='uppercase font-semibold'>Related Files</p>
-                        <button className='capitalize bg-primaryD w-[150px] px-3 py-2 text-white mt-3 rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowFileUploadModel(true)}>
+                        <button className='capitalize bg-primaryExtraLight w-[150px] px-3 py-2 text-black mt-3 rounded-md hover:bg-primaryLight cursor-pointer disabled:cursor-not-allowed' onClick={() => setShowFileUploadModel(true)}>
                             Choose files
                         </button>
                     </div>
@@ -227,8 +199,10 @@ const NoticeAdd = ({id}) => {
                     </div>
                     <div>
                         <button type='submit' className='bg-primary px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={submitHandler}>
-                            {
-                                id == 'add' ? 'Add Notice' : 'Edit Notice'
+                            {  
+                                id == 'add' ? 
+                                (addNoticeLoading ? 'Adding' : 'Add Notice'): 
+                                (editNoticeLoading ? 'Editing' : 'Edit Notice')
                             }
                         </button>
                         {
@@ -242,7 +216,7 @@ const NoticeAdd = ({id}) => {
             </div>
             {
                 showModal &&
-                <DeleteNewsModal
+                <DeleteNoticeModal
                     setShowModal={setShowModal}
                     id={id}
                     slug={oldData.metaId}
@@ -254,8 +228,8 @@ const NoticeAdd = ({id}) => {
                     setShowUploadModal={setShowImageUploadModel}
                     values={values} 
                     setvalues={setvalues} 
-                    type='array'
-                    varName='images'
+                    type='string'
+                    varName='metaImage'
                 />
             }
             {

@@ -55,9 +55,9 @@ const Tiptap = ({content, onChange}) => {
                 class: "bg-gray-300 p-2 outline-none focus:bg-[#b4bbc5] min-h-[100px]"
             },
         },
-        onUpdate({ editor }){
-            handleChange(editor.getHTML())
-        }
+        onBlur: ({ editor }) => {
+            handleChange(editor.getHTML());
+        },
     })
 
   return (
