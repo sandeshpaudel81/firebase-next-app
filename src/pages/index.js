@@ -36,6 +36,7 @@ export default function Home() {
   return (
     <>
         <Head>
+            <title>Home | KADAM Myagdi</title>
             <meta property="og:image" content="https://www.kadammyagdi.org.np/assets/meta_images/homepage.png"/>
             <meta property="og:title" content="Home | KADAM Myagdi"/>
             <meta property="og:description" content="Kaligandaki Community Development Munch (KADAM), registered according to the Institution Registration Act of 2034 BS  in the local administration in Myagdi district in 2056 BS, is an unbroken community-based national NGO dedicated to promoting human rights and empowerment in the community."/>
