@@ -11,6 +11,7 @@ import ProjectBox from '@/components/common/ProjectBox';
 import { fetchNews } from '@/redux/slices/newsSlice';
 import CenteredLoading from '@/components/common/Loader';
 import {NextSeo} from 'next-seo'
+import Head from 'next/head';
 
 export default function Home() {
     const dispatch = useDispatch();
@@ -34,7 +35,15 @@ export default function Home() {
 
   return (
     <>
-        <NextSeo
+        <Head>
+            <title>Home | KADAM Myagdi</title>
+            <meta property="og:image" content="https://www.kadammyagdi.org.np/assets/meta_images/homepage.png"/>
+            <meta property="og:title" content="Home | KADAM Myagdi"/>
+            <meta property="og:description" content="Kaligandaki Community Development Munch (KADAM), registered according to the Institution Registration Act of 2034 BS  in the local administration in Myagdi district in 2056 BS, is an unbroken community-based national NGO dedicated to promoting human rights and empowerment in the community."/>
+            <meta property="og:image:width" content="1200"/>
+            <meta property="og:image:height" content="630"/>
+        </Head>
+        {/* <NextSeo
             title="Home | KADAM Myagdi"
             description="Kaligandaki Community Development Munch (KADAM), registered according to the Institution Registration Act of 2034 BS  in the local administration in Myagdi district in 2056 BS, is an unbroken community-based national NGO dedicated to promoting human rights and empowerment in the community."
             keywords="kadam myagdi, vmgo of ngo, vision of ngo"
@@ -49,7 +58,7 @@ export default function Home() {
                 }],
                 site_name: 'Kaligandaki Community Development Munch (KADAM) Myagdi'
             }}
-        />
+        /> */}
     
     <main>
         {

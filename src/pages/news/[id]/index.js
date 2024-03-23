@@ -9,19 +9,19 @@ const NewsDetail = (props) => {
   return (
     <div>
         <NextSeo
-                title={`${data?.title} | KADAM Myagdi`}
-                description={`${data?.content.substring(0,120)}`}
+                title={`${data.title} | KADAM Myagdi`}
+                description={`${data?.content}`}
                 keywords="news of kadam myagdi, ngo news, ngo programs"
                 openGraph={{
-                    title: `${data?.title} | KADAM Myagdi`,
-                    description: `${data?.content.substring(0,120)}`,
+                    title: `${data.title} | KADAM Myagdi`,
+                    description: `${data?.content}`,
                     type: 'article',
-                    url: `https://kadammyagdi.org.np/news/${data?.id}/`,
+                    url: `https://kadammyagdi.org.np/news/${data.id}/`,
                     images: [{
-                        url: data?.images,
+                        url: data.images,
                         width: 1200,
                         height: 630,
-                        alt: data?.title,
+                        alt: data.title,
                         type: `'image/*'`
                     },{
                         url: "https://kadammyagdi.org.np/assets/meta_images/news.png",
