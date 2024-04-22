@@ -3,7 +3,7 @@ import {getDocs, query, collection, orderBy, addDoc, updateDoc, doc, deleteDoc} 
 import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
 import { ref, remove, set, update } from "firebase/database"
-import { addNewsToRealDB, getAllNews } from "@/utils/api-util";
+import { addNewsToRealDB, deleteNewsFromRealDB, getAllNews } from "@/utils/api-util";
 
 const getNews = createSlice({
     name: 'getNews',
@@ -187,20 +187,31 @@ export function editNews(id, oldSlug, data){
                 metaId: data.slug
             })
             if (data.slug == oldSlug){
-                const updates = {}
-                updates['/news/'+oldSlug] = {
+                await addNewsToRealDB(data.slug, {
                     title: data.title,
                     content: data.meta_description,
                     images: data.metaImage
-                }
-                await update(ref(realDb), updates)
+                })
+                // const updates = {}
+                // updates['/news/'+oldSlug] = {
+                //     title: data.title,
+                //     content: data.meta_description,
+                //     images: data.metaImage
+                // }
+                // await update(ref(realDb), updates)
             } else {
-                await remove(ref(realDb, `news/${oldSlug}`))
-                await set(ref(realDb, 'news/' + data.slug), {
+                await deleteNewsFromRealDB(oldSlug)
+                await addNewsToRealDB(data.slug, {
                     title: data.title,
                     content: data.meta_description,
                     images: data.metaImage
-                }); 
+                })
+                // await remove(ref(realDb, `news/${oldSlug}`))
+                // await set(ref(realDb, 'news/' + data.slug), {
+                //     title: data.title,
+                //     content: data.meta_description,
+                //     images: data.metaImage
+                // }); 
             }
             dispatch(editNewsLoading(false))
             dispatch(editNewsSuccess(true))
@@ -215,7 +226,7 @@ export function deleteNews(id, slug){
         dispatch(deleteNewsLoading(true))
         try {
             await deleteDoc(doc(db, "news", id))
-            await remove(ref(realDb, `news/${slug}`))
+            await deleteNewsFromRealDB(slug)
             dispatch(deleteNewsLoading(false))
             dispatch(deleteNewsSuccess(true))
         } catch(err) {

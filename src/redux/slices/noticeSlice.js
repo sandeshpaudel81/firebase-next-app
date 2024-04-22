@@ -3,7 +3,7 @@ import {getDocs, query, collection, doc, orderBy, addDoc, updateDoc, deleteDoc} 
 import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
 import { ref, remove, set, update } from "firebase/database";
-import { getAllNotices } from "@/utils/api-util";
+import { addNoticeToRealDB, deleteNoticeFromRealDB, getAllNotices } from "@/utils/api-util";
 
 const getNotices = createSlice({
     name: 'getNotices',
@@ -160,11 +160,11 @@ export function addNotice(data){
                 files: data.files,
                 posted_at: new Date()
             })
-            await set(ref(realDb, 'notices/' + data.slug), {
+            await addNoticeToRealDB(data.slug, {
                 title: data.title,
                 content: data.meta_description,
                 images: data.metaImage
-            });
+            })
             dispatch(addNoticeLoading(false))
             dispatch(addNoticeSuccess(true))
         } catch(err) {
@@ -184,20 +184,18 @@ export function editNotice(id, oldSlug, data){
                 files: data.files
             })
             if (data.slug == oldSlug){
-                const updates = {}
-                updates['/notices/'+oldSlug] = {
+                await addNoticeToRealDB(data.slug, {
                     title: data.title,
                     content: data.meta_description,
                     images: data.metaImage
-                }
-                await update(ref(realDb), updates)
+                })
             } else {
-                await remove(ref(realDb, `notices/${oldSlug}`))
-                await set(ref(realDb, 'notices/' + data.slug), {
+                await deleteNoticeFromRealDB(oldSlug)
+                await addNoticeToRealDB(data.slug, {
                     title: data.title,
                     content: data.meta_description,
                     images: data.metaImage
-                }); 
+                }) 
             }
             dispatch(editNoticeLoading(false))
             dispatch(editNoticeSuccess(true))
