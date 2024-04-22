@@ -3,7 +3,7 @@ import {getDocs, query, collection, orderBy, addDoc, updateDoc, doc, deleteDoc} 
 import {db, realDb} from "../../../firebase-config"
 import moment from "moment";
 import { ref, remove, set, update } from "firebase/database"
-import { getAllNews } from "@/utils/api-util";
+import { addNewsToRealDB, getAllNews } from "@/utils/api-util";
 
 const getNews = createSlice({
     name: 'getNews',
@@ -159,11 +159,16 @@ export function addNews(data){
                 metaId: data.slug,
                 posted_at: new Date()
             })
-            await set(ref(realDb, 'news/' + data.slug), {
+            // await set(ref(realDb, 'news/' + data.slug), {
+            //     title: data.title,
+            //     content: data.meta_description,
+            //     images: data.metaImage
+            // });
+            await addNewsToRealDB(data.slug, {
                 title: data.title,
                 content: data.meta_description,
                 images: data.metaImage
-            });
+            })
             dispatch(addNewsLoading(false))
             dispatch(addNewsSuccess(true))
         } catch(err) {
