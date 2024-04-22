@@ -14,6 +14,33 @@ export async function getAllNotices() {
     return notices;
 }
 
+export async function addNoticeToRealDB(id, data) {
+    try{
+        await fetch(`https://kadam-myagdi-default-rtdb.asia-southeast1.firebasedatabase.app/notices/${id}.json`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+    } catch(err){
+        console.log(err)
+    }
+}
+
+export async function deleteNoticeFromRealDB(id) {
+    try{
+        await fetch(`https://kadam-myagdi-default-rtdb.asia-southeast1.firebasedatabase.app/notices/${id}.json`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+    } catch(err){
+        console.log(err)
+    }
+}
+
 
 export async function getNoticeById(id) {
     const allNotices = await getAllNotices();
