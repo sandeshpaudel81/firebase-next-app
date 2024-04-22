@@ -50,6 +50,19 @@ export async function addNewsToRealDB(id, data) {
     }
 }
 
+export async function deleteNewsFromRealDB(id) {
+    try{
+        await fetch(`https://kadam-myagdi-default-rtdb.asia-southeast1.firebasedatabase.app/news/${id}.json`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+    } catch(err){
+        console.log(err)
+    }
+}
+
 
 export async function getNewsById(id) {
     const allNews = await getAllNews();
