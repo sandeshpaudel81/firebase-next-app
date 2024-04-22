@@ -36,6 +36,20 @@ export async function getAllNews() {
     return news;
 }
 
+export async function addNewsToRealDB(id, data) {
+    try{
+        await fetch(`https://kadam-myagdi-default-rtdb.asia-southeast1.firebasedatabase.app/news/${id}.json`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+    } catch(err){
+        console.log(err)
+    }
+}
+
 
 export async function getNewsById(id) {
     const allNews = await getAllNews();
