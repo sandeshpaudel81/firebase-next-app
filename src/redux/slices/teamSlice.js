@@ -102,10 +102,36 @@ const getMembers = createSlice({
     }
 })
 
+const editTeam = createSlice({
+    name: 'editTeam',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        setEditTeamLoading(state, action){
+            state.loading = action.payload
+        },
+        setEditTeamSuccess(state, action){
+            state.success = action.payload
+        },
+        setEditTeamError(state, action){
+            state.error = action.payload
+        },
+        setEditTeamReset(state){
+            state.loading = false
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const { setBoardCommittee, setBoardCommitteeLoading, setBoardCommitteeSuccess, setBoardCommitteeError } = getBoardCommittee.actions;
 export const { setOfficeStaffs, setOfficeStaffsLoading, setOfficeStaffsSuccess, setOfficeStaffsError } = getOfficeStaffs.actions;
 export const { setAdvisors, setAdvisorsLoading, setAdvisorsSuccess, setAdvisorsError } = getAdvisors.actions;
 export const { setGeneralMembers, setLifeMembers, setMembersLoading, setMembersSuccess, setMembersError } = getMembers.actions;
+export const { setEditTeamLoading, setEditTeamSuccess, setEditTeamError } = editTeam.actions;
 
 export const teamReducer = combineReducers({
     getBoardCommittee: getBoardCommittee.reducer,
@@ -204,6 +230,27 @@ export function fetchMembers(){
         } catch(err) {
             dispatch(setMembersLoading(false))
             dispatch(setMembersError(err.message))
+        }
+    }
+}
+
+export function editTeamCategory(){
+    return async function editTeamCategoryThunk(dispatch, getState){
+        dispatch(setEditTeamLoading(true))
+        try {
+            // let advisors = []
+            // const Members = await getDocs(
+            //     query(collection(db, "members"),where('teamCategory', '==', 'Advisors'), orderBy('level', 'asc'))
+            // );
+            // Members.docs.forEach((doc) => {
+            //     advisors.push({ ...doc.data(), id: doc.id})
+            // });
+            // dispatch(setAdvisors(advisors))
+            dispatch(setEditTeamLoading(false))
+            dispatch(setEditTeamSuccess(true)) 
+        } catch(err) {
+            dispatch(setEditTeamLoading(false))
+            dispatch(setEditTeamError(err.message))
         }
     }
 }
