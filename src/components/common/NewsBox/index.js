@@ -10,11 +10,11 @@ const NewsBox = ({news}) => {
             <p className='text-[12px] font-medium'>{posted_at}</p>
           </div>
           <div className='overflow-hidden z-10'>
-              <img src={images[0]} alt={title} className='w-full h-[200px] object-cover object-center group-hover:scale-[1.1] group-hover:blur-[1px] duration-300'/>
+              <img src={images} alt={title} className='w-full h-[200px] object-cover object-center group-hover:scale-[1.1] group-hover:blur-[1px] duration-300'/>
           </div>
           <div className='bg-primaryExtraLight absolute p-2 bottom-[-90px] group-hover:bottom-0 duration-500 z-20'>
               <h2 className='text-xl font-bold'>{title}</h2>
-              <p className='text-gray-700 h-24 opacity-0 overflow-hidden group-hover:opacity-100 text-sm'>{content} - {posted_at}</p>
+              <p className='text-gray-700 h-24 opacity-0 overflow-hidden group-hover:opacity-100 text-sm' dangerouslySetInnerHTML={{__html: content}}></p>
               <small className='flex items-center mt-2 font-medium text-gray-600 opacity-0 group-hover:opacity-100'><FaRegHourglass className='mr-2'/>5 min read</small>
           </div>
           <div className='absolute bottom-0 right-0 bg-secondary z-40 text-white'>
