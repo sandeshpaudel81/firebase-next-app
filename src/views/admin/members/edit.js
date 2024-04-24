@@ -133,7 +133,7 @@ const TeamEdit = ({id}) => {
                                             <input className='outline-none border-none bg-transparent' name={`address-${index}`} value={mem.address} onChange={fieldChangeHandler}></input>
                                         </td>
                                         <td className="px-4 py-2">
-                                            <FaArchive className='text-red-500 hover:text-red-600 cursor-pointer'/>
+                                            <FaArchive className='text-red-500 hover:text-red-600 cursor-pointer' onClick={() => setShowDeleteModal({index: index, active: true})}/>
                                         </td>
                                     </tr>
                                 })
@@ -153,6 +153,7 @@ const TeamEdit = ({id}) => {
                                 <th scope="col" className="px-4 py-2">
                                     Address
                                 </th>
+                                <th scope="col" className="px-4 py-2"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -165,6 +166,9 @@ const TeamEdit = ({id}) => {
                                         <td className="px-4 py-2">
                                             <input className='outline-none border-none bg-transparent' name={`address-${index}`} value={mem.address} onChange={fieldChangeHandler}></input>
                                         </td>
+                                        <td className="px-4 py-2">
+                                            <FaArchive className='text-red-500 hover:text-red-600 cursor-pointer' onClick={() => setShowDeleteModal({index: index, active: true})}/>
+                                        </td>
                                     </tr>
                                 })
                             }
@@ -174,7 +178,7 @@ const TeamEdit = ({id}) => {
                 (<div className="flex flex-wrap mt-10">
                     {teamData.members.length>0 ? (
                         teamData.members.map((mem, index) => (
-                            <div className='flex flex-row items-center'>
+                            <div key={index} className='flex flex-row items-center'>
                                 { index == 0 && 
                                     <div className='cursor-pointer p-5 bg-gray-200 hover:bg-gray-300' onClick={() => addMemberHandle(0)}>+</div>
                                 }
