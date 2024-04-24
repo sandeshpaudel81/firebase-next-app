@@ -39,10 +39,20 @@ const TeamCategoryList = () => {
                     </div>
                     <div className='bg-slate-300 p-2 flex'>
                         <div>
-                            <h1 className='text-lg'>General & Life Members</h1>
+                            <h1 className='text-lg'>General Members</h1>
                         </div>
                         <div className="ml-5">
-                            <Link href='/admin/members/general-life-members'>
+                            <Link href='/admin/members/general-members'>
+                                <FaEdit className='text-2xl text-primary hover:text-primaryDark'/>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className='bg-slate-300 p-2 flex'>
+                        <div>
+                            <h1 className='text-lg'>Life Members</h1>
+                        </div>
+                        <div className="ml-5">
+                            <Link href='/admin/members/life-members'>
                                 <FaEdit className='text-2xl text-primary hover:text-primaryDark'/>
                             </Link>
                         </div>
