@@ -6,7 +6,6 @@ import { donorsPartnersReducer } from './slices/donorsPartnersSlice'
 import { imageReducer } from './slices/imageSlice'
 import { noticesReducer } from './slices/noticeSlice'
 import { newsReducer } from './slices/newsSlice'
-import { teamReducer } from './slices/teamSlice'
 import { galleryReducer } from './slices/gallerySlice'
 import { publicationsReducer } from './slices/publicationSlice'
 import { storageReducer } from './slices/storageSlice'
@@ -20,7 +19,6 @@ export const store = configureStore({
         donorsPartners: donorsPartnersReducer,
         notice: noticesReducer,
         news: newsReducer,
-        team: teamReducer,
         teamMembers: teamMembersReducer,
         gallery: galleryReducer,
         publications: publicationsReducer,
