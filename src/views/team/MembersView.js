@@ -1,18 +1,36 @@
-import PersonCard from "@/components/common/PersonCard/personCard"
-import { fetchMembers } from "@/redux/slices/teamSlice"
-import React, { useEffect } from "react"
+import { fetchTeamMembers } from "@/redux/slices/teamMemberSlice"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 
 const MembersView = () => {
 	const dispatch = useDispatch()
-	const {generalMembers, lifeMembers, loading, success, error} = useSelector(state => state.team.getMembers)
+	const router = useRouter()
+	const {data, success} = useSelector(state => state.teamMembers.getTeamMembers)
+	const initialValue = {
+        id: "",
+        name: "",
+        members: []
+    }
+	const [generalMembers, setGeneralMembers] = useState(initialValue)
+	const [lifeMembers, setLifeMembers] = useState(initialValue)
 	useEffect(() => {
-		if (!success){
-			dispatch(fetchMembers())
-		}
-		return ;
-	}, [success, dispatch])
+        if(!success){
+            dispatch(fetchTeamMembers())
+        } else {
+            const gm = data.find((n) => n.name === 'general-members')
+			const lm = data.find((n) => n.name === 'life-members')
+            if(gm != null && lm!= null){
+                setGeneralMembers(gm)
+				setLifeMembers(lm)
+            } else {
+                toast.error("Team not found!")
+                router.push('/')
+            }
+        }
+    }, [dispatch, success])
+
 	return (
 		<div className="container mx-auto px-5 py-10 md:py-20">
 			<div className="border-l-8 border-primary px-5">
@@ -43,7 +61,7 @@ const MembersView = () => {
 							</thead>
 							<tbody>
 								{
-									generalMembers?.map((mem, index) => {
+									generalMembers?.members.map((mem, index) => {
 										return <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 											<th scope="row" className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 												{mem.name}
@@ -76,7 +94,7 @@ const MembersView = () => {
 						</thead>
 						<tbody>
 							{
-								lifeMembers?.map((mem, index) => {
+								lifeMembers?.members.map((mem, index) => {
 									return <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 										<th scope="row" className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
 											{mem.name}
