@@ -1,17 +1,34 @@
 import PersonCard from "@/components/common/PersonCard/personCard"
+import { fetchTeamMembers } from "@/redux/slices/teamMemberSlice"
 import { fetchAdvisors } from "@/redux/slices/teamSlice"
-import React, { useEffect } from "react"
+import { useRouter } from "next/router"
+import React, { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
 
 const AdvisorsView = () => {
 	const dispatch = useDispatch()
-	const {data, loading, success, error} = useSelector(state => state.team.getAdvisors)
+	const router = useRouter()
+	const {data, success} = useSelector(state => state.teamMembers.getTeamMembers)
+	const initialValue = {
+        id: "",
+        name: "",
+        members: []
+    }
+	const [teamData, setTeamData] = useState(initialValue)
 	useEffect(() => {
-		if (!success){
-			dispatch(fetchAdvisors())
-		}
-		return ;
-	}, [success, dispatch])
+        if(!success){
+            dispatch(fetchTeamMembers())
+        } else {
+            const d = data.find((n) => n.name === 'advisors')
+            if(d != null){
+                setTeamData(d)
+            } else {
+                toast.error("Team not found!")
+                router.push('/')
+            }
+        }
+    }, [dispatch, success])
 	
 	return (
 		<div className="container mx-auto px-5 py-10 md:py-20">
@@ -25,14 +42,13 @@ const AdvisorsView = () => {
 			</div>
 
 			<div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-10 gap-8">
-				{data.map((adv) => (
+				{teamData?.members.map((adv) => (
 					<PersonCard
 						key={adv.id}
 						name={adv.name}
-						post={adv.post}
+						post={adv.designation}
 						contact={adv.contact}
-						address={adv.address}
-						photo={adv.picture}
+						photo={adv.image}
 					/>
 				))}
 			</div>
