@@ -1,6 +1,5 @@
 import PersonCard from "@/components/common/PersonCard/personCard"
 import { fetchTeamMembers } from "@/redux/slices/teamMemberSlice"
-import { fetchAdvisors } from "@/redux/slices/teamSlice"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import toast from "react-hot-toast"
