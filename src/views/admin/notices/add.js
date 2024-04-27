@@ -184,7 +184,6 @@ const NoticeAdd = ({id}) => {
                             Choose files
                         </button>
                     </div>
-
                     <div className='flex gap-3 mb-5'>
                         {values.files.length > 0 ? (
                             values.files.map((j, index) => (

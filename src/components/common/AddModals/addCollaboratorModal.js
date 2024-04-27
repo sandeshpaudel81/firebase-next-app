@@ -10,7 +10,11 @@ const AddCollaboratorModal = ({todo, index, data, setData, setAddCollaboratorMod
     }
     const [values, setvalues] = useState(initialValue)
     const closeModal = () => {
-        setAddCollaboratorModal(false)
+        if(todo=='add'){
+            setAddCollaboratorModal(false)
+        } else {
+            setAddCollaboratorModal({index:-1, active:false})
+        }
     }
 
     const textChangeHandler = (e) => {
@@ -29,7 +33,7 @@ const AddCollaboratorModal = ({todo, index, data, setData, setAddCollaboratorMod
             const updatedcollaborators = [...data.collaborators]
             updatedcollaborators[index] = collaborator
             setData({...data, collaborators: updatedcollaborators});
-            setAddCollaboratorModal(false)
+            setAddCollaboratorModal({index:-1, active:false})
         }
     }
 
