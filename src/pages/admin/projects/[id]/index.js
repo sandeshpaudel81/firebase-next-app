@@ -13,7 +13,7 @@ const AdminProjectDetail = () => {
     const { query: { id } } = useRouter()
     return (
         <div>
-            { id === "add" ? <ProjectAdd /> : <ProjectDetail id={id}/> }
+            { id === "add" ? <ProjectAdd id={id} /> : <ProjectAdd id={id}/> }
         </div>
     )
 }
