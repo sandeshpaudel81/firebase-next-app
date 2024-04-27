@@ -1,16 +1,14 @@
-import UploadProgress from '@/components/common/UploadProgress';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast';
 import { FaChevronLeft } from 'react-icons/fa';
+import { IoIosAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
-import { MdDeleteForever } from 'react-icons/md'
-import { uploadImage, uploadImageReset, uploadImageSuccess } from '@/redux/slices/imageSlice';
+import Tiptap from '@/components/common/TipTap';
+import AddCollaboratorModal from '@/components/common/AddModals/addCollaboratorModal';
 
 const ProjectAdd = () => {
     const dispatch = useDispatch()
-    const {image:uploadedImageUrl, loading:uploadLoading, progress:uploadProgress, success:uploadSuccess} = useSelector(state => state.image.uploadImage);
-    const [image, setImage] = useState(null)
     const initialValue = {
         title: "",
         objectives: "",
@@ -25,8 +23,7 @@ const ProjectAdd = () => {
         images: []
     }
     const [values, setvalues] = useState(initialValue)
-    const [collaboratorName, setcollaboratorName] = useState("")
-    const [progress, setProgress] = useState(0)
+    const [addCollaboratorModal, setAddCollaboratorModal] = useState(false)
 
     const changeHandler = (e) => {
         if(e.target.name === "isCompleted") {
@@ -36,62 +33,19 @@ const ProjectAdd = () => {
         }
     }
 
-    // const objectivesChangeHandler = (e) => {
-    //     setvalues({ ...values, objectives: e })
-    // }
-    // const methodologiesChangeHandler = (e) => {
-    //     setvalues({ ...values, methodologies: e })
-    // }
-    // const outcomesChangeHandler = (e) => {
-    //     setvalues({ ...values, outcomes: e })
-    // }
-
-    const addCollaboratorHandler = async () => {
-        if (collaboratorName.length > 0) {
-            let tempObj = {
-                name: collaboratorName,
-                imageUrl: ""  
-            }
-            if (image !== null) {
-                try {
-                    await dispatch(uploadImage("projects", image))
-                    if (uploadSuccess) {
-                        tempObj.imageUrl = uploadedImageUrl;
-                    }
-                    let tempCollab = values.collaborators;
-                    tempCollab.push(tempObj);
-                    setvalues({ ...values, collaborators: tempCollab });
-                    console.log(values);
-                    await dispatch(uploadImageReset());
-                    setcollaboratorName("");
-                    toast.success("Collaborator added successfully.");
-                } catch(err) {
-                    toast.error("Could not upload image.");
-                }
-            } else {
-            let tempCollab = values.collaborators;
-            tempCollab.push(tempObj);
-            setvalues({ ...values, collaborators: tempCollab });
-            console.log(values);
-            setcollaboratorName("");
-            toast.success("Collaborator added successfully.");
-            }
-        } else {
-            return toast.error("Name of the collaborator is required.")
-        }
+    const objectivesChangeHandler = (e) => {
+        setvalues({ ...values, objectives: e })
     }
-
-    const deleteCollaborator = () => {
-
+    const methodologiesChangeHandler = (e) => {
+        setvalues({ ...values, methodologies: e })
+    }
+    const outcomesChangeHandler = (e) => {
+        setvalues({ ...values, outcomes: e })
     }
     
     const addProjectHandler = () => {
 
     }
-
-    useEffect(() => {
-        setProgress(uploadProgress)
-    }, [uploadProgress])
 
     return (
         <div className='container mx-auto py-5'>
@@ -100,22 +54,22 @@ const ProjectAdd = () => {
                 <p className='uppercase text-gray-600 text-sm font-medium mt-2'>On the portfolio</p>
             </div>
             <div className='mt-5 md:mt-10'>
-                <div className='w-1/2'>
+                <div className='w-2/3'>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Project Title</label>
                         <input type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='title' value={values.title} onChange={changeHandler}></input>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Objectives</label>
-                        {/* <ReactQuill theme="snow" value={values.objectives} onChange={objectivesChangeHandler}/> */}
+                        <Tiptap content={values.objectives} onChange={objectivesChangeHandler}/>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Methodologies</label>
-                        {/* <ReactQuill theme="snow" value={values.methodologies} onChange={methodologiesChangeHandler}/> */}
+                        <Tiptap content={values.methodologies} onChange={methodologiesChangeHandler}/>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Outcomes</label>
-                        {/* <ReactQuill theme="snow" value={values.outcomes} onChange={outcomesChangeHandler}/> */}
+                        <Tiptap content={values.outcomes} onChange={outcomesChangeHandler}/>
                     </div>
                     <div className='flex flex-col mb-5'>
                         <label className='uppercase font-semibold'>Project Area</label>
@@ -135,35 +89,21 @@ const ProjectAdd = () => {
                         <p>Completed</p>
                     </div>
                     <div className='flex flex-col mb-5'>
-                        <label className='uppercase font-semibold mr-5'>Collaborators</label>
-                        {
-                            values.collaborators?.map((collab, index) => {
-                                return <div key={index} className='flex justify-between items-center bg-slate-100 p-2 mb-2 rounded-md'>
-                                    <img src={collab.imageUrl} alt={collab.name} className='h-[50px] w-[50px] object-cover'/>
-                                    <p>{collab.name}</p>
-                                    <MdDeleteForever className='text-3xl cursor-pointer text-red-600 hover:text-red-500 ' onClick={deleteCollaborator}/>
-                                </div>
-                            })
-                        }
-                        <div className='flex flex-col bg-primaryExtraLight p-2 gap-2'>
-                            <input type='text' className='bg-gray-300 p-2 focus:border-primary focus:bg-gray-200 rounded-lg placeholder-gray-500' placeholder='Name of the collaborator' value={collaboratorName} name='name' onChange={(e) => setcollaboratorName(e.target.value)}></input>
-                            {(progress > 0) ? 
-                                <UploadProgress progress={progress}/> : <div></div>
+                        <div className='flex items-center'>
+                            <label className='uppercase font-semibold mr-5'>Collaborators</label>
+                            <button type='submit' className='text-3xl text-primary rounded-lg cursor-pointer hover:text-primaryD' onClick={() => setAddCollaboratorModal(true)}><IoIosAddCircle /></button>
+                        </div>
+                        <div className='flex flex-wrap gap-4'>
+                            {
+                                values.collaborators.map((collab, index) => (
+                                    <div key={index} className='flex flex-col items-center'>
+                                        <img src={collab.imageUrl} className='w-28 h-28 object-cover border-2'/>
+                                        <h4>{collab.name}</h4>
+                                    </div>
+                                ))
                             }
-                            <label className='font-medium text-sm'>Logo/Image :</label>
-                            <div className='flex'>
-                                <input type='file' accept='image/*' onChange={(e) => setImage(e.target.files[0])}></input>
-                                <button className='uppercase bg-primaryD w-1/5 text-white rounded-md hover:bg-primaryDark cursor-pointer disabled:cursor-not-allowed' onClick={addCollaboratorHandler}>
-                                    {/* { uploadLoading ? "Uploading..." : "Upload" } */}Add
-                                </button>
-                            </div>
                         </div>
                     </div>
-                    {/* <div>
-                        {uploadSuccess ? (
-                            <img src={imageUrl} alt='slide' className='w-[200px] h-[150px] object-cover object-center'/>
-                        ) : <></> }
-                    </div> */}
                     <div className='flex flex-col mb-5'>
                         <input type='text' className='bg-slate-400 text-white p-2 focus:border-primary focus:bg-gray-400 rounded-lg' name='thumbnailImageUrl' value={values.thumbnailImageUrl} disabled></input>
                     </div>
@@ -177,6 +117,9 @@ const ProjectAdd = () => {
                     <p className='flex items-center font-medium'><FaChevronLeft className='mr-3'/>All Projects</p>
                 </Link>
             </div>
+            { addCollaboratorModal &&
+                <AddCollaboratorModal todo='add' data={values} setData={setvalues} setAddCollaboratorModal={setAddCollaboratorModal}/>
+            }
         </div>
     )
 }

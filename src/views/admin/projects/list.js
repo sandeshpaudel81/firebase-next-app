@@ -21,16 +21,11 @@ const ProjectList = () => {
             </div>
             { projects?.map((project) => {
                 return <Link key={project.id} href={`/admin/projects/${project.id}`} className='col-span-4 md:col-span-1'>
-                    <div className=' bg-primaryExtraLight rounded-md p-2 group'>
+                    <div className=' bg-primaryExtraLight hover:bg-primaryLight rounded-md p-2 group'>
+                        <p className={project.isCompleted ? "text-sdgGreen text-[12px]" : "text-sdgOrange text-[12px]"}>
+                            {project.isCompleted ? "Completed" : "Ongoing"}
+                        </p>
                         <p className='font-medium text-lg md:text-xl'>{project.title}</p>
-                        <div className='flex gap-5 text-sm mt-8'>
-                            <button type='submit' className='bg-primary px-5 py-1 text-white rounded-lg group-hover:bg-primaryDark cursor-pointer'>
-                                Update
-                            </button>
-                            <button type='submit' className='bg-red-700 px-5 py-1 text-white rounded-lg group-hover:bg-red-800 cursor-pointer'>
-                                Delete
-                            </button>
-                        </div>
                     </div>
                 </Link>
             })}
