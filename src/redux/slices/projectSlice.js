@@ -1,5 +1,5 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, doc, getDoc, addDoc, updateDoc} from "firebase/firestore"
+import {getDocs, query, collection, doc, getDoc, addDoc, updateDoc, deleteDoc} from "firebase/firestore"
 import {db} from "../../../firebase-config"
 
 const getProjectSlice = createSlice({
@@ -75,14 +75,40 @@ const editProjectSlice = createSlice({
     }
 })
 
+const deleteProjectSlice = createSlice({
+    name: 'deleteProject',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        deleteProjectLoading(state, action){
+            state.loading = action.payload
+        },
+        deleteProjectSuccess(state, action){
+            state.success = action.payload
+        },
+        deleteProjectError(state, action){
+            state.error = action.payload
+        },
+        deleteProjectReset(state){
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const { setProjects, setLoading, setSuccess, setError } = getProjectSlice.actions;
 export const { addProjectLoading, addProjectSuccess, addProjectError, addProjectReset } = addProjectSlice.actions;
 export const { editProjectLoading, editProjectSuccess, editProjectError, editProjectReset } = editProjectSlice.actions;
+export const { deleteProjectLoading, deleteProjectSuccess, deleteProjectError, deleteProjectReset } = deleteProjectSlice.actions;
 
 export const projectReducer = combineReducers({
     getProject: getProjectSlice.reducer,
     addProject: addProjectSlice.reducer,
     editProject: editProjectSlice.reducer,
+    deleteProject: deleteProjectSlice.reducer,
 });
 
 // thunks
@@ -129,6 +155,19 @@ export function editProject(id, data){
             dispatch(editProjectSuccess(true))
         } catch(err) {
             dispatch(editProjectError(err.message))
+        }
+    }
+}
+
+export function deleteProject(id, slug){
+    return async function deleteProjectThunk(dispatch){
+        dispatch(deleteProjectLoading(true))
+        try {
+            await deleteDoc(doc(db, "news", id))
+            dispatch(deleteProjectLoading(false))
+            dispatch(deleteProjectSuccess(true))
+        } catch(err) {
+            dispatch(deleteProjectError(err.message))
         }
     }
 }

@@ -11,6 +11,7 @@ import UploadFiles from '@/components/common/UploadFiles';
 import { addProject, addProjectReset, editProject, editProjectReset, fetchProjects } from '@/redux/slices/projectSlice';
 import { useRouter } from 'next/router';
 import CenteredLoading from '@/components/common/Loader';
+import DeleteProjectModal from '@/components/common/deleteModal/deleteProject';
 
 const ProjectAdd = ({id}) => {
     const {data: projects, loading:projectLoading, success: projectSuccess} = useSelector(state => state.project.getProject)
@@ -33,6 +34,7 @@ const ProjectAdd = ({id}) => {
     }
     const [values, setvalues] = useState(initialValue)
     const [showUploadModel, setShowUploadModel] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [addCollaboratorModal, setAddCollaboratorModal] = useState(false)
     const [editCollaboratorModal, setEditCollaboratorModal] = useState({
         index: -1, active:false
@@ -226,6 +228,12 @@ const ProjectAdd = ({id}) => {
                                     (editProjectLoading ? 'Editing' : 'Edit Project')
                                 }
                             </button>
+                            {
+                            id !== 'add' &&
+                            <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={() => setShowDeleteModal(true)}>
+                                Delete
+                            </button>
+                        }
                         </div>
                     </div>
                 }
@@ -246,6 +254,9 @@ const ProjectAdd = ({id}) => {
             }
             { showUploadModel && 
                 <UploadFiles setShowUploadModal={setShowUploadModel} values={values} setvalues={setvalues} type='string' varName='thumbnailImageUrl' />
+            }
+            { showModal &&
+                <DeleteProjectModal setShowModal={setShowDeleteModal} id={id} />
             }
         </div>
     )
