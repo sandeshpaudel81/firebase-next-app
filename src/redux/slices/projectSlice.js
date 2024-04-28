@@ -159,11 +159,11 @@ export function editProject(id, data){
     }
 }
 
-export function deleteProject(id, slug){
+export function deleteProject(id){
     return async function deleteProjectThunk(dispatch){
         dispatch(deleteProjectLoading(true))
         try {
-            await deleteDoc(doc(db, "news", id))
+            await deleteDoc(doc(db, "projects", id))
             dispatch(deleteProjectLoading(false))
             dispatch(deleteProjectSuccess(true))
         } catch(err) {

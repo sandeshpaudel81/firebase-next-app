@@ -255,7 +255,7 @@ const ProjectAdd = ({id}) => {
             { showUploadModel && 
                 <UploadFiles setShowUploadModal={setShowUploadModel} values={values} setvalues={setvalues} type='string' varName='thumbnailImageUrl' />
             }
-            { showModal &&
+            { showDeleteModal &&
                 <DeleteProjectModal setShowModal={setShowDeleteModal} id={id} />
             }
         </div>

@@ -1,5 +1,4 @@
 import Layout from '@/views/Layout'
-import ProjectDetail from '@/views/admin/projects/detail'
 import { useRouter } from 'next/router'
 import React from 'react'
 import dynamic from 'next/dynamic'
