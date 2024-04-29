@@ -1,5 +1,4 @@
 import Layout from '@/views/Layout'
-import ProjectDetail from '@/views/admin/projects/detail'
 import { useRouter } from 'next/router'
 import React from 'react'
 import dynamic from 'next/dynamic'
@@ -13,7 +12,7 @@ const AdminProjectDetail = () => {
     const { query: { id } } = useRouter()
     return (
         <div>
-            { id === "add" ? <ProjectAdd /> : <ProjectDetail id={id}/> }
+            { id === "add" ? <ProjectAdd id={id} /> : <ProjectAdd id={id}/> }
         </div>
     )
 }
