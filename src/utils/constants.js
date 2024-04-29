@@ -118,11 +118,16 @@ export const AdminNavbarMenu = [
     },
     {
         id: 6,
+        url: "/admin/donors-partners",
+        name: "Donors & Partners"
+    },
+    {
+        id: 7,
         url: "/admin/change-password",
         name: "Change Password"
     },
     {
-        id: 7,
+        id: 8,
         url: "/admin/logout",
         name: "Logout"
     }

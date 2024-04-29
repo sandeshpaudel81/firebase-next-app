@@ -24,11 +24,11 @@ const AdminDonorsPartnersList = () => {
             </div>
             {data?.map((dp) => {
                 return <Link key={dp.id} href={`/admin/donors-partners/${dp.id}`} className='col-span-4 md:col-span-1'>
-                    <div className=' bg-primaryExtraLight hover:bg-primaryLight rounded-md p-2 group'>
+                    <div className=' bg-primaryExtraLight hover:bg-primaryLight rounded-md p-2 group flex flex-col items-center'>
                         <div className='w-[150px] h-[150px]'>
                             <img src={dp.logoUrl} className='w-full h-full object-contain'/>
                         </div>
-                        <p className='font-medium text-lg md:text-xl'>{dp.name}</p>
+                        <p className='text-center font-medium text-md md:text-lg'>{dp.name}</p>
                     </div>
                 </Link>
             })}

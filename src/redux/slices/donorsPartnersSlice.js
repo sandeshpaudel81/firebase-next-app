@@ -26,7 +26,7 @@ const getDonorsPartners = createSlice({
     }
 })
 
-const addDonorsPartners = createSlice({
+const addDonorsPartnersSlice = createSlice({
     name: 'addDonorsPartners',
     initialState: {
         loading: false,
@@ -52,11 +52,11 @@ const addDonorsPartners = createSlice({
 })
 
 export const { setDonorsPartners, setDonorsPartnersLoading, setDonorsPartnersSuccess, setDonorsPartnersError } = getDonorsPartners.actions;
-export const { addDonorsPartnersLoading, addDonorsPartnersSuccess, addDonorsPartnersError, addDonorsPartnersReset} = addDonorsPartners.actions;
+export const { addDonorsPartnersLoading, addDonorsPartnersSuccess, addDonorsPartnersError, addDonorsPartnersReset} = addDonorsPartnersSlice.actions;
 
 export const donorsPartnersReducer = combineReducers({
     getDonorsPartners: getDonorsPartners.reducer,
-    addDonorsPartners: addDonorsPartners.reducer,
+    addDonorsPartners: addDonorsPartnersSlice.reducer,
 });
 
 export function fetchDonorsPartners(){
