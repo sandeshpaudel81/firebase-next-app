@@ -1,5 +1,5 @@
 import { combineReducers, createSlice } from "@reduxjs/toolkit";
-import {getDocs, query, collection, doc, getDoc} from "firebase/firestore"
+import {getDocs, query, collection, doc, getDoc, addDoc} from "firebase/firestore"
 import {db} from "../../../firebase-config"
 
 const getDonorsPartners = createSlice({
@@ -26,11 +26,37 @@ const getDonorsPartners = createSlice({
     }
 })
 
+const addDonorsPartnersSlice = createSlice({
+    name: 'addDonorsPartners',
+    initialState: {
+        loading: false,
+        success: false,
+        error: "",
+    },
+    reducers: {
+        addDonorsPartnersLoading(state, action){
+            state.loading = action.payload
+        },
+        addDonorsPartnersSuccess(state, action){
+            state.success = action.payload
+        },
+        addDonorsPartnersError(state, action){
+            state.error = action.payload
+        },
+        addDonorsPartnersReset(state){
+            state.loading = false
+            state.success = false
+            state.error = ""
+        }
+    }
+})
+
 export const { setDonorsPartners, setDonorsPartnersLoading, setDonorsPartnersSuccess, setDonorsPartnersError } = getDonorsPartners.actions;
+export const { addDonorsPartnersLoading, addDonorsPartnersSuccess, addDonorsPartnersError, addDonorsPartnersReset} = addDonorsPartnersSlice.actions;
 
 export const donorsPartnersReducer = combineReducers({
     getDonorsPartners: getDonorsPartners.reducer,
-    
+    addDonorsPartners: addDonorsPartnersSlice.reducer,
 });
 
 export function fetchDonorsPartners(){
@@ -50,6 +76,19 @@ export function fetchDonorsPartners(){
         } catch(err) {
             dispatch(setDonorsPartnersLoading(false))
             dispatch(setDonorsPartnersError('Error while fetching data.'))
+        }
+    }
+}
+
+export function addDonorsPartners(data){
+    return async function addDonorsPartnersThunk(dispatch){
+        dispatch(addDonorsPartnersLoading(true))
+        try {
+            await addDoc(collection(db, "donors-partners"), data)
+            dispatch(addDonorsPartnersLoading(false))
+            dispatch(addDonorsPartnersSuccess(true))
+        } catch(err) {
+            dispatch(addDonorsPartnersError(err.message))
         }
     }
 }
