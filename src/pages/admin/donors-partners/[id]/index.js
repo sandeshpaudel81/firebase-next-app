@@ -17,4 +17,4 @@ export default AdminDonorsPartnersDetail
 
 AdminDonorsPartnersDetail.getLayout = function getLayout(page) {
     return <AdminProtected><Layout>{page}</Layout></AdminProtected>;
-  };
+};
