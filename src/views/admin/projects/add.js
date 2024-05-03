@@ -233,7 +233,7 @@ const ProjectAdd = ({id}) => {
                             <button type='submit' className='bg-red-600 ml-3 px-8 py-3 text-white rounded-lg hover:bg-primaryDark cursor-pointer' onClick={() => setShowDeleteModal(true)}>
                                 Delete
                             </button>
-                        }
+                            }
                         </div>
                     </div>
                 }
