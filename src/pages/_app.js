@@ -3,6 +3,7 @@ import { store } from '@/redux/store'
 import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast';
 import { AuthContextProvider } from '@/contexts/AuthContext';
+import { useEffect } from 'react';
 
 export default function App({ Component, pageProps, router }) {
 
