@@ -1,5 +1,6 @@
 import Layout from "@/views/Layout"
 import MembersView from "@/views/team/MembersView"
+import { NextSeo } from "next-seo"
 import React from "react"
 
 const Members = () => {

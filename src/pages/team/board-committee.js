@@ -1,5 +1,6 @@
 import Layout from "@/views/Layout"
 import BoardCommitteeView from "@/views/team/BoardCommitteeView"
+import { NextSeo } from "next-seo"
 import React from "react"
 
 const BoardCommittee = () => {

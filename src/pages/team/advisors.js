@@ -1,5 +1,6 @@
 import Layout from "@/views/Layout"
 import AdvisorsView from "@/views/team/AdvisorsView"
+import { NextSeo } from "next-seo"
 import React from "react"
 
 const Advisors = () => {

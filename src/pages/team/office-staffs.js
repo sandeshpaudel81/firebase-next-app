@@ -1,5 +1,6 @@
 import Layout from "@/views/Layout"
 import OfficeStaffsView from "@/views/team/OfficeStaffsView"
+import { NextSeo } from "next-seo"
 import React from "react"
 
 const OfficeStaffs = () => {

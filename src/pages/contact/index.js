@@ -1,5 +1,6 @@
 import Layout from '@/views/Layout'
 import ContactView from '@/views/contact'
+import { NextSeo } from 'next-seo'
 import React from 'react'
 
 const Contact = () => {

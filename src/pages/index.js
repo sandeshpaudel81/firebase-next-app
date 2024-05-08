@@ -11,7 +11,6 @@ import ProjectBox from '@/components/common/ProjectBox';
 import { fetchNews } from '@/redux/slices/newsSlice';
 import CenteredLoading from '@/components/common/Loader';
 import {NextSeo} from 'next-seo'
-import Head from 'next/head';
 
 export default function Home() {
     const dispatch = useDispatch();
