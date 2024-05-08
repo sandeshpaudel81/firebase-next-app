@@ -1,11 +1,7 @@
 import Layout from '@/views/Layout'
 import NoticeDetailView from '@/views/notices/detail'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import { db } from '../../../../firebase-config'
-import { doc, getDoc } from 'firebase/firestore'
+import React from 'react'
 import { NextSeo } from 'next-seo'
-import { timestampToDate } from '@/redux/slices/noticeSlice'
 import { getAllNotices, getNoticeById } from '@/utils/api-util'
 
 const NoticeDetail = (props) => {

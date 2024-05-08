@@ -12,6 +12,7 @@ const Project = () => {
                 keywords="projects of  kadam myagdi, ngo projects, projects in nepal"
                 openGraph={{
                     type: 'website',
+                    description: 'Discover impactful projects initiated by our NGO, fueled by the unwavering support of our valued collaborators, donors, and partners. Join us in making a difference and creating positive change in our communities.',
                     url: 'https://kadammyagdi.org.np/projects/',
                     images: [{
                         url: 'https://www.kadammyagdi.org.np/assets/meta_images/projects.png',
