@@ -13,6 +13,7 @@ const News = () => {
                 openGraph={{
                     type: 'website',
                     url: 'https://kadammyagdi.org.np/news/',
+                    description: 'Stay updated with our latest news and updates of progress, events and more.',
                     images: [{
                         url: 'https://www.kadammyagdi.org.np/assets/meta_images/news.png',
                         width: 1200,

@@ -12,6 +12,7 @@ const Notices = () => {
                 keywords="notices of kadam myagdi, ngo notices, ngo vacancies"
                 openGraph={{
                     type: 'website',
+                    description: 'Stay updated with notices and announcements about vacancies, events and more.',
                     url: 'https://kadammyagdi.org.np/notices/',
                     images: [{
                         url: 'https://www.kadammyagdi.org.np/assets/meta_images/notices.png',
@@ -31,4 +32,4 @@ export default Notices
 
 Notices.getLayout = function getLayout(page) {
     return <Layout>{page}</Layout>;
-  };
+};

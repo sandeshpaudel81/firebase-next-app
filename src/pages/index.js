@@ -35,21 +35,14 @@ export default function Home() {
 
   return (
     <>
-        <Head>
-            <title>Home | KADAM Myagdi</title>
-            <meta property="og:image" content="https://www.kadammyagdi.org.np/assets/meta_images/homepage.png"/>
-            <meta property="og:title" content="Home | KADAM Myagdi"/>
-            <meta property="og:description" content="Kaligandaki Community Development Munch (KADAM), registered according to the Institution Registration Act of 2034 BS  in the local administration in Myagdi district in 2056 BS, is an unbroken community-based national NGO dedicated to promoting human rights and empowerment in the community."/>
-            <meta property="og:image:width" content="1200"/>
-            <meta property="og:image:height" content="630"/>
-        </Head>
-        {/* <NextSeo
+        <NextSeo
             title="Home | KADAM Myagdi"
             description="Kaligandaki Community Development Munch (KADAM), registered according to the Institution Registration Act of 2034 BS  in the local administration in Myagdi district in 2056 BS, is an unbroken community-based national NGO dedicated to promoting human rights and empowerment in the community."
             keywords="kadam myagdi, vmgo of ngo, vision of ngo"
             openGraph={{
                 type: 'website',
                 url: 'https://kadammyagdi.org.np',
+                description: "Kaligandaki Community Development Munch (KADAM), registered according to the Institution Registration Act of 2034 BS  in the local administration in Myagdi district in 2056 BS, is an unbroken community-based national NGO dedicated to promoting human rights and empowerment in the community.",
                 images: [{
                     url: 'https://www.kadammyagdi.org.np/assets/meta_images/homepage.png',
                     width: 1200,
@@ -58,7 +51,7 @@ export default function Home() {
                 }],
                 site_name: 'Kaligandaki Community Development Munch (KADAM) Myagdi'
             }}
-        /> */}
+        />
     
     <main>
         {
