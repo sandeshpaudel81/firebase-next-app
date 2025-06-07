@@ -79,7 +79,7 @@ export default function Home() {
 
         {/* Message From Chairperson */}
         <div className='bg-primaryExtraLight'>
-          <div className='container mx-auto py-20 px-5'>
+          <div className='container mx-auto px-5 md:px-10 lg:px-20 xl:px-32 py-20'>
             <div className='border-l-8 border-primary px-5'>
               <h2 className='text-primary font-bold text-3xl'>
                 Message From <span className='text-primaryDark'>Officials</span>
@@ -163,7 +163,7 @@ export default function Home() {
 
         {/* Projects */}
         <div className='bg-slate-900'>
-          <div className='container mx-auto px-5 py-10 md:py-20'>
+          <div className='container mx-auto px-5 md:px-10 lg:px-20 xl:px-32 py-10 md:py-20'>
             <div className='border-l-8 border-primary px-5'>
               <h2 className='text-primary font-bold text-3xl'>
                 Our <span className='text-white'>Projects</span>
@@ -198,7 +198,7 @@ export default function Home() {
 
         {/* News */}
         <div className='bg-white'>
-          <div className='container mx-auto px-5 py-10 md:py-20'>
+          <div className='container mx-auto px-5 md:px-10 lg:px-20 xl:px-32 py-10 md:py-20'>
             <div className='border-l-8 border-primary px-5'>
               <h2 className='text-primary font-bold text-3xl'>
                 News / <span className='text-primaryDark'>Events</span>
@@ -237,7 +237,7 @@ export default function Home() {
 
         {/* Get Involved */}
         <div className='bg-slate-900'>
-          <div className='container mx-auto px-5 py-10 md:py-20'>
+          <div className='container mx-auto px-5 md:px-10 lg:px-20 xl:px-32 py-10 md:py-20'>
             <div className='border-l-8 border-primary px-5'>
               <h2 className='text-primary font-bold text-3xl'>
                 Get <span className='text-white'>Involved</span>
@@ -306,13 +306,13 @@ export default function Home() {
 
         {/* Donors and Partners */}
         <div className='bg-primaryExtraLight'>
-          <div className='container mx-auto px-5 py-10 md:py-20'>
+          <div className='container mx-auto px-5 md:px-10 lg:px-20 xl:px-32 py-10 md:py-20'>
             <div className='border-l-8 border-primary px-5'>
               <h2 className='text-primary font-bold text-3xl'>
                 Donors <span className='text-primaryDark'>& Partners</span>
               </h2>
               <p className='uppercase text-gray-600 text-sm font-medium mt-2'>
-                With whom we work
+                With whom we work/worked
               </p>
             </div>
             {dpLoading ? (

@@ -15,7 +15,7 @@ const PublicationsView = () => {
     }, [])
     
     return (
-        <div className='container mx-auto py-10 px-2'>
+        <div className='container mx-auto px-5 md:px-10 lg:px-20 xl:px-48 py-10'>
             <div className='border-l-8 border-primary px-5'>
                 <h2 className='text-primary font-bold text-3xl'>Publications <span className='text-primaryDark'>/ Literatures</span></h2>
                 <p className='uppercase text-gray-600 text-sm font-medium mt-2'>Our Published Resources, Reports and Literatures</p>

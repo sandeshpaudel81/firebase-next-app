@@ -31,7 +31,7 @@ const BoardCommitteeView = () => {
     }, [dispatch, success])
 	
 	return (
-		<div className="container mx-auto px-5 py-10 md:py-20">
+		<div className="container mx-auto px-5 md:px-10 lg:px-20 xl:px-48 py-10 md:py-20">
 			<div className="border-l-8 border-primary px-5">
 				<h2 className="text-primary font-bold text-3xl">
 					Board <span className="text-primaryDark">Committee</span>
